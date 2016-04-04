@@ -62,8 +62,7 @@ class TableFormatter implements FormatterInterface, ConfigurationAwareInterface
         if (empty($fields)) {
             return $fieldLabels;
         }
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             if (array_key_exists($field, $data[0])) {
                 if (array_key_exists($field, $fieldLabels)) {
                     $result[$field] = $fieldLabels[$field];
