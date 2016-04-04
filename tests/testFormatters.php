@@ -137,6 +137,83 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'json', $data);
     }
 
+    function testSimplePrintR()
+    {
+        $data = [
+            'one' => 'a',
+            'two' => 'b',
+            'three' => 'c',
+        ];
+
+        $expected = <<<EOT
+Array
+(
+    [one] => a
+    [two] => b
+    [three] => c
+)
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'print-r', $data);
+    }
+
+    function testNestedPrintR()
+    {
+        $data = [
+            'one' => [
+                'i' => ['a', 'b', 'c'],
+            ],
+            'two' => [
+                'ii' => ['q', 'r', 's'],
+            ],
+            'three' => [
+                'iii' => ['t', 'u', 'v'],
+            ],
+        ];
+
+        $expected = <<<EOT
+Array
+(
+    [one] => Array
+        (
+            [i] => Array
+                (
+                    [0] => a
+                    [1] => b
+                    [2] => c
+                )
+
+        )
+
+    [two] => Array
+        (
+            [ii] => Array
+                (
+                    [0] => q
+                    [1] => r
+                    [2] => s
+                )
+
+        )
+
+    [three] => Array
+        (
+            [iii] => Array
+                (
+                    [0] => t
+                    [1] => u
+                    [2] => v
+                )
+
+        )
+
+)
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'print-r', $data);
+    }
+
+
     function testSimpleTable()
     {
         $data = [
