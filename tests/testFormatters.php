@@ -75,6 +75,68 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'yaml', $data);
     }
 
+    function testSimpleJson()
+    {
+        $data = [
+            'one' => 'a',
+            'two' => 'b',
+            'three' => 'c',
+        ];
+
+        $expected = <<<EOT
+{
+    "one": "a",
+    "two": "b",
+    "three": "c"
+}
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'json', $data);
+    }
+
+    function testNestedJson()
+    {
+        $data = [
+            'one' => [
+                'i' => ['a', 'b', 'c'],
+            ],
+            'two' => [
+                'ii' => ['q', 'r', 's'],
+            ],
+            'three' => [
+                'iii' => ['t', 'u', 'v'],
+            ],
+        ];
+
+        $expected = <<<EOT
+{
+    "one": {
+        "i": [
+            "a",
+            "b",
+            "c"
+        ]
+    },
+    "two": {
+        "ii": [
+            "q",
+            "r",
+            "s"
+        ]
+    },
+    "three": {
+        "iii": [
+            "t",
+            "u",
+            "v"
+        ]
+    }
+}
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'json', $data);
+    }
+
     function testSimpleTable()
     {
         $data = [

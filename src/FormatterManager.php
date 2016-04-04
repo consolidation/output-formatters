@@ -12,6 +12,7 @@ class FormatterManager
     {
         $this->formatters = [
             'yaml' => \Consolidation\OutputFormatters\Formatters\YamlFormatter::class,
+            'json' => \Consolidation\OutputFormatters\Formatters\JsonFormatter::class,
             'table' => \Consolidation\OutputFormatters\Formatters\TableFormatter::class,
         ];
     }
