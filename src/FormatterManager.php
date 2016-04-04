@@ -14,6 +14,7 @@ class FormatterManager
             'yaml' => \Consolidation\OutputFormatters\Formatters\YamlFormatter::class,
             'json' => \Consolidation\OutputFormatters\Formatters\JsonFormatter::class,
             'print-r' => \Consolidation\OutputFormatters\Formatters\PrintRFormatter::class,
+            'var_export' => \Consolidation\OutputFormatters\Formatters\VarExportFormatter::class,
             'table' => \Consolidation\OutputFormatters\Formatters\TableFormatter::class,
         ];
     }

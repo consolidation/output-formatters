@@ -19,7 +19,7 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
         $output = new BufferedOutput();
         $formatter = $this->formatterManager->getFormatter($format, $annotationData);
         $formatter->write($data, $options, $output);
-        $actual = trim($output->fetch());
+        $actual = preg_replace('#[ \t]*$#sm', '', $output->fetch());
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
 
@@ -213,6 +213,73 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'print-r', $data);
     }
 
+    function testSimpleVarExport()
+    {
+        $data = [
+            'one' => 'a',
+            'two' => 'b',
+            'three' => 'c',
+        ];
+
+        $expected = <<<EOT
+array (
+  'one' => 'a',
+  'two' => 'b',
+  'three' => 'c',
+)
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'var_export', $data);
+    }
+
+    function testNestedVarExport()
+    {
+        $data = [
+            'one' => [
+                'i' => ['a', 'b', 'c'],
+            ],
+            'two' => [
+                'ii' => ['q', 'r', 's'],
+            ],
+            'three' => [
+                'iii' => ['t', 'u', 'v'],
+            ],
+        ];
+
+        $expected = <<<EOT
+array (
+  'one' =>
+  array (
+    'i' =>
+    array (
+      0 => 'a',
+      1 => 'b',
+      2 => 'c',
+    ),
+  ),
+  'two' =>
+  array (
+    'ii' =>
+    array (
+      0 => 'q',
+      1 => 'r',
+      2 => 's',
+    ),
+  ),
+  'three' =>
+  array (
+    'iii' =>
+    array (
+      0 => 't',
+      1 => 'u',
+      2 => 'v',
+    ),
+  ),
+)
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'var_export', $data);
+    }
 
     function testSimpleTable()
     {
