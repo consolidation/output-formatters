@@ -298,6 +298,60 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'list', $data);
     }
 
+    function testSimpleCsv()
+    {
+        $data = ['a', 'b', 'c'];
+        $expected = "a,b,c";
+
+        $this->assertFormattedOutputMatches($expected, 'csv', $data);
+    }
+
+    function testLinesOfCsv()
+    {
+        $data = [['a', 'b', 'c'], ['x', 'y', 'z']];
+        $expected = "a,b,c\nx,y,z";
+
+        $this->assertFormattedOutputMatches($expected, 'csv', $data);
+    }
+
+    function testCsvWithEscapedValues()
+    {
+        $data = ["Red apple", "Yellow lemon"];
+        $expected = '"Red apple","Yellow lemon"';
+
+        $this->assertFormattedOutputMatches($expected, 'csv', $data);
+    }
+
+    function testCsvWithEmbeddedSingleQuote()
+    {
+        $data = ["John's book", "Mary's laptop"];
+        $expected = <<<EOT
+"John's book","Mary's laptop"
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'csv', $data);
+    }
+
+    function testCsvWithEmbeddedDoubleQuote()
+    {
+        $data = ['The "best" solution'];
+        $expected = <<<EOT
+"The ""best"" solution"
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'csv', $data);
+    }
+
+    function testCsvBothKindsOfQuotes()
+    {
+        $data = ["John's \"new\" book", "Mary's \"modified\" laptop"];
+        $expected = <<<EOT
+"John's ""new"" book","Mary's ""modified"" laptop"
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'csv', $data);
+    }
+
     function testSimpleTable()
     {
         $data = [

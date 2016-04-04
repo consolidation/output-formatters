@@ -16,6 +16,7 @@ class FormatterManager
             'print-r' => \Consolidation\OutputFormatters\Formatters\PrintRFormatter::class,
             'var_export' => \Consolidation\OutputFormatters\Formatters\VarExportFormatter::class,
             'list' => \Consolidation\OutputFormatters\Formatters\ListFormatter::class,
+            'csv' => \Consolidation\OutputFormatters\Formatters\CsvFormatter::class,
             'table' => \Consolidation\OutputFormatters\Formatters\TableFormatter::class,
         ];
     }
