@@ -1,5 +1,5 @@
 {
-    "name": "consolidation/formatters",
+    "name": "consolidation/output-formatters",
     "description": "Format text by applying transformations provided by plug-in formatters.",
     "license": "MIT",
     "authors": [
