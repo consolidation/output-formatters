@@ -23,7 +23,7 @@ class FormatterManager
 
     public function getFormatter($format, $annotationData = [])
     {
-        if (array_key_exists($format, $this->formatters)) {
+        if (is_string($format) && array_key_exists($format, $this->formatters)) {
             $formatter = new $this->formatters[$format];
             if ($formatter instanceof ConfigurationAwareInterface) {
                 $formatter->configure($annotationData);
