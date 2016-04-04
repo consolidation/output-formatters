@@ -15,6 +15,7 @@ class FormatterManager
             'json' => \Consolidation\OutputFormatters\Formatters\JsonFormatter::class,
             'print-r' => \Consolidation\OutputFormatters\Formatters\PrintRFormatter::class,
             'var_export' => \Consolidation\OutputFormatters\Formatters\VarExportFormatter::class,
+            'list' => \Consolidation\OutputFormatters\Formatters\ListFormatter::class,
             'table' => \Consolidation\OutputFormatters\Formatters\TableFormatter::class,
         ];
     }

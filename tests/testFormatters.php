@@ -281,6 +281,23 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'var_export', $data);
     }
 
+    function testList()
+    {
+        $data = [
+            'one' => 'a',
+            'two' => 'b',
+            'three' => 'c',
+        ];
+
+        $expected = <<<EOT
+a
+b
+c
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'list', $data);
+    }
+
     function testSimpleTable()
     {
         $data = [
