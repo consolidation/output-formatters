@@ -417,5 +417,6 @@ EOT;
         ];
         $this->assertFormattedOutputMatches($expected, 'table', $data, $annotationData);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $annotationData, ['fields' => ['three', 'one']]);
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $annotationData, ['fields' => ['San', 'Ichi']]);
     }
 }

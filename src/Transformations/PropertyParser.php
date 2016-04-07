@@ -22,14 +22,15 @@ class PropertyParser
 {
     public static function parse($data)
     {
-        if (is_string($data)) {
-            $result = [];
-            $lines = explode("\n", $data);
-            foreach ($lines as $line) {
-                list($key, $value) = explode(':', trim($line), 2) + ['', ''];
-                $result[$key] = trim($value);
-            }
-            return $result;
+        if (!is_string($data)) {
+            return $data;
         }
+        $result = [];
+        $lines = explode("\n", $data);
+        foreach ($lines as $line) {
+            list($key, $value) = explode(':', trim($line), 2) + ['', ''];
+            $result[$key] = trim($value);
+        }
+        return $result;
     }
 }

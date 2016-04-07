@@ -8,6 +8,7 @@ use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\ConfigurationAwareInterface;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
+use Consolidation\OutputFormatters\Transformations\ReorderFields;
 
 class TableFormatter implements FormatterInterface, ConfigurationAwareInterface
 {
@@ -41,7 +42,8 @@ class TableFormatter implements FormatterInterface, ConfigurationAwareInterface
             'fields' => $this->defaultFields,
             'include-field-labels' => true,
         ];
-        $fieldLabels = $this->selectFieldLabels($options['fields'], $this->fieldLabels, $data);
+        $reorderer = new ReorderFields();
+        $fieldLabels = $reorderer->reorder($options['fields'], $this->fieldLabels, $data);
         $tableTransformer = new TableTransformation($data, $fieldLabels, $options);
 
         $table = new Table($output);
@@ -51,24 +53,5 @@ class TableFormatter implements FormatterInterface, ConfigurationAwareInterface
         }
         $table->setRows($tableTransformer->getData());
         $table->render();
-    }
-
-    protected function selectFieldLabels($fields, $fieldLabels, $data)
-    {
-        $result = [];
-        if (empty($fieldLabels)) {
-            $fieldLabels = array_combine(array_keys($data[0]), array_keys($data[0]));
-        }
-        if (empty($fields)) {
-            return $fieldLabels;
-        }
-        foreach ($fields as $field) {
-            if (array_key_exists($field, $data[0])) {
-                if (array_key_exists($field, $fieldLabels)) {
-                    $result[$field] = $fieldLabels[$field];
-                }
-            }
-        }
-        return $result;
     }
 }
