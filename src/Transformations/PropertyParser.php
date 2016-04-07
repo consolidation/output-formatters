@@ -1,8 +1,6 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
-use Symfony\Component\Yaml\Yaml;
-
 /**
  * Transform a string of properties into a PHP associative array.
  *
@@ -25,8 +23,13 @@ class PropertyParser
     public static function parse($data)
     {
         if (is_string($data)) {
-            $data = Yaml::parse(trim($data));
+            $result = [];
+            $lines = explode("\n", $data);
+            foreach ($lines as $line) {
+                list($key, $value) = explode(':', trim($line), 2) + ['', ''];
+                $result[$key] = trim($value);
+            }
+            return $result;
         }
-        return $data;
     }
 }
