@@ -22,7 +22,6 @@ class ReorderFields
     public function reorder($fields, $fieldLabels, $data)
     {
         $fields = $this->getSelectedFieldKeys($fields, $fieldLabels);
-        $result = [];
         if (empty($fieldLabels)) {
             $fieldLabels = array_combine(array_keys($data[0]), array_keys($data[0]));
         }
@@ -34,6 +33,7 @@ class ReorderFields
 
     protected function reorderFieldLabels($fields, $fieldLabels, $data)
     {
+        $result = [];
         foreach ($fields as $field) {
             if (array_key_exists($field, $data[0])) {
                 if (array_key_exists($field, $fieldLabels)) {
