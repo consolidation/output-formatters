@@ -11,13 +11,13 @@ class FormatterManager
     public function __construct()
     {
         $this->formatters = [
-            'yaml' => \Consolidation\OutputFormatters\Formatters\YamlFormatter::class,
-            'json' => \Consolidation\OutputFormatters\Formatters\JsonFormatter::class,
-            'print-r' => \Consolidation\OutputFormatters\Formatters\PrintRFormatter::class,
-            'var_export' => \Consolidation\OutputFormatters\Formatters\VarExportFormatter::class,
-            'list' => \Consolidation\OutputFormatters\Formatters\ListFormatter::class,
-            'csv' => \Consolidation\OutputFormatters\Formatters\CsvFormatter::class,
-            'table' => \Consolidation\OutputFormatters\Formatters\TableFormatter::class,
+            'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
+            'json' => '\Consolidation\OutputFormatters\Formatters\JsonFormatter',
+            'print-r' => '\Consolidation\OutputFormatters\Formatters\PrintRFormatter',
+            'var_export' => '\Consolidation\OutputFormatters\Formatters\VarExportFormatter',
+            'list' => '\Consolidation\OutputFormatters\Formatters\ListFormatter',
+            'csv' => '\Consolidation\OutputFormatters\Formatters\CsvFormatter',
+            'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
         ];
     }
 
