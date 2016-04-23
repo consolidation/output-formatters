@@ -23,6 +23,15 @@ class FormatterManager
         ];
     }
 
+    /**
+     * Format and write output
+     *
+     * @param OutputInterface $output Output stream to write to
+     * @param string $format Data format to output in
+     * @param mixed $structuredOutput Data to output
+     * @param array $annotationData Configuration information for formatter
+     * @param array $options User options
+     */
     public function write(OutputInterface $output, $format, $structuredOutput, $annotationData = [], $options = [])
     {
         $formatter = $this->getFormatter($format, $annotationData);
@@ -36,6 +45,13 @@ class FormatterManager
         $formatter->write($output, $structuredOutput, $options);
     }
 
+    /**
+     * Fetch the requested formatter.
+     *
+     * @param string $format Identifier for requested formatter
+     * @param array $configurationData Configuration data for formatter
+     * @return FormatterInterface
+     */
     public function getFormatter($format, $configurationData = [])
     {
         if (is_string($format) && array_key_exists($format, $this->formatters)) {
@@ -47,6 +63,13 @@ class FormatterManager
         }
     }
 
+    /**
+     * Determine if the provided data is compatible with the formatter being used.
+     *
+     * @param FormatterInterface $formatter Formatter being used
+     * @param mixed $structuredOutput Data to validate
+     * @return mixed
+     */
     public function validateData(FormatterInterface $formatter, $structuredOutput)
     {
         // If the formatter implements ValidationInterface, then let it
@@ -64,6 +87,14 @@ class FormatterManager
         return $structuredOutput;
     }
 
+    /**
+     * Restructure the data as necessary (e.g. to select or reorder fields).
+     *
+     * @param mixed $structuredOutput
+     * @param array $configurationData
+     * @param array $options
+     * @return mixed
+     */
     public function restructureData($structuredOutput, $configurationData, $options)
     {
         if ($structuredOutput instanceof RestructureInterface) {
