@@ -10,7 +10,7 @@ class YamlFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write($data, $options, OutputInterface $output)
+    public function write(OutputInterface $output, $data, $options = [])
     {
         $dumper = new Dumper();
         // Set Yaml\Dumper's default indentation for nested nodes/collections to

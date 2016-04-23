@@ -1,21 +1,30 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
-class TableTransformation
+class TableTransformation extends \ArrayObject
 {
     protected $headers;
-    protected $rows;
 
-    public function __construct($data, $fieldLabels, $options)
+    public function __construct($data, $fieldLabels)
     {
         $this->headers = array_values($fieldLabels);
-        $this->rows = [];
-        foreach ($data as $row) {
-            $this->rows[] = $this->transformRow($row, $fieldLabels);
+        $rows = static::transformRows($data, $fieldLabels);
+        if (empty($this->headers) && !empty($rows)) {
+            $this->headers = array_combine(array_keys($rows[0]), array_keys($rows[0]));
         }
+        parent::__construct($rows);
     }
 
-    protected function transformRow($row, $fieldLabels)
+    protected static function transformRows($data, $fieldLabels)
+    {
+        $rows = [];
+        foreach ($data as $row) {
+            $rows[] = static::transformRow($row, $fieldLabels);
+        }
+        return $rows;
+    }
+
+    protected static function transformRow($row, $fieldLabels)
     {
         $result = [];
         foreach ($fieldLabels as $key => $label) {
@@ -31,6 +40,6 @@ class TableTransformation
 
     public function getData()
     {
-        return $this->rows;
+        return $this->getArrayCopy();
     }
 }

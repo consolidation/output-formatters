@@ -9,7 +9,7 @@ class PrintRFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write($data, $options, OutputInterface $output)
+    public function write(OutputInterface $output, $data, $options = [])
     {
         $output->writeln(print_r($data, true));
     }

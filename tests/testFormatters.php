@@ -1,6 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
+use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,8 +18,9 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
 
     function assertFormattedOutputMatches($expected, $format, $data, $annotationData = [], $options = []) {
         $output = new BufferedOutput();
-        $formatter = $this->formatterManager->getFormatter($format, $annotationData);
-        $formatter->write($data, $options, $output);
+        //$formatter = $this->formatterManager->getFormatter($format, $annotationData);
+        //$formatter->write($data, $options, $output);
+        $this->formatterManager->write($output, $format, $data, $annotationData, $options);
         $actual = preg_replace('#[ \t]*$#sm', '', $output->fetch());
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
@@ -366,6 +368,7 @@ EOT;
                 'three' => 'z',
             ],
         ];
+        $data = new RowsOfFields($data);
 
         $expected = <<<EOT
 +-----+-----+-------+
@@ -393,6 +396,7 @@ EOT;
                 'three' => 'z',
             ],
         ];
+        $data = new RowsOfFields($data);
 
         $expected = <<<EOT
 +------+----+-----+

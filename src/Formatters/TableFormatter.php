@@ -5,46 +5,53 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 
 use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ConfigurationAwareInterface;
+use Consolidation\OutputFormatters\ConfigureInterface;
+use Consolidation\OutputFormatters\ValidationInterface;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 
-class TableFormatter implements FormatterInterface, ConfigurationAwareInterface
+class TableFormatter implements FormatterInterface, ConfigureInterface, ValidationInterface
 {
     protected $fieldLabels;
     protected $defaultFields;
     protected $tableStyle;
+
+    public function __construct()
+    {
+        $this->tableStyle = 'default';
+    }
 
     /**
      * @inheritdoc
      */
     public function configure($configurationData)
     {
-        $configurationData += [
-            'field-labels' => [],
-            'default-fields' => [],
-            'table-style' => 'default',
-        ];
+        if (isset($configurationData['table-style'])) {
+            $this->tableStyle = $configurationData['table-style'];
+        }
+    }
 
-        $this->fieldLabels = PropertyParser::parse($configurationData['field-labels']);
-        $this->defaultFields = PropertyParser::parse($configurationData['default-fields']);
-        $this->tableStyle = $configurationData['table-style'];
+    public function validate($structuredData)
+    {
+        // If the returned data is of class RowsOfFields, that will
+        // be converted into a TableTransformation object.
+        if (!$structuredData instanceof TableTransformation) {
+            // TODO: Define our own Exception class
+            throw new \Exception("Data provided to table formatter must be an instance of RowsOfFields. Instead, a " . get_class($structuredData) . " was provided.", 1);
+        }
+        return $structuredData;
     }
 
     /**
      * @inheritdoc
      */
-    public function write($data, $options, OutputInterface $output)
+    public function write(OutputInterface $output, $tableTransformer, $options = [])
     {
         $options += [
             'table-style' => $this->tableStyle,
-            'fields' => $this->defaultFields,
             'include-field-labels' => true,
         ];
-        $reorderer = new ReorderFields();
-        $fieldLabels = $reorderer->reorder($options['fields'], $this->fieldLabels, $data);
-        $tableTransformer = new TableTransformation($data, $fieldLabels, $options);
 
         $table = new Table($output);
         $table->setStyle($options['table-style']);

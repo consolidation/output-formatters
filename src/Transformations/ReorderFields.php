@@ -21,10 +21,10 @@ class ReorderFields
      */
     public function reorder($fields, $fieldLabels, $data)
     {
-        $fields = $this->getSelectedFieldKeys($fields, $fieldLabels);
-        if (empty($fieldLabels)) {
+        if (empty($fieldLabels) && !empty($data)) {
             $fieldLabels = array_combine(array_keys($data[0]), array_keys($data[0]));
         }
+        $fields = $this->getSelectedFieldKeys($fields, $fieldLabels);
         if (empty($fields)) {
             return $fieldLabels;
         }

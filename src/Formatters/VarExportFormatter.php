@@ -9,7 +9,7 @@ class VarExportFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write($data, $options, OutputInterface $output)
+    public function write(OutputInterface $output, $data, $options = [])
     {
         $output->writeln(var_export($data, true));
     }

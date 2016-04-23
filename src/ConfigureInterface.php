@@ -1,7 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
-interface ConfigurationAwareInterface
+interface ConfigureInterface
 {
     /**
      * Provide formatter with annotation data to use

@@ -9,7 +9,7 @@ class CsvFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write($data, $options, OutputInterface $output)
+    public function write(OutputInterface $output, $data, $options = [])
     {
         if (empty($data) || !is_array($data)) {
             return;
