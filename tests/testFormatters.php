@@ -344,6 +344,13 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    function testNoFormatterSelected()
+    {
+        $data = 'Hello';
+        $expected = $data;
+        $this->assertFormattedOutputMatches($expected, '', $data);
+    }
+
     function testCsvBothKindsOfQuotes()
     {
         $data = ["John's \"new\" book", "Mary's \"modified\" laptop"];

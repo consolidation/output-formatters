@@ -13,6 +13,7 @@ class FormatterManager
     public function __construct()
     {
         $this->formatters = [
+            'default' => '\Consolidation\OutputFormatters\Formatters\DefaultFormatter',
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
             'json' => '\Consolidation\OutputFormatters\Formatters\JsonFormatter',
             'print-r' => '\Consolidation\OutputFormatters\Formatters\PrintRFormatter',
@@ -54,6 +55,9 @@ class FormatterManager
      */
     public function getFormatter($format, $configurationData = [])
     {
+        if (empty($format)) {
+            $format = 'default';
+        }
         if (is_string($format) && array_key_exists($format, $this->formatters)) {
             $formatter = new $this->formatters[$format];
             if ($formatter instanceof ConfigureInterface) {
