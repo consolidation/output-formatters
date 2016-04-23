@@ -10,6 +10,7 @@ use Consolidation\OutputFormatters\ValidationInterface;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
+use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 
 class TableFormatter implements FormatterInterface, ConfigureInterface, ValidationInterface
 {
@@ -34,11 +35,10 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
 
     public function validate($structuredData)
     {
-        // If the returned data is of class RowsOfFields, that will
-        // be converted into a TableTransformation object.
+        // If the provided data was of class RowsOfFields, it will be
+        // converted into a TableTransformation object.
         if (!$structuredData instanceof TableTransformation) {
-            // TODO: Define our own Exception class
-            throw new \Exception("Data provided to table formatter must be an instance of RowsOfFields. Instead, a " . get_class($structuredData) . " was provided.", 1);
+            throw new IncompatibleDataException($this, $structuredData, new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'));
         }
         return $structuredData;
     }

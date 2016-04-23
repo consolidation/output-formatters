@@ -354,7 +354,7 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
-    function testSimpleTable()
+    protected function simpleTableExampleData()
     {
         $data = [
             [
@@ -368,7 +368,23 @@ EOT;
                 'three' => 'z',
             ],
         ];
-        $data = new RowsOfFields($data);
+        return new RowsOfFields($data);
+    }
+
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields. Instead, an array was provided.
+     */
+    function testIncompatibleDataForTableFormatter()
+    {
+        $data = $this->simpleTableExampleData();
+        $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
+    }
+
+    function testSimpleTable()
+    {
+        $data = $this->simpleTableExampleData();
 
         $expected = <<<EOT
 +-----+-----+-------+
@@ -384,19 +400,7 @@ EOT;
 
     function testSimpleTableWithFieldLabels()
     {
-        $data = [
-            [
-                'one' => 'a',
-                'two' => 'b',
-                'three' => 'c',
-            ],
-            [
-                'one' => 'x',
-                'two' => 'y',
-                'three' => 'z',
-            ],
-        ];
-        $data = new RowsOfFields($data);
+        $data = $this->simpleTableExampleData();
 
         $expected = <<<EOT
 +------+----+-----+
