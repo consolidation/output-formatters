@@ -51,7 +51,7 @@ class IncompatibleDataException extends \Exception
             $descriptions[] = static::describeDataType($oneAllowedType);
         }
         if (count($descriptions) == 2) {
-            return "either {$description[0]} or {$description[1]}";
+            return "either {$descriptions[0]} or {$descriptions[1]}";
         }
         $lastDescription = array_pop($descriptions);
         $otherDescriptions = implode(', ', $descriptions);
