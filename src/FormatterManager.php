@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -22,6 +23,9 @@ class FormatterManager
             'csv' => '\Consolidation\OutputFormatters\Formatters\CsvFormatter',
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
         ];
+
+        // Make the empty string an alias for 'default'.
+        $this->formatters[''] = $this->formatters['default'];
     }
 
     /**
@@ -55,16 +59,20 @@ class FormatterManager
      */
     public function getFormatter($format, $configurationData = [])
     {
-        if (empty($format)) {
-            $format = 'default';
+        if (!$this->hasFormatter($format)) {
+            throw new UnknownFormatException($format);
         }
-        if (is_string($format) && array_key_exists($format, $this->formatters)) {
-            $formatter = new $this->formatters[$format];
-            if ($formatter instanceof ConfigureInterface) {
-                $formatter->configure($configurationData);
-            }
-            return $formatter;
+
+        $formatter = new $this->formatters[$format];
+        if ($formatter instanceof ConfigureInterface) {
+            $formatter->configure($configurationData);
         }
+        return $formatter;
+    }
+
+    public function hasFormatter($format)
+    {
+        return array_key_exists($format, $this->formatters);
     }
 
     /**
