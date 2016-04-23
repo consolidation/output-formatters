@@ -45,7 +45,8 @@ class IncompatibleDataException extends \Exception
         return static::describeDataType($allowedTypes);
     }
 
-    protected static function describeListOfAllowedTypes($allowedTypes) {
+    protected static function describeListOfAllowedTypes($allowedTypes)
+    {
         $descriptions = [];
         foreach ($allowedTypes as $oneAllowedType) {
             $descriptions[] = static::describeDataType($oneAllowedType);
