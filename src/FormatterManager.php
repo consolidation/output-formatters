@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 
 /**
@@ -41,6 +42,18 @@ class FormatterManager
     public function write(OutputInterface $output, $format, $structuredOutput, $configurationData = [], $options = [])
     {
         $formatter = $this->getFormatter((string)$format, $configurationData);
+        $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $configurationData, $options);
+        $formatter->write($output, $structuredOutput, $options);
+    }
+
+    protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, $configurationData, $options)
+    {
+        // Give the formatter a chance to do something with the
+        // raw data before it is restructured.
+        $overrideRestructure = $this->overrideRestructure($formatter, $structuredOutput, $configurationData, $options);
+        if ($overrideRestructure) {
+            return $overrideRestructure;
+        }
 
         // Restructure the output data (e.g. select fields to display, etc.).
         $structuredOutput = $this->restructureData($structuredOutput, $configurationData, $options);
@@ -48,7 +61,7 @@ class FormatterManager
         // Make sure that the provided data is in the correct format for the selected formatter.
         $structuredOutput = $this->validateData($formatter, $structuredOutput);
 
-        $formatter->write($output, $structuredOutput, $options);
+        return $structuredOutput;
     }
 
     /**
@@ -114,5 +127,25 @@ class FormatterManager
             return $structuredOutput->restructure($configurationData, $options);
         }
         return $structuredOutput;
+    }
+
+    /**
+     * Allow the formatter access to the raw structured data prior
+     * to restructuring.  For example, the 'list' formatter may wish
+     * to display the row keys when provided table output.  If this
+     * function returns a result that does not evaluate to 'false',
+     * then that result will be used as-is, and restructuring and
+     * validation will not occur.
+     *
+     * @param mixed $structuredOutput
+     * @param array $configurationData
+     * @param array $options
+     * @return mixed
+     */
+    public function overrideRestructure(FormatterInterface $formatter, $structuredOutput, $configurationData, $options)
+    {
+        if ($formatter instanceof OverrideRestructureInterface) {
+            return $formatter->overrideRestructure($structuredOutput, $configurationData, $options);
+        }
     }
 }
