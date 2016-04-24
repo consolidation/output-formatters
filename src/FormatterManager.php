@@ -39,7 +39,7 @@ class FormatterManager
      */
     public function write(OutputInterface $output, $format, $structuredOutput, $configurationData = [], $options = [])
     {
-        $formatter = $this->getFormatter($format, $configurationData);
+        $formatter = $this->getFormatter((string)$format, $configurationData);
 
         // Restructure the output data (e.g. select fields to display, etc.).
         $structuredOutput = $this->restructureData($structuredOutput, $configurationData, $options);
