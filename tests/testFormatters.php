@@ -95,6 +95,19 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'json', $data);
     }
 
+    function testSerializeFormat()
+    {
+        $data = [
+            'one' => 'a',
+            'two' => 'b',
+            'three' => 'c',
+        ];
+
+        $expected = 'a:3:{s:3:"one";s:1:"a";s:3:"two";s:1:"b";s:5:"three";s:1:"c";}';
+
+        $this->assertFormattedOutputMatches($expected, 'php', $data);
+    }
+
     function testNestedJson()
     {
         $data = [

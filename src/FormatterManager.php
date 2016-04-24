@@ -18,6 +18,7 @@ class FormatterManager
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
             'json' => '\Consolidation\OutputFormatters\Formatters\JsonFormatter',
             'print-r' => '\Consolidation\OutputFormatters\Formatters\PrintRFormatter',
+            'php' => '\Consolidation\OutputFormatters\Formatters\SerializeFormatter',
             'var_export' => '\Consolidation\OutputFormatters\Formatters\VarExportFormatter',
             'list' => '\Consolidation\OutputFormatters\Formatters\ListFormatter',
             'csv' => '\Consolidation\OutputFormatters\Formatters\CsvFormatter',
