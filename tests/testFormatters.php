@@ -360,6 +360,45 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    protected function missingCellTableExampleData()
+    {
+        $data = [
+            [
+                'one' => 'a',
+                'two' => 'b',
+                'three' => 'c',
+            ],
+            [
+                'one' => 'x',
+                'three' => 'z',
+            ],
+        ];
+        return new RowsOfFields($data);
+    }
+
+    function testTableWithMissingCell()
+    {
+        $data = $this->missingCellTableExampleData();
+
+        $expected = <<<EOT
++-----+-----+-------+
+| One | Two | Three |
++-----+-----+-------+
+| a   | b   | c     |
+| x   |     | z     |
++-----+-----+-------+
+EOT;
+
+        $expectedCsv = <<<EOT
+One,Two,Three
+a,b,c
+x,,z
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
+    }
+
     protected function simpleTableExampleData()
     {
         $data = [
@@ -416,8 +455,15 @@ EOT;
 ]
 EOT;
 
+        $expectedCsv = <<<EOT
+One,Two,Three
+a,b,c
+x,y,z
+EOT;
+
         $this->assertFormattedOutputMatches($expected, 'table', $data);
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
     }
 
     function testSimpleTableWithFieldLabels()

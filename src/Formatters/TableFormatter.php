@@ -7,7 +7,7 @@ use Symfony\Component\Console\Helper\Table;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\ConfigureInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
-use Consolidation\OutputFormatters\Transformations\TableTransformation;
+use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
@@ -37,8 +37,8 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
     {
         // If the provided data was of class RowsOfFields
         // or AssociativeList, it will be converted into
-        // a TableTransformation object.
-        if (!$structuredData instanceof TableTransformation) {
+        // a TableTransformation object by the restructure call.
+        if (!$structuredData instanceof TableDataInterface) {
             throw new IncompatibleDataException(
                 $this,
                 $structuredData,
@@ -69,7 +69,7 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
         if ($includeHeaders && !$isList && !empty($headers)) {
             $table->setHeaders($headers);
         }
-        $table->setRows($tableTransformer->getData($includeHeaders && $isList));
+        $table->setRows($tableTransformer->getTableData($includeHeaders && $isList));
         $table->render();
     }
 }
