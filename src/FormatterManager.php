@@ -34,15 +34,15 @@ class FormatterManager
      * @param OutputInterface $output Output stream to write to
      * @param string $format Data format to output in
      * @param mixed $structuredOutput Data to output
-     * @param array $annotationData Configuration information for formatter
+     * @param array $configurationData Configuration information for formatter
      * @param array $options User options
      */
-    public function write(OutputInterface $output, $format, $structuredOutput, $annotationData = [], $options = [])
+    public function write(OutputInterface $output, $format, $structuredOutput, $configurationData = [], $options = [])
     {
-        $formatter = $this->getFormatter($format, $annotationData);
+        $formatter = $this->getFormatter($format, $configurationData);
 
         // Restructure the output data (e.g. select fields to display, etc.).
-        $structuredOutput = $this->restructureData($structuredOutput, $annotationData, $options);
+        $structuredOutput = $this->restructureData($structuredOutput, $configurationData, $options);
 
         // Make sure that the provided data is in the correct format for the selected formatter.
         $structuredOutput = $this->validateData($formatter, $structuredOutput);

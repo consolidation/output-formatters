@@ -24,11 +24,15 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface
 
     public function restructure($configurationData, $options)
     {
+        $data = $this->getArrayCopy();
+        return $this->createTableTransformation($data, $configurationData, $options);
+    }
+
+    protected function createTableTransformation($data, $configurationData, $options)
+    {
         $options = $this->interpretOptions($configurationData, $options);
 
         $reorderer = new ReorderFields();
-        $data = $this->getArrayCopy();
-
         $fieldLabels = $reorderer->reorder($options['fields'], $options['field-labels'], $data);
 
         $tableTransformer = new TableTransformation($data, $fieldLabels);
