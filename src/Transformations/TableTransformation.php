@@ -1,7 +1,9 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
-class TableTransformation extends \ArrayObject
+use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
+
+class TableTransformation extends \ArrayObject implements TableDataInterface
 {
     protected $headers;
     protected $layout;
@@ -63,7 +65,12 @@ class TableTransformation extends \ArrayObject
         return $key;
     }
 
-    public function getData($includeRowKey = false)
+    public function getData()
+    {
+        return $this->getArrayCopy();
+    }
+
+    public function getTableData($includeRowKey = false)
     {
         $data = $this->getArrayCopy();
         if ($this->isList()) {
