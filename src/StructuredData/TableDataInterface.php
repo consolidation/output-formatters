@@ -4,8 +4,8 @@ namespace Consolidation\OutputFormatters\StructuredData;
 interface TableDataInterface
 {
     /**
-     * Provide formatter with annotation data to use
-     * for configuration.
+     * Convert structured data into a form suitable for use
+     * by the table formatter.
      *
      * @param boolean $includeRowKey Add a field containing the
      *   key from each row.

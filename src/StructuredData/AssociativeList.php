@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\RestructureInterface;
+use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
@@ -11,7 +12,7 @@ use Consolidation\OutputFormatters\Transformations\TableTransformation;
  * key : value pair.  The keys must be unique, as is typically
  * the case for associative arrays.
  */
-class AssociativeList extends RowsOfFields
+class AssociativeList extends RowsOfFields implements ListDataInterface
 {
     protected $data;
 
@@ -26,5 +27,10 @@ class AssociativeList extends RowsOfFields
         $tableTransformer = $this->createTableTransformation($data, $configurationData, $options);
         $tableTransformer->setLayout(TableTransformation::LIST_LAYOUT);
         return $tableTransformer;
+    }
+
+    public function getListData()
+    {
+        return $this->getArrayCopy();
     }
 }

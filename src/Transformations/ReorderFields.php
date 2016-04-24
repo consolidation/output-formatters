@@ -22,7 +22,8 @@ class ReorderFields
     public function reorder($fields, $fieldLabels, $data)
     {
         if (empty($fieldLabels) && !empty($data)) {
-            $fieldLabels = array_combine(array_keys($data[0]), array_map('ucfirst', array_keys($data[0])));
+            $firstRow = reset($data);
+            $fieldLabels = array_combine(array_keys($firstRow), array_map('ucfirst', array_keys($firstRow)));
         }
         $fields = $this->getSelectedFieldKeys($fields, $fieldLabels);
         if (empty($fields)) {
@@ -34,8 +35,9 @@ class ReorderFields
     protected function reorderFieldLabels($fields, $fieldLabels, $data)
     {
         $result = [];
+        $firstRow = reset($data);
         foreach ($fields as $field) {
-            if (array_key_exists($field, $data[0])) {
+            if (array_key_exists($field, $firstRow)) {
                 if (array_key_exists($field, $fieldLabels)) {
                     $result[$field] = $fieldLabels[$field];
                 }

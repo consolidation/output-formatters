@@ -415,11 +415,13 @@ EOT;
     protected function simpleTableExampleData()
     {
         $data = [
+            'id-123' =>
             [
                 'one' => 'a',
                 'two' => 'b',
                 'three' => 'c',
             ],
+            'id-456' =>
             [
                 'one' => 'x',
                 'two' => 'y',
@@ -474,9 +476,15 @@ a,b,c
 x,y,z
 EOT;
 
+        $expectedList = <<<EOT
+id-123
+id-456
+EOT;
+
         $this->assertFormattedOutputMatches($expected, 'table', $data);
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
+        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
     }
 
     function testSimpleTableWithFieldLabels()
@@ -490,6 +498,13 @@ EOT;
 | a    | b  | c   |
 | x    | y  | z   |
 +------+----+-----+
+EOT;
+
+        $expectedWithNoFields = <<<EOT
++---+---+---+
+| a | b | c |
+| x | y | z |
++---+---+---+
 EOT;
 
         $expectedWithReorderedFields = <<<EOT
@@ -518,6 +533,7 @@ EOT;
             'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
         ];
         $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
+        $this->assertFormattedOutputMatches($expectedWithNoFields, 'table', $data, $configurationData, ['include-field-labels' => false]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
@@ -556,7 +572,23 @@ EOT;
 +-------+--------+
 EOT;
 
+        $expectedList = <<< EOT
+apple
+banana
+carrot
+EOT;
+
+        $expectedCsv = <<< EOT
+One,Two,Three
+apple,banana,carrot
+EOT;
+
+        $expectedCsvNoHeaders = 'apple,banana,carrot';
+
         $this->assertFormattedOutputMatches($expected, 'table', $data);
+        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
+        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
     }
 
     function testSimpleListWithFieldLabels()

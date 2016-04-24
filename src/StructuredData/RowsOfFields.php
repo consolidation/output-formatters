@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\RestructureInterface;
+use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
@@ -13,7 +14,7 @@ use Consolidation\OutputFormatters\Transformations\TableTransformation;
  *
  * It is presumed that every row contains the same keys.
  */
-class RowsOfFields extends \ArrayObject implements RestructureInterface
+class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDataInterface
 {
     protected $data;
 
@@ -26,6 +27,11 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface
     {
         $data = $this->getArrayCopy();
         return $this->createTableTransformation($data, $configurationData, $options);
+    }
+
+    public function getListData()
+    {
+        return array_keys($this->getArrayCopy());
     }
 
     protected function createTableTransformation($data, $configurationData, $options)
