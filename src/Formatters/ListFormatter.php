@@ -4,6 +4,7 @@ namespace Consolidation\OutputFormatters\Formatters;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\OverrideRestructureInterface;
+use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 
 class ListFormatter implements FormatterInterface, OverrideRestructureInterface
 {

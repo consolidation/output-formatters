@@ -14,7 +14,7 @@ use Consolidation\OutputFormatters\Transformations\TableTransformation;
  *
  * It is presumed that every row contains the same keys.
  */
-class RowsOfFields extends \ArrayObject implements RestructureInterface,  ListDataInterface
+class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDataInterface
 {
     protected $data;
 
