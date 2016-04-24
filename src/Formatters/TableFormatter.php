@@ -35,10 +35,18 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
 
     public function validate($structuredData)
     {
-        // If the provided data was of class RowsOfFields, it will be
-        // converted into a TableTransformation object.
+        // If the provided data was of class RowsOfFields
+        // or AssociativeList, it will be converted into
+        // a TableTransformation object.
         if (!$structuredData instanceof TableTransformation) {
-            throw new IncompatibleDataException($this, $structuredData, new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'));
+            throw new IncompatibleDataException(
+                $this,
+                $structuredData,
+                [
+                    new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
+                    new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList'),
+                ]
+            );
         }
         return $structuredData;
     }
@@ -55,10 +63,13 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
 
         $table = new Table($output);
         $table->setStyle($options['table-style']);
-        if ($options['include-field-labels']) {
-            $table->setHeaders($tableTransformer->getHeaders());
+        $headers = $tableTransformer->getHeaders();
+        $isList = $tableTransformer->isList();
+        $includeHeaders = $options['include-field-labels'];
+        if ($includeHeaders && !$isList && !empty($headers)) {
+            $table->setHeaders($headers);
         }
-        $table->setRows($tableTransformer->getData());
+        $table->setRows($tableTransformer->getData($includeHeaders && $isList));
         $table->render();
     }
 }

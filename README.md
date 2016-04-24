@@ -6,7 +6,7 @@ Apply transformations to structured data to write output in different formats.
 
 ## Component Status
 
-Under development.
+Currently in use in [Robo](https://github.com/Codegyre/Robo).
 
 ## Motivation
 
@@ -35,22 +35,37 @@ Some formatters take command-specific configuration data; the list of available 
 
 When configuration data is required, it is provided as annotations on the command method. Formatters that implement ConfigurationAwareInterface will be passed the annotations for the command that requested the formatter.
 
+## Structured Data
+
+Most formatters will operate on any array or ArrayObject data. Some formatters require that specific data types be used. The following data types, all of which are subclasses of ArrayObject, are available for use:
+
+- RowsOfFields: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
+- AssociativeList: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
+
+Commands that return structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json; however, unstructured data cannot be filtered, re-ordered, or rendered in a table. It is therefore best for a command to use the apporpriate structured data type in place of a php array whenever possible.
+
 ## API Usage
 
 It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation-org/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation-org/annotation-command#api-usage) for details.
 
 The FormatterManager may also be used directly, if desired:
 ```
+/**
+ * @param OutputInterface $output Output stream to write to
+ * @param string $format Data format to output in
+ * @param mixed $structuredOutput Data to output
+ * @param array $annotationData Configuration information for formatter
+ * @param array $options User options
+ */
 function doFormat(
-    $format, 
-    array $annotationData, 
+    OutputInterface $output,
+    string $format, 
     array $data,
-    array $options,
-    arrayOutputInterface $output) 
+    array $configurationData, 
+    array $options) 
 {
     $formatterManager = new FormatterManager();
-    $formatter = $formatterManager->getFormatter($format, $annotationData);
-    $formatter->write($data, $options, $output);
+    $formatterManager->write(output, $format, $data, $configurationData, $options);
 }
 ```
 ## Comparison to Existing Solutions

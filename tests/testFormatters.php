@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters;
 
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
+use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,11 +17,9 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
         //$this->logger = new Logger($this->output);
     }
 
-    function assertFormattedOutputMatches($expected, $format, $data, $annotationData = [], $options = []) {
+    function assertFormattedOutputMatches($expected, $format, $data, $configurationData = [], $options = []) {
         $output = new BufferedOutput();
-        //$formatter = $this->formatterManager->getFormatter($format, $annotationData);
-        //$formatter->write($data, $options, $output);
-        $this->formatterManager->write($output, $format, $data, $annotationData, $options);
+        $this->formatterManager->write($output, $format, $data, $configurationData, $options);
         $actual = preg_replace('#[ \t]*$#sm', '', $output->fetch());
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
@@ -381,7 +380,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields. Instead, an array was provided.
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be either an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields or an instance of Consolidation\OutputFormatters\StructuredData\AssociativeList. Instead, an array was provided.
      */
     function testIncompatibleDataForTableFormatter()
     {
@@ -395,14 +394,30 @@ EOT;
 
         $expected = <<<EOT
 +-----+-----+-------+
-| one | two | three |
+| One | Two | Three |
 +-----+-----+-------+
 | a   | b   | c     |
 | x   | y   | z     |
 +-----+-----+-------+
 EOT;
 
+        $expectedJson = <<<EOT
+[
+    {
+        "one": "a",
+        "two": "b",
+        "three": "c"
+    },
+    {
+        "one": "x",
+        "two": "y",
+        "three": "z"
+    }
+]
+EOT;
+
         $this->assertFormattedOutputMatches($expected, 'table', $data);
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
     }
 
     function testSimpleTableWithFieldLabels()
@@ -427,11 +442,101 @@ EOT;
 +-----+------+
 EOT;
 
-        $annotationData = [
+        $expectedJson = <<<EOT
+[
+    {
+        "three": "c",
+        "one": "a"
+    },
+    {
+        "three": "z",
+        "one": "x"
+    }
+]
+EOT;
+
+        $configurationData = [
             'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
         ];
-        $this->assertFormattedOutputMatches($expected, 'table', $data, $annotationData);
-        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $annotationData, ['fields' => ['three', 'one']]);
-        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $annotationData, ['fields' => ['San', 'Ichi']]);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
     }
+
+    protected function simpleListExampleData()
+    {
+        $data = [
+            'one' => 'apple',
+            'two' => 'banana',
+            'three' => 'carrot',
+        ];
+        return new AssociativeList($data);
+    }
+
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be either an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields or an instance of Consolidation\OutputFormatters\StructuredData\AssociativeList. Instead, an array was provided.
+     */
+    function testIncompatibleListDataForTableFormatter()
+    {
+        $data = $this->simpleListExampleData();
+        $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
+    }
+
+    function testSimpleList()
+    {
+        $data = $this->simpleListExampleData();
+
+        $expected = <<<EOT
++-------+--------+
+| One   | apple  |
+| Two   | banana |
+| Three | carrot |
++-------+--------+
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
+    }
+
+    function testSimpleListWithFieldLabels()
+    {
+        $data = $this->simpleListExampleData();
+
+        $expected = <<<EOT
++------+--------+
+| Ichi | apple  |
+| Ni   | banana |
+| San  | carrot |
++------+--------+
+EOT;
+
+        $expectedWithReorderedFields = <<<EOT
++------+--------+
+| San  | carrot |
+| Ichi | apple  |
++------+--------+
+EOT;
+
+        $expectedJson = <<<EOT
+[
+    {
+        "three": "carrot",
+        "one": "apple"
+    }
+]
+EOT;
+
+
+        $configurationData = [
+            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+        ];
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
+    }
+
 }
+
