@@ -2,7 +2,7 @@
 
 Apply transformations to structured data to write output in different formats.
 
-[![Travis CI](https://travis-ci.org/consolidation-org/output-formatters.svg?branch=master)](https://travis-ci.org/consolidation-org/output-formatters) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation-org/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation-org/output-formatters/?branch=master) [![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
+[![Travis CI](https://travis-ci.org/consolidation-org/output-formatters.svg?branch=master)](https://travis-ci.org/consolidation-org/output-formatters) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation-org/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation-org/output-formatters/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/consolidation-org/output-formatters/badge.svg?branch=master)](https://coveralls.io/github/consolidation-org/output-formatters?branch=master) [![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
 
 ## Component Status
 
