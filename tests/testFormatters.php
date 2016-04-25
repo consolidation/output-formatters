@@ -312,6 +312,26 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'list', $data);
     }
 
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\UnknownFormatException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage The requested format, 'no-such-format', is not available.
+     */
+    function testBadFormat()
+    {
+        $this->assertFormattedOutputMatches('Will fail, not return', 'no-such-format', ['a' => 'b']);
+    }
+
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\CsvFormatter must be one of an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields, an instance of Consolidation\OutputFormatters\StructuredData\AssociativeList or an array. Instead, a string was provided.
+     */
+    function testBadDataTypeForCsv()
+    {
+        $this->assertFormattedOutputMatches('Will fail, not return', 'csv', 'String cannot be converted to csv');
+    }
+
     function testSimpleCsv()
     {
         $data = ['a', 'b', 'c'];
@@ -455,6 +475,15 @@ EOT;
 +-----+-----+-------+
 EOT;
 
+        $expectedBorderless = <<<EOT
+ ===== ===== =======
+  One   Two   Three
+ ===== ===== =======
+  a     b     c
+  x     y     z
+ ===== ===== =======
+EOT;
+
         $expectedJson = <<<EOT
 [
     {
@@ -482,6 +511,7 @@ id-456
 EOT;
 
         $this->assertFormattedOutputMatches($expected, 'table', $data);
+        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
