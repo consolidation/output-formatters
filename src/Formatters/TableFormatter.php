@@ -8,7 +8,6 @@ use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\ConfigureInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
-use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 

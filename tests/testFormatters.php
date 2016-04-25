@@ -529,6 +529,14 @@ EOT;
 | x    | y  | z   |
 +------+----+-----+
 EOT;
+        $expectedAnnotationFormatConfigData = <<<EOT
++-----+-----+------+
+| Uno | Dos | Tres |
++-----+-----+------+
+| a   | b   | c    |
+| x   | y   | z    |
++-----+-----+------+
+EOT;
 
         $expectedWithNoFields = <<<EOT
 +---+---+---+
@@ -562,7 +570,11 @@ EOT;
         $configurationData = [
             'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
         ];
+        $configurationDataAnnotationFormat = [
+            'field-labels' => "one: Uno\ntwo: Dos\nthree: Tres",
+        ];
         $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
+        $this->assertFormattedOutputMatches($expectedAnnotationFormatConfigData, 'table', $data, $configurationDataAnnotationFormat);
         $this->assertFormattedOutputMatches($expectedWithNoFields, 'table', $data, $configurationData, ['include-field-labels' => false]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
