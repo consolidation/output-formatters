@@ -5,6 +5,11 @@ use Symfony\Component\Yaml\Yaml;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Yaml formatter
+ *
+ * Convert an array or ArrayObject into Yaml.
+ */
 class YamlFormatter implements FormatterInterface
 {
     /**

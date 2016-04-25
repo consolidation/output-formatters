@@ -4,6 +4,11 @@ namespace Consolidation\OutputFormatters\Formatters;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Print_r formatter
+ *
+ * Run provided date thruogh print_r.
+ */
 class PrintRFormatter implements FormatterInterface
 {
     /**

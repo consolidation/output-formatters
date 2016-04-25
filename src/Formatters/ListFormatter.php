@@ -6,6 +6,14 @@ use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\OverrideRestructureInterface;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 
+/**
+ * Display the data in a simple list.
+ *
+ * This formatter prints a plain, unadorned list of data,
+ * with each data item appearing on a separate line.  If you
+ * wish your list to contain headers, then use the table
+ * formatter, and wrap your data in an AssociativeList.
+ */
 class ListFormatter implements FormatterInterface, OverrideRestructureInterface
 {
     /**

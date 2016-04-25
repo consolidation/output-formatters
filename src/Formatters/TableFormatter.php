@@ -11,6 +11,16 @@ use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 
+/**
+ * Display a table of data with the Symfony Table class.
+ *
+ * This formatter takes data of either the RowsOfFields or
+ * AssociativeList data type.  Tables can be rendered with the
+ * rows running either vertically (the normal orientation) or
+ * horizontally.  By default, associative lists will be displayed
+ * as two columns, with the key in the first column and the
+ * value in the second column.
+ */
 class TableFormatter implements FormatterInterface, ConfigureInterface, ValidationInterface
 {
     protected $fieldLabels;

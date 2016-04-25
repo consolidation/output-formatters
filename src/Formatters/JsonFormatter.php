@@ -4,6 +4,11 @@ namespace Consolidation\OutputFormatters\Formatters;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Json formatter
+ *
+ * Convert an array or ArrayObject into Json.
+ */
 class JsonFormatter implements FormatterInterface
 {
     /**
