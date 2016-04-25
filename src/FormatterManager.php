@@ -15,7 +15,7 @@ class FormatterManager
     public function __construct()
     {
         $this->formatters = [
-            'default' => '\Consolidation\OutputFormatters\Formatters\DefaultFormatter',
+            'string' => '\Consolidation\OutputFormatters\Formatters\StringFormatter',
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
             'json' => '\Consolidation\OutputFormatters\Formatters\JsonFormatter',
             'print-r' => '\Consolidation\OutputFormatters\Formatters\PrintRFormatter',
@@ -26,8 +26,8 @@ class FormatterManager
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
         ];
 
-        // Make the empty string an alias for 'default'.
-        $this->formatters[''] = $this->formatters['default'];
+        // Make the empty format an alias for the 'string' formatter.
+        $this->formatters[''] = $this->formatters['string'];
     }
 
     /**

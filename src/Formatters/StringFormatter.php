@@ -4,7 +4,7 @@ namespace Consolidation\OutputFormatters\Formatters;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DefaultFormatter implements FormatterInterface
+class StringFormatter implements FormatterInterface
 {
     /**
      * @inheritdoc
