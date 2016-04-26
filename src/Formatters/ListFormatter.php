@@ -3,6 +3,7 @@ namespace Consolidation\OutputFormatters\Formatters;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\FormatterInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\OverrideRestructureInterface;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\StructuredData\RenderCellInterface;
@@ -20,7 +21,7 @@ class ListFormatter implements FormatterInterface, OverrideRestructureInterface,
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $data, $options = [])
+    public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         $output->writeln(implode("\n", $data));
     }
@@ -28,31 +29,31 @@ class ListFormatter implements FormatterInterface, OverrideRestructureInterface,
     /**
      * @inheritdoc
      */
-    public function overrideRestructure($structuredOutput, $configurationData, $options)
+    public function overrideRestructure($structuredOutput, FormatterOptions $options)
     {
         // If the structured data implements ListDataInterface,
         // then we will render whatever data its 'getListData'
         // method provides.
         if ($structuredOutput instanceof ListDataInterface) {
-            return $this->renderData($structuredOutput, $structuredOutput->getListData(), $configurationData, $options);
+            return $this->renderData($structuredOutput, $structuredOutput->getListData(), $options);
         }
     }
 
     /**
      * @inheritdoc
      */
-    public function renderData($originalData, $restructuredData, $configurationData, $options)
+    public function renderData($originalData, $restructuredData, FormatterOptions $options)
     {
         if ($originalData instanceof RenderCellInterface) {
-            return $this->renderEachCell($originalData, $restructuredData, $configurationData, $options);
+            return $this->renderEachCell($originalData, $restructuredData, $options);
         }
         return $restructuredData;
     }
 
-    protected function renderEachCell($originalData, $restructuredData, $configurationData, $options)
+    protected function renderEachCell($originalData, $restructuredData, FormatterOptions $options)
     {
         foreach ($restructuredData as $key => $cellData) {
-            $restructuredData[$key] = $originalData->renderCell($key, $cellData, $configurationData, $options);
+            $restructuredData[$key] = $originalData->renderCell($key, $cellData, $options);
         }
         return $restructuredData;
     }

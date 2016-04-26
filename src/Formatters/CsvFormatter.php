@@ -3,6 +3,7 @@ namespace Consolidation\OutputFormatters\Formatters;
 
 use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,13 +53,13 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $data, $options = [])
+    public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
-        $options += [
+        $defaults = [
             'include-field-labels' => true,
         ];
 
-        if ($options['include-field-labels'] && ($data instanceof TableTransformation)) {
+        if ($options->get('include-field-labels', $defaults) && ($data instanceof TableTransformation)) {
             $headers = $data->getHeaders();
             $this->writeCsvLine($output, $headers, $options);
         }

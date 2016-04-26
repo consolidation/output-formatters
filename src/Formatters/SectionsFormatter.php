@@ -5,8 +5,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 
 use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ConfigureInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
@@ -45,7 +45,7 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $tableTransformer, $options = [])
+    public function write(OutputInterface $output, $tableTransformer, FormatterOptions $options)
     {
         $table = new Table($output);
         $table->setStyle('compact');
@@ -54,7 +54,8 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
             $output->writeln('');
             $output->writeln($rowLabel); // TODO: convert to a label
             $sectionData = new AssociativeList($row);
-            $sectionTableTransformer = $sectionData->restructure([], $options);
+            $sectionOptions = new FormatterOptions([], $options->getOptions());
+            $sectionTableTransformer = $sectionData->restructure($sectionOptions);
             $table->setRows($sectionTableTransformer->getTableData(true));
             $table->render();
         }

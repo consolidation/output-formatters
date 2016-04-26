@@ -5,8 +5,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 
 use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ConfigureInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
@@ -21,27 +21,15 @@ use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
  * as two columns, with the key in the first column and the
  * value in the second column.
  */
-class TableFormatter implements FormatterInterface, ConfigureInterface, ValidationInterface, RenderDataInterface
+class TableFormatter implements FormatterInterface, ValidationInterface, RenderDataInterface
 {
     use RenderTableDataTrait;
 
     protected $fieldLabels;
     protected $defaultFields;
-    protected $tableStyle;
 
     public function __construct()
     {
-        $this->tableStyle = 'default';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function configure($configurationData)
-    {
-        if (isset($configurationData['table-style'])) {
-            $this->tableStyle = $configurationData['table-style'];
-        }
     }
 
     /**
@@ -69,18 +57,18 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $tableTransformer, $options = [])
+    public function write(OutputInterface $output, $tableTransformer, FormatterOptions $options)
     {
-        $options += [
-            'table-style' => $this->tableStyle,
+        $defaults = [
+            'table-style' => 'default',
             'include-field-labels' => true,
         ];
 
         $table = new Table($output);
-        $table->setStyle($options['table-style']);
+        $table->setStyle($options->get('table-style', $defaults));
         $headers = $tableTransformer->getHeaders();
         $isList = $tableTransformer->isList();
-        $includeHeaders = $options['include-field-labels'];
+        $includeHeaders = $options->get('include-field-labels', $defaults);
         if ($includeHeaders && !$isList && !empty($headers)) {
             $table->setHeaders($headers);
         }

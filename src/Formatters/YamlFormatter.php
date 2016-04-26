@@ -3,6 +3,7 @@ namespace Consolidation\OutputFormatters\Formatters;
 
 use Symfony\Component\Yaml\Yaml;
 use Consolidation\OutputFormatters\FormatterInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -15,7 +16,7 @@ class YamlFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $data, $options = [])
+    public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         // Set Yaml\Dumper's default indentation for nested nodes/collections to
         // 2 spaces for consistency with Drupal coding standards.

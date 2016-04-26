@@ -13,5 +13,5 @@ interface FormatterInterface
      *
      * @return string
      */
-    public function write(OutputInterface $output, $data, $options = []);
+    public function write(OutputInterface $output, $data, FormatterOptions $options);
 }

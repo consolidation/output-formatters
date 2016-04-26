@@ -38,34 +38,33 @@ class FormatterManager
      * @param OutputInterface $output Output stream to write to
      * @param string $format Data format to output in
      * @param mixed $structuredOutput Data to output
-     * @param array $configurationData Configuration information for formatter
-     * @param array $options User options
+     * @param FormatterOptions $options Formatting options
      */
-    public function write(OutputInterface $output, $format, $structuredOutput, $configurationData = [], $options = [])
+    public function write(OutputInterface $output, $format, $structuredOutput, FormatterOptions $options)
     {
-        $formatter = $this->getFormatter((string)$format, $configurationData);
-        $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $configurationData, $options);
+        $formatter = $this->getFormatter((string)$format);
+        $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
         $formatter->write($output, $structuredOutput, $options);
     }
 
-    protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, $configurationData, $options)
+    protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
     {
         // Give the formatter a chance to do something with the
         // raw data before it is restructured.
-        $overrideRestructure = $this->overrideRestructure($formatter, $structuredOutput, $configurationData, $options);
+        $overrideRestructure = $this->overrideRestructure($formatter, $structuredOutput, $options);
         if ($overrideRestructure) {
             return $overrideRestructure;
         }
 
         // Restructure the output data (e.g. select fields to display, etc.).
-        $restructuredOutput = $this->restructureData($structuredOutput, $configurationData, $options);
+        $restructuredOutput = $this->restructureData($structuredOutput, $options);
 
         // Make sure that the provided data is in the correct format for the selected formatter.
         $restructuredOutput = $this->validateData($formatter, $restructuredOutput);
 
         // Give the original data a chance to re-render the structured
         // output after it has been restructured and validated.
-        $restructuredOutput = $this->renderData($formatter, $structuredOutput, $restructuredOutput, $configurationData, $options);
+        $restructuredOutput = $this->renderData($formatter, $structuredOutput, $restructuredOutput, $options);
 
         return $restructuredOutput;
     }
@@ -74,19 +73,14 @@ class FormatterManager
      * Fetch the requested formatter.
      *
      * @param string $format Identifier for requested formatter
-     * @param array $configurationData Configuration data for formatter
      * @return FormatterInterface
      */
-    public function getFormatter($format, $configurationData = [])
+    public function getFormatter($format)
     {
         if (!$this->hasFormatter($format)) {
             throw new UnknownFormatException($format);
         }
-
         $formatter = new $this->formatters[$format];
-        if ($formatter instanceof ConfigureInterface) {
-            $formatter->configure($configurationData);
-        }
         return $formatter;
     }
 
@@ -101,14 +95,13 @@ class FormatterManager
      * @param FormatterInterface $formatter
      * @param mixed $originalData
      * @param mixed $restructuredData
-     * @param array $configurationData
-     * @param array $options
+     * @param FormatterOptions $options Formatting options
      * @return mixed
      */
-    public function renderData(FormatterInterface $formatter, $originalData, $restructuredData, $configurationData, $options)
+    public function renderData(FormatterInterface $formatter, $originalData, $restructuredData, FormatterOptions $options)
     {
         if ($formatter instanceof RenderDataInterface) {
-            return $formatter->renderData($originalData, $restructuredData, $configurationData, $options);
+            return $formatter->renderData($originalData, $restructuredData, $options);
         }
         return $restructuredData;
     }
@@ -141,14 +134,13 @@ class FormatterManager
      * Restructure the data as necessary (e.g. to select or reorder fields).
      *
      * @param mixed $structuredOutput
-     * @param array $configurationData
-     * @param array $options
+     * @param FormatterOptions $options
      * @return mixed
      */
-    public function restructureData($structuredOutput, $configurationData, $options)
+    public function restructureData($structuredOutput, FormatterOptions $options)
     {
         if ($structuredOutput instanceof RestructureInterface) {
-            return $structuredOutput->restructure($configurationData, $options);
+            return $structuredOutput->restructure($options);
         }
         return $structuredOutput;
     }
@@ -162,14 +154,13 @@ class FormatterManager
      * validation will not occur.
      *
      * @param mixed $structuredOutput
-     * @param array $configurationData
-     * @param array $options
+     * @param FormatterOptions $options
      * @return mixed
      */
-    public function overrideRestructure(FormatterInterface $formatter, $structuredOutput, $configurationData, $options)
+    public function overrideRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
     {
         if ($formatter instanceof OverrideRestructureInterface) {
-            return $formatter->overrideRestructure($structuredOutput, $configurationData, $options);
+            return $formatter->overrideRestructure($structuredOutput, $options);
         }
     }
 }
