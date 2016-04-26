@@ -47,11 +47,6 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
      */
     public function write(OutputInterface $output, $tableTransformer, $options = [])
     {
-        $options += [
-            'table-style' => $this->tableStyle,
-            'include-field-labels' => true,
-        ];
-
         $table = new Table($output);
         $table->setStyle('compact');
         foreach ($tableTransformer as $rowid => $row) {
