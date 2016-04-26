@@ -24,8 +24,7 @@ class AssociativeList extends RowsOfFields implements ListDataInterface
     public function restructure($configurationData, $options)
     {
         $data = [$this->getArrayCopy()];
-        $tableTransformer = $this->createTableTransformation($data, $configurationData, $options);
-        $tableTransformer->setLayout(TableTransformation::LIST_LAYOUT);
+        $tableTransformer = $this->createTableTransformation($data, $configurationData + ['list-orientation' => true], $options);
         return $tableTransformer;
     }
 

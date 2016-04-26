@@ -629,6 +629,15 @@ EOT;
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
 
+        $expectedSidewaysTable = <<<EOT
++------+---+---+
+| Ichi | a | x |
+| Ni   | b | y |
+| San  | c | z |
++------+---+---+
+EOT;
+        $this->assertFormattedOutputMatches($expectedSidewaysTable, 'table', $data, $configurationData + ['list-orientation' => true]);
+
         $expectedAnnotationFormatConfigData = <<<EOT
 +-----+-----+------+
 | Uno | Dos | Tres |
@@ -721,6 +730,15 @@ EOT;
 +-------+--------+
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
+
+        $expectedRotated = <<<EOT
++-------+--------+--------+
+| One   | Two    | Three  |
++-------+--------+--------+
+| apple | banana | carrot |
++-------+--------+--------+
+EOT;
+        $this->assertFormattedOutputMatches($expectedRotated, 'table', $data, ['list-orientation' => false]);
 
         $expectedList = <<< EOT
 apple

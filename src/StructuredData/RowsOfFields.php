@@ -42,6 +42,9 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
         $fieldLabels = $reorderer->reorder($options['fields'], $options['field-labels'], $data);
 
         $tableTransformer = new TableTransformation($data, $fieldLabels, $options['row-labels']);
+        if ($options['list-orientation']) {
+            $tableTransformer->setLayout(TableTransformation::LIST_LAYOUT);
+        }
 
         return $tableTransformer;
     }
@@ -60,6 +63,7 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
     protected function defaultOptions()
     {
         return [
+            'list-orientation' => false,
             'fields' => [],
             'field-labels' => [],
             'row-labels' => [],
