@@ -2,8 +2,8 @@
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\RestructureInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
-use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 
@@ -23,10 +23,10 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
         parent::__construct($data);
     }
 
-    public function restructure($configurationData, $options)
+    public function restructure(FormatterOptions $options)
     {
         $data = $this->getArrayCopy();
-        return $this->createTableTransformation($data, $configurationData, $options);
+        return $this->createTableTransformation($data, $options);
     }
 
     public function getListData()
@@ -34,30 +34,19 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
         return array_keys($this->getArrayCopy());
     }
 
-    protected function createTableTransformation($data, $configurationData, $options)
+    protected function createTableTransformation($data, $options)
     {
-        $options = $this->interpretOptions($configurationData, $options);
+        $defaults = $this->defaultOptions();
 
         $reorderer = new ReorderFields();
-        $fieldLabels = $reorderer->reorder($options['fields'], $options['field-labels'], $data);
+        $fieldLabels = $reorderer->reorder($options->get('fields', $defaults), $options->get('field-labels', $defaults), $data);
 
-        $tableTransformer = new TableTransformation($data, $fieldLabels, $options['row-labels']);
-        if ($options['list-orientation']) {
+        $tableTransformer = new TableTransformation($data, $fieldLabels, $options->get('row-labels', $defaults));
+        if ($options->get('list-orientation', $defaults)) {
             $tableTransformer->setLayout(TableTransformation::LIST_LAYOUT);
         }
 
         return $tableTransformer;
-    }
-
-    protected function interpretOptions($configurationData, $options)
-    {
-        $configurationData += $this->defaultOptions();
-
-        $configurationData['field-labels'] = PropertyParser::parse($configurationData['field-labels']);
-        $configurationData['row-labels'] = PropertyParser::parse($configurationData['row-labels']);
-        $configurationData['default-fields'] = PropertyParser::parse($configurationData['default-fields']);
-
-        return $options + $configurationData;
     }
 
     protected function defaultOptions()

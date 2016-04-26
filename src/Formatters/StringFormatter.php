@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\Formatters;
 
 use Consolidation\OutputFormatters\FormatterInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -17,7 +18,7 @@ class StringFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $data, $options = [])
+    public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         if (is_string($data)) {
             $output->writeln($data);

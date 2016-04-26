@@ -19,9 +19,13 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
         //$this->logger = new Logger($this->output);
     }
 
-    function assertFormattedOutputMatches($expected, $format, $data, $configurationData = [], $options = []) {
+    function assertFormattedOutputMatches($expected, $format, $data, FormatterOptions $options = null, $userOptions = []) {
+        if (!$options) {
+            $options = new FormatterOptions();
+        }
+        $options->setOptions($userOptions);
         $output = new BufferedOutput();
-        $this->formatterManager->write($output, $format, $data, $configurationData, $options);
+        $this->formatterManager->write($output, $format, $data, $options);
         $actual = preg_replace('#[ \t]*$#sm', '', $output->fetch());
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
@@ -496,7 +500,7 @@ EOT;
   x     y     z
  ===== ===== =======
 EOT;
-        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
+        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, new FormatterOptions(['table-style' => 'borderless']));
 
         $expectedJson = <<<EOT
 {
@@ -569,7 +573,7 @@ EOT;
   x     y                           apples|oranges
  ===== =========================== ================
 EOT;
-        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
+        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, new FormatterOptions(['table-style' => 'borderless']));
 
         $expectedJson = <<<EOT
 {
@@ -611,13 +615,17 @@ EOT;
     function testSimpleTableWithFieldLabels()
     {
         $data = $this->simpleTableExampleData();
-        $configurationData = [
-            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
-            'row-labels' => ['id-123' => 'Walrus', 'id-456' => 'Carpenter'],
-        ];
-        $configurationDataAnnotationFormat = [
-            'field-labels' => "one: Uno\ntwo: Dos\nthree: Tres",
-        ];
+        $configurationData = new FormatterOptions(
+            [
+                'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+                'row-labels' => ['id-123' => 'Walrus', 'id-456' => 'Carpenter'],
+            ]
+        );
+        $configurationDataAnnotationFormat = new FormatterOptions(
+            [
+                'field-labels' => "one: Uno\ntwo: Dos\nthree: Tres",
+            ]
+        );
 
         $expected = <<<EOT
 +------+----+-----+
@@ -636,7 +644,7 @@ EOT;
 | San  | c | z |
 +------+---+---+
 EOT;
-        $this->assertFormattedOutputMatches($expectedSidewaysTable, 'table', $data, $configurationData + ['list-orientation' => true]);
+        $this->assertFormattedOutputMatches($expectedSidewaysTable, 'table', $data, $configurationData->override(['list-orientation' => true]));
 
         $expectedAnnotationFormatConfigData = <<<EOT
 +-----+-----+------+
@@ -738,7 +746,7 @@ EOT;
 | apple | banana | carrot |
 +-------+--------+--------+
 EOT;
-        $this->assertFormattedOutputMatches($expectedRotated, 'table', $data, ['list-orientation' => false]);
+        $this->assertFormattedOutputMatches($expectedRotated, 'table', $data, new FormatterOptions(['list-orientation' => false]));
 
         $expectedList = <<< EOT
 apple
@@ -754,7 +762,7 @@ EOT;
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
         $expectedCsvNoHeaders = 'apple,banana,carrot';
-        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
+        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, new FormatterOptions(), ['include-field-labels' => false]);
     }
 
     protected function associativeListWithCsvCells()
@@ -797,16 +805,17 @@ EOT;
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
         $expectedCsvNoHeaders = 'apple,"banana,plantain",carrot,"peaches,pumpkin pie"';
-        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
+        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, new FormatterOptions(), ['include-field-labels' => false]);
     }
-
 
     function testSimpleListWithFieldLabels()
     {
         $data = $this->simpleListExampleData();
-        $configurationData = [
-            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
-        ];
+        $configurationData = new FormatterOptions(
+            [
+                'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+            ]
+        );
 
         $expected = <<<EOT
 +------+--------+
@@ -836,5 +845,4 @@ EOT;
 EOT;
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
     }
-
 }

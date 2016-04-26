@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\RestructureInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
@@ -21,10 +22,11 @@ class AssociativeList extends RowsOfFields implements ListDataInterface
         parent::__construct($data);
     }
 
-    public function restructure($configurationData, $options)
+    public function restructure(FormatterOptions $options)
     {
         $data = [$this->getArrayCopy()];
-        $tableTransformer = $this->createTableTransformation($data, $configurationData + ['list-orientation' => true], $options);
+        $options->setConfigurationDefault('list-orientation', true);
+        $tableTransformer = $this->createTableTransformation($data, $options);
         return $tableTransformer;
     }
 

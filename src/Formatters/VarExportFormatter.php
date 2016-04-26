@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\Formatters;
 
 use Consolidation\OutputFormatters\FormatterInterface;
+use Consolidation\OutputFormatters\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -14,7 +15,7 @@ class VarExportFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function write(OutputInterface $output, $data, $options = [])
+    public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         $output->writeln(var_export($data, true));
     }

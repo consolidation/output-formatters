@@ -7,8 +7,7 @@ interface RestructureInterface
      * Allow structured data to be restructured -- i.e. to select fields
      * to show, reorder fields, etc.
      *
-     * @param mixed $configurationData Annotation data for configuration
-     * @param mixed $options Options for restructuring (user selected)
+     * @param FormatterOptions $options Formatting options
      */
-    public function restructure($configurationData, $options);
+    public function restructure(FormatterOptions $options);
 }

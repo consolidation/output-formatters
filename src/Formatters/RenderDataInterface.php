@@ -1,6 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
+use Consolidation\OutputFormatters\FormatterOptions;
+
 interface RenderDataInterface
 {
     /**
@@ -10,9 +12,8 @@ interface RenderDataInterface
      *
      * @param mixed $originalData
      * @param mixed $restructuredData
-     * @param array $configurationData
-     * @param array $options
+     * @param FormatterOptions $options Formatting options
      * @return mixed
      */
-    public function renderData($originalData, $restructuredData, $configurationData, $options);
+    public function renderData($originalData, $restructuredData, FormatterOptions $options);
 }

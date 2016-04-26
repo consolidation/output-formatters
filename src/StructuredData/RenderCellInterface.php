@@ -1,6 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\StructuredData;
 
+use Consolidation\OutputFormatters\FormatterOptions;
+
 interface RenderCellInterface
 {
     /**
@@ -12,5 +14,5 @@ interface RenderCellInterface
      *
      * @return string
      */
-    public function renderCell($key, $cellData, $configurationData, $options);
+    public function renderCell($key, $cellData, FormatterOptions $options);
 }
