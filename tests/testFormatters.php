@@ -7,6 +7,11 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 
 class FormattersTests extends \PHPUnit_Framework_TestCase
 {
@@ -763,6 +768,25 @@ EOT;
 
         $expectedCsvNoHeaders = 'apple,banana,carrot';
         $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, new FormatterOptions(), ['include-field-labels' => false]);
+
+        // Next, configure the formatter options with 'include-field-labels',
+        // but set --include-field-labels to turn the option back on again.
+        $options = new FormatterOptions(['include-field-labels' => false]);
+        $input = new StringInput('test --include-field-labels');
+        $optionDefinitions = [
+            new InputArgument('unused', InputArgument::REQUIRED),
+            new InputOption('include-field-labels', null, InputOption::VALUE_NONE),
+        ];
+        $definition = new InputDefinition($optionDefinitions);
+        $input->bind($definition);
+        $testValue = $input->getOption('include-field-labels');
+        $this->assertTrue($testValue);
+        $hasFieldLabels = $input->hasOption('include-field-labels');
+        $this->assertTrue($hasFieldLabels);
+
+        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, $options);
+        $options->setInput($input);
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data, $options);
     }
 
     protected function associativeListWithCsvCells()

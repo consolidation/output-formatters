@@ -40,7 +40,11 @@ class FormatterOptions
 
     public function override($configurationData)
     {
-        return new self($configurationData + $this->getConfigurationData(), $this->getOptions());
+        $override = new self();
+        $override
+            ->setConfigurationData($configurationData + $this->getConfigurationData())
+            ->setOptions($this->getOptions());
+        return $override;
     }
 
     public function get($key, $defaults = [], $default = false)
