@@ -1,6 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
+use Consolidation\TestUtils\AssociativeListWithCsvCells;
+use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -517,6 +519,87 @@ EOT;
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
     }
 
+    protected function tableWithAlternativesExampleData()
+    {
+        $data = [
+            'id-123' =>
+            [
+                'one' => 'a',
+                'two' => ['this', 'that', 'the other thing'],
+                'three' => 'c',
+            ],
+            'id-456' =>
+            [
+                'one' => 'x',
+                'two' => 'y',
+                'three' => ['apples', 'oranges'],
+            ],
+        ];
+        return new RowsOfFieldsWithAlternatives($data);
+    }
+
+    function testTableWithAlternatives()
+    {
+        $data = $this->tableWithAlternativesExampleData();
+
+        $expected = <<<EOT
++-----+---------------------------+----------------+
+| One | Two                       | Three          |
++-----+---------------------------+----------------+
+| a   | this|that|the other thing | c              |
+| x   | y                         | apples|oranges |
++-----+---------------------------+----------------+
+EOT;
+
+        $expectedBorderless = <<<EOT
+ ===== =========================== ================
+  One   Two                         Three
+ ===== =========================== ================
+  a     this|that|the other thing   c
+  x     y                           apples|oranges
+ ===== =========================== ================
+EOT;
+
+        $expectedJson = <<<EOT
+[
+    {
+        "one": "a",
+        "two": [
+            "this",
+            "that",
+            "the other thing"
+        ],
+        "three": "c"
+    },
+    {
+        "one": "x",
+        "two": "y",
+        "three": [
+            "apples",
+            "oranges"
+        ]
+    }
+]
+EOT;
+
+        $expectedCsv = <<<EOT
+One,Two,Three
+a,"this|that|the other thing",c
+x,y,apples|oranges
+EOT;
+
+        $expectedList = <<<EOT
+id-123
+id-456
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
+        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
+        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
+    }
+
     function testSimpleTableWithFieldLabels()
     {
         $data = $this->simpleTableExampleData();
@@ -633,6 +716,51 @@ EOT;
         $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
     }
 
+    protected function associativeListWithCsvCells()
+    {
+        $data = [
+            'one' => 'apple',
+            'two' => ['banana', 'plantain'],
+            'three' => 'carrot',
+            'four' => ['peaches', 'pumpkin pie'],
+        ];
+        return new AssociativeListWithCsvCells($data);
+    }
+
+    function testAssociativeListWithCsvCells()
+    {
+        $data = $this->associativeListWithCsvCells();
+
+        $expected = <<<EOT
++-------+---------------------+
+| One   | apple               |
+| Two   | banana,plantain     |
+| Three | carrot              |
+| Four  | peaches,pumpkin pie |
++-------+---------------------+
+EOT;
+
+        $expectedList = <<< EOT
+apple
+banana,plantain
+carrot
+peaches,pumpkin pie
+EOT;
+
+        $expectedCsv = <<< EOT
+One,Two,Three,Four
+apple,"banana,plantain",carrot,"peaches,pumpkin pie"
+EOT;
+
+        $expectedCsvNoHeaders = 'apple,"banana,plantain",carrot,"peaches,pumpkin pie"';
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
+        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
+        $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
+    }
+
+
     function testSimpleListWithFieldLabels()
     {
         $data = $this->simpleListExampleData();
@@ -672,4 +800,3 @@ EOT;
     }
 
 }
-

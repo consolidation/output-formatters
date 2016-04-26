@@ -4,6 +4,7 @@ namespace Consolidation\OutputFormatters;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
+use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -56,12 +57,16 @@ class FormatterManager
         }
 
         // Restructure the output data (e.g. select fields to display, etc.).
-        $structuredOutput = $this->restructureData($structuredOutput, $configurationData, $options);
+        $restructuredOutput = $this->restructureData($structuredOutput, $configurationData, $options);
 
         // Make sure that the provided data is in the correct format for the selected formatter.
-        $structuredOutput = $this->validateData($formatter, $structuredOutput);
+        $restructuredOutput = $this->validateData($formatter, $restructuredOutput);
 
-        return $structuredOutput;
+        // Give the original data a chance to re-render the structured
+        // output after it has been restructured and validated.
+        $restructuredOutput = $this->renderData($formatter, $structuredOutput, $restructuredOutput, $configurationData, $options);
+
+        return $restructuredOutput;
     }
 
     /**
@@ -87,6 +92,22 @@ class FormatterManager
     public function hasFormatter($format)
     {
         return array_key_exists($format, $this->formatters);
+    }
+
+    /**
+     * Render the data as necessary (e.g. to select or reorder fields).
+     *
+     * @param mixed $structuredOutput
+     * @param array $configurationData
+     * @param array $options
+     * @return mixed
+     */
+    public function renderData(FormatterInterface $formatter, $originalData, $restructuredData, $configurationData, $options)
+    {
+        if ($formatter instanceof RenderDataInterface) {
+            return $formatter->renderData($originalData, $restructuredData, $configurationData, $options);
+        }
+        return $restructuredData;
     }
 
     /**

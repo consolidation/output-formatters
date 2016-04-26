@@ -44,6 +44,24 @@ Most formatters will operate on any array or ArrayObject data. Some formatters r
 
 Commands that return structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json; however, unstructured data cannot be filtered, re-ordered, or rendered in a table. It is therefore best for a command to use the apporpriate structured data type in place of a php array whenever possible.
 
+By default, both the RowsOfFields and AssociativeList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or AssociativeList, as desired, and implement RenderCellInterface.  The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
+```
+public function renderCell($key, $cellData, $configurationData, $options)
+{
+    // 'my-field' is always an array; convert it to a comma-separated list.
+    if ($key == 'my-field') {
+        return implode(',', $cellData);
+    }
+    // MyStructuredCellType has its own render function
+    if ($cellData instanceof MyStructuredCellType) {
+        return $cellData->myRenderfunction();
+    }
+    // If we do not recognize the cell data, return it unchnaged.
+    return $cellData;
+}
+```
+Note that if your data structure is printed with some formatter other than the table formatter, it will still be reordered per the selected fields, but cell rendering will **not** be done.
+
 ## API Usage
 
 It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation-org/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation-org/annotation-command#api-usage) for details.
