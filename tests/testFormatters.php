@@ -423,14 +423,13 @@ EOT;
 | x   |     | z     |
 +-----+-----+-------+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expectedCsv = <<<EOT
 One,Two,Three
 a,b,c
 x,,z
 EOT;
-
-        $this->assertFormattedOutputMatches($expected, 'table', $data);
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
     }
 
@@ -476,6 +475,7 @@ EOT;
 | x   | y   | z     |
 +-----+-----+-------+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expectedBorderless = <<<EOT
  ===== ===== =======
@@ -485,37 +485,35 @@ EOT;
   x     y     z
  ===== ===== =======
 EOT;
+        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
 
         $expectedJson = <<<EOT
-[
-    {
+{
+    "id-123": {
         "one": "a",
         "two": "b",
         "three": "c"
     },
-    {
+    "id-456": {
         "one": "x",
         "two": "y",
         "three": "z"
     }
-]
+}
 EOT;
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
 
         $expectedCsv = <<<EOT
 One,Two,Three
 a,b,c
 x,y,z
 EOT;
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
         $expectedList = <<<EOT
 id-123
 id-456
 EOT;
-
-        $this->assertFormattedOutputMatches($expected, 'table', $data);
-        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
-        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
-        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
     }
 
@@ -550,6 +548,7 @@ EOT;
 | x   | y                         | apples|oranges |
 +-----+---------------------------+----------------+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expectedBorderless = <<<EOT
  ===== =========================== ================
@@ -559,10 +558,11 @@ EOT;
   x     y                           apples|oranges
  ===== =========================== ================
 EOT;
+        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
 
         $expectedJson = <<<EOT
-[
-    {
+{
+    "id-123": {
         "one": "a",
         "two": [
             "this",
@@ -571,7 +571,7 @@ EOT;
         ],
         "three": "c"
     },
-    {
+    "id-456": {
         "one": "x",
         "two": "y",
         "three": [
@@ -579,30 +579,33 @@ EOT;
             "oranges"
         ]
     }
-]
+}
 EOT;
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
 
         $expectedCsv = <<<EOT
 One,Two,Three
 a,"this|that|the other thing",c
 x,y,apples|oranges
 EOT;
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
         $expectedList = <<<EOT
 id-123
 id-456
 EOT;
-
-        $this->assertFormattedOutputMatches($expected, 'table', $data);
-        $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, ['table-style' => 'borderless']);
-        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
-        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
     }
 
     function testSimpleTableWithFieldLabels()
     {
         $data = $this->simpleTableExampleData();
+        $configurationData = [
+            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+        ];
+        $configurationDataAnnotationFormat = [
+            'field-labels' => "one: Uno\ntwo: Dos\nthree: Tres",
+        ];
 
         $expected = <<<EOT
 +------+----+-----+
@@ -612,6 +615,8 @@ EOT;
 | x    | y  | z   |
 +------+----+-----+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
+
         $expectedAnnotationFormatConfigData = <<<EOT
 +-----+-----+------+
 | Uno | Dos | Tres |
@@ -620,6 +625,7 @@ EOT;
 | x   | y   | z    |
 +-----+-----+------+
 EOT;
+        $this->assertFormattedOutputMatches($expectedAnnotationFormatConfigData, 'table', $data, $configurationDataAnnotationFormat);
 
         $expectedWithNoFields = <<<EOT
 +---+---+---+
@@ -627,6 +633,7 @@ EOT;
 | x | y | z |
 +---+---+---+
 EOT;
+        $this->assertFormattedOutputMatches($expectedWithNoFields, 'table', $data, $configurationData, ['include-field-labels' => false]);
 
         $expectedWithReorderedFields = <<<EOT
 +-----+------+
@@ -636,32 +643,36 @@ EOT;
 | z   | x    |
 +-----+------+
 EOT;
-
-        $expectedJson = <<<EOT
-[
-    {
-        "three": "c",
-        "one": "a"
-    },
-    {
-        "three": "z",
-        "one": "x"
-    }
-]
-EOT;
-
-        $configurationData = [
-            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
-        ];
-        $configurationDataAnnotationFormat = [
-            'field-labels' => "one: Uno\ntwo: Dos\nthree: Tres",
-        ];
-        $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
-        $this->assertFormattedOutputMatches($expectedAnnotationFormatConfigData, 'table', $data, $configurationDataAnnotationFormat);
-        $this->assertFormattedOutputMatches($expectedWithNoFields, 'table', $data, $configurationData, ['include-field-labels' => false]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => 'San,Ichi']);
+
+        $expectedSections = <<<EOT
+
+id-123
+ One   a
+ Two   b
+ Three c
+
+id-456
+ One   x
+ Two   y
+ Three z
+EOT;
+        $this->assertFormattedOutputMatches($expectedSections, 'sections', $data, $configurationData);
+
+        $expectedJson = <<<EOT
+{
+    "id-123": {
+        "three": "c",
+        "one": "a"
+    },
+    "id-456": {
+        "three": "z",
+        "one": "x"
+    }
+}
+EOT;
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
     }
 
@@ -697,23 +708,22 @@ EOT;
 | Three | carrot |
 +-------+--------+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expectedList = <<< EOT
 apple
 banana
 carrot
 EOT;
+        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
 
         $expectedCsv = <<< EOT
 One,Two,Three
 apple,banana,carrot
 EOT;
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
         $expectedCsvNoHeaders = 'apple,banana,carrot';
-
-        $this->assertFormattedOutputMatches($expected, 'table', $data);
-        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
-        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
         $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
     }
 
@@ -740,6 +750,7 @@ EOT;
 | Four  | peaches,pumpkin pie |
 +-------+---------------------+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expectedList = <<< EOT
 apple
@@ -747,17 +758,15 @@ banana,plantain
 carrot
 peaches,pumpkin pie
 EOT;
+        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
 
         $expectedCsv = <<< EOT
 One,Two,Three,Four
 apple,"banana,plantain",carrot,"peaches,pumpkin pie"
 EOT;
+        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
         $expectedCsvNoHeaders = 'apple,"banana,plantain",carrot,"peaches,pumpkin pie"';
-
-        $this->assertFormattedOutputMatches($expected, 'table', $data);
-        $this->assertFormattedOutputMatches($expectedList, 'list', $data);
-        $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
         $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, [], ['include-field-labels' => false]);
     }
 
@@ -765,6 +774,9 @@ EOT;
     function testSimpleListWithFieldLabels()
     {
         $data = $this->simpleListExampleData();
+        $configurationData = [
+            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+        ];
 
         $expected = <<<EOT
 +------+--------+
@@ -773,6 +785,7 @@ EOT;
 | San  | carrot |
 +------+--------+
 EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
 
         $expectedWithReorderedFields = <<<EOT
 +------+--------+
@@ -780,6 +793,8 @@ EOT;
 | Ichi | apple  |
 +------+--------+
 EOT;
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
+        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
 
         $expectedJson = <<<EOT
 [
@@ -789,14 +804,6 @@ EOT;
     }
 ]
 EOT;
-
-
-        $configurationData = [
-            'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
-        ];
-        $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
-        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
-        $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
     }
 

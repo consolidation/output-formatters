@@ -37,8 +37,8 @@ class TableTransformation extends \ArrayObject implements TableDataInterface
     protected static function transformRows($data, $fieldLabels)
     {
         $rows = [];
-        foreach ($data as $row) {
-            $rows[] = static::transformRow($row, $fieldLabels);
+        foreach ($data as $rowid => $row) {
+            $rows[$rowid] = static::transformRow($row, $fieldLabels);
         }
         return $rows;
     }

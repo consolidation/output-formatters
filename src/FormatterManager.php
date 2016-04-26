@@ -25,6 +25,7 @@ class FormatterManager
             'list' => '\Consolidation\OutputFormatters\Formatters\ListFormatter',
             'csv' => '\Consolidation\OutputFormatters\Formatters\CsvFormatter',
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
+            'sections' => '\Consolidation\OutputFormatters\Formatters\SectionsFormatter',
         ];
 
         // Make the empty format an alias for the 'string' formatter.
