@@ -50,8 +50,9 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
         $table = new Table($output);
         $table->setStyle('compact');
         foreach ($tableTransformer as $rowid => $row) {
+            $rowLabel = $tableTransformer->getRowLabel($rowid);
             $output->writeln('');
-            $output->writeln($rowid); // TODO: convert to a label
+            $output->writeln($rowLabel); // TODO: convert to a label
             $sectionData = new AssociativeList($row);
             $sectionTableTransformer = $sectionData->restructure([], $options);
             $table->setRows($sectionTableTransformer->getTableData(true));

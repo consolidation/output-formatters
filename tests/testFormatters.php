@@ -613,6 +613,7 @@ EOT;
         $data = $this->simpleTableExampleData();
         $configurationData = [
             'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+            'row-labels' => ['id-123' => 'Walrus', 'id-456' => 'Carpenter'],
         ];
         $configurationDataAnnotationFormat = [
             'field-labels' => "one: Uno\ntwo: Dos\nthree: Tres",
@@ -660,12 +661,12 @@ EOT;
 
         $expectedSections = <<<EOT
 
-id-123
+Walrus
  One   a
  Two   b
  Three c
 
-id-456
+Carpenter
  One   x
  Two   y
  Three z
