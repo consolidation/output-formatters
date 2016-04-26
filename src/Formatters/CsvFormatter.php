@@ -18,8 +18,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * accept a PHP array; this is also interpreted as a single-row of data
  * with no header.
  */
-class CsvFormatter implements FormatterInterface, ValidationInterface
+class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDataInterface
 {
+    use RenderTableDataTrait;
+
     public function validate($structuredData)
     {
         // If the provided data was of class RowsOfFields
@@ -36,6 +38,14 @@ class CsvFormatter implements FormatterInterface, ValidationInterface
                 ]
             );
         }
+        // If the data was provided to us as a single array, then
+        // convert it to a single row.
+        if (is_array($structuredData) && !empty($structuredData)) {
+            $firstRow = reset($structuredData);
+            if (!is_array($firstRow)) {
+                return [$structuredData];
+            }
+        }
         return $structuredData;
     }
 
@@ -43,25 +53,6 @@ class CsvFormatter implements FormatterInterface, ValidationInterface
      * @inheritdoc
      */
     public function write(OutputInterface $output, $data, $options = [])
-    {
-        if ($this->isMultiLine($data)) {
-            $this->writeCsvLines($output, $data, $options);
-            return;
-        }
-        $this->writeCsvLine($output, $data, $options);
-    }
-
-    protected function isMultiLine($data)
-    {
-        return
-            ($data instanceof TableTransformation) ||
-            (
-                !empty($data) &&
-                is_array($data[0])
-            );
-    }
-
-    protected function writeCsvLines(OutputInterface $output, $data, $options)
     {
         $options += [
             'include-field-labels' => true,

@@ -21,8 +21,10 @@ use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
  * as two columns, with the key in the first column and the
  * value in the second column.
  */
-class TableFormatter implements FormatterInterface, ConfigureInterface, ValidationInterface
+class TableFormatter implements FormatterInterface, ConfigureInterface, ValidationInterface, RenderDataInterface
 {
+    use RenderTableDataTrait;
+
     protected $fieldLabels;
     protected $defaultFields;
     protected $tableStyle;
@@ -42,6 +44,9 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function validate($structuredData)
     {
         // If the provided data was of class RowsOfFields
@@ -59,6 +64,7 @@ class TableFormatter implements FormatterInterface, ConfigureInterface, Validati
         }
         return $structuredData;
     }
+
 
     /**
      * @inheritdoc
