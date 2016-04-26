@@ -459,8 +459,19 @@ EOT;
      */
     function testIncompatibleDataForTableFormatter()
     {
-        $data = $this->simpleTableExampleData();
-        $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
+        $data = $this->simpleTableExampleData()->getArrayCopy();
+        $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data);
+    }
+
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\SectionsFormatter must be an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields. Instead, an array was provided.
+     */
+    function testIncompatibleDataForSectionsFormatter()
+    {
+        $data = $this->simpleTableExampleData()->getArrayCopy();
+        $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'sections', $data);
     }
 
     function testSimpleTable()
