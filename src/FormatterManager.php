@@ -42,7 +42,7 @@ class FormatterManager
      */
     public function write(OutputInterface $output, $format, $structuredOutput, FormatterOptions $options)
     {
-        $formatter = $this->getFormatter((string)$format, $options);
+        $formatter = $this->getFormatter((string)$format);
         $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
         $formatter->write($output, $structuredOutput, $options);
     }
@@ -76,7 +76,7 @@ class FormatterManager
      * @param FormatterOptions $options Formatting options
      * @return FormatterInterface
      */
-    public function getFormatter($format, FormatterOptions $options)
+    public function getFormatter($format)
     {
         if (!$this->hasFormatter($format)) {
             throw new UnknownFormatException($format);
@@ -135,8 +135,7 @@ class FormatterManager
      * Restructure the data as necessary (e.g. to select or reorder fields).
      *
      * @param mixed $structuredOutput
-     * @param array $configurationData
-     * @param array $options
+     * @param FormatterOptions $options
      * @return mixed
      */
     public function restructureData($structuredOutput, FormatterOptions $options)
@@ -156,8 +155,7 @@ class FormatterManager
      * validation will not occur.
      *
      * @param mixed $structuredOutput
-     * @param array $configurationData
-     * @param array $options
+     * @param FormatterOptions $options
      * @return mixed
      */
     public function overrideRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)

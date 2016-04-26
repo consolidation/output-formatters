@@ -144,8 +144,8 @@ class FormatterOptions
         }
         $options = [];
         foreach ($defaults as $key => $value) {
-            if ($input->hasOption($key)) {
-                $options[$key] = $input->getOption($key);
+            if ($this->input->hasOption($key)) {
+                $options[$key] = $this->input->getOption($key);
             }
         }
         return $options;
