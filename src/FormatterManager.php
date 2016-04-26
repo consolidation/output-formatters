@@ -73,7 +73,6 @@ class FormatterManager
      * Fetch the requested formatter.
      *
      * @param string $format Identifier for requested formatter
-     * @param FormatterOptions $options Formatting options
      * @return FormatterInterface
      */
     public function getFormatter($format)
