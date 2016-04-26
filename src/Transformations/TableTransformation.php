@@ -6,14 +6,16 @@ use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 class TableTransformation extends \ArrayObject implements TableDataInterface
 {
     protected $headers;
+    protected $rowLabels;
     protected $layout;
 
     const TABLE_LAYOUT = 'table';
     const LIST_LAYOUT = 'list';
 
-    public function __construct($data, $fieldLabels)
+    public function __construct($data, $fieldLabels, $rowLabels = [])
     {
         $this->headers = $fieldLabels;
+        $this->rowLabels = $rowLabels;
         $rows = static::transformRows($data, $fieldLabels);
         $this->layout = self::TABLE_LAYOUT;
         parent::__construct($rows);
@@ -37,8 +39,8 @@ class TableTransformation extends \ArrayObject implements TableDataInterface
     protected static function transformRows($data, $fieldLabels)
     {
         $rows = [];
-        foreach ($data as $row) {
-            $rows[] = static::transformRow($row, $fieldLabels);
+        foreach ($data as $rowid => $row) {
+            $rows[$rowid] = static::transformRow($row, $fieldLabels);
         }
         return $rows;
     }
@@ -63,6 +65,19 @@ class TableTransformation extends \ArrayObject implements TableDataInterface
             return $this->headers[$key];
         }
         return $key;
+    }
+
+    public function getRowLabels()
+    {
+        return $this->rowLabels;
+    }
+
+    public function getRowLabel($rowid)
+    {
+        if (array_key_exists($rowid, $this->rowLabels)) {
+            return $this->rowLabels[$rowid];
+        }
+        return $rowid;
     }
 
     public function getData()

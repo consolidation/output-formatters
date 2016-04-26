@@ -41,7 +41,7 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
         $reorderer = new ReorderFields();
         $fieldLabels = $reorderer->reorder($options['fields'], $options['field-labels'], $data);
 
-        $tableTransformer = new TableTransformation($data, $fieldLabels);
+        $tableTransformer = new TableTransformation($data, $fieldLabels, $options['row-labels']);
 
         return $tableTransformer;
     }
@@ -51,6 +51,7 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
         $configurationData += $this->defaultOptions();
 
         $configurationData['field-labels'] = PropertyParser::parse($configurationData['field-labels']);
+        $configurationData['row-labels'] = PropertyParser::parse($configurationData['row-labels']);
         $configurationData['default-fields'] = PropertyParser::parse($configurationData['default-fields']);
 
         return $options + $configurationData;
@@ -61,6 +62,7 @@ class RowsOfFields extends \ArrayObject implements RestructureInterface, ListDat
         return [
             'fields' => [],
             'field-labels' => [],
+            'row-labels' => [],
             'default-fields' => [],
         ];
     }
