@@ -8,8 +8,10 @@ interface RenderDataInterface
      * is to be printed, prior to output but after restructuring
      * and validation.
      *
-     * @param mixed $data Restructured, validated data.
-     *
+     * @param mixed $originalData
+     * @param mixed $restructuredData
+     * @param array $configurationData
+     * @param array $options
      * @return mixed
      */
     public function renderData($originalData, $restructuredData, $configurationData, $options);

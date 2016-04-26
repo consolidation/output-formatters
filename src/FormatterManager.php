@@ -97,7 +97,9 @@ class FormatterManager
     /**
      * Render the data as necessary (e.g. to select or reorder fields).
      *
-     * @param mixed $structuredOutput
+     * @param FormatterInterface $formatter
+     * @param mixed $originalData
+     * @param mixed $restructuredData
      * @param array $configurationData
      * @param array $options
      * @return mixed
