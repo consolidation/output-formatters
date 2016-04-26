@@ -1,4 +1,4 @@
-# Consolidation\Formatters
+# Consolidation\OutputFormatters
 
 Apply transformations to structured data to write output in different formats.
 
@@ -20,7 +20,7 @@ Simple formatters are very easy to write.
 ```
 class YamlFormatter implements FormatterInterface
 {
-    public function write($data, $options, OutputInterface $output)
+    public function write(OutputInterface $output, $data, $options)
     {
         $dumper = new Dumper();
         $output->writeln($dumper->dump($data));
@@ -42,7 +42,9 @@ Most formatters will operate on any array or ArrayObject data. Some formatters r
 - RowsOfFields: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
 - AssociativeList: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
 
-Commands that return structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json; however, unstructured data cannot be filtered, re-ordered, or rendered in a table. It is therefore best for a command to use the apporpriate structured data type in place of a php array whenever possible.
+Commands that return structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array.
+
+## Rendering Table Cells
 
 By default, both the RowsOfFields and AssociativeList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or AssociativeList, as desired, and implement RenderCellInterface.  The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
 ```
