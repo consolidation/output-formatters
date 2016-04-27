@@ -24,6 +24,14 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
 {
     use RenderTableDataTrait;
 
+    public function validDataTypes()
+    {
+        return
+            [
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields')
+            ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -36,7 +44,7 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
             throw new IncompatibleDataException(
                 $this,
                 $structuredData,
-                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields')
+                $this->validDataTypes()
             );
         }
         return $structuredData;

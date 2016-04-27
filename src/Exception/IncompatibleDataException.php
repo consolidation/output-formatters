@@ -37,7 +37,7 @@ class IncompatibleDataException extends \Exception
     protected static function describeAllowedTypes($allowedTypes)
     {
         if (is_array($allowedTypes) && !empty($allowedTypes)) {
-            if (count($allowedTypes > 1)) {
+            if (count($allowedTypes) > 1) {
                 return static::describeListOfAllowedTypes($allowedTypes);
             }
             $allowedTypes = $allowedTypes[0];

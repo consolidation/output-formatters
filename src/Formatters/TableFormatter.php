@@ -32,6 +32,15 @@ class TableFormatter implements FormatterInterface, ValidationInterface, RenderD
     {
     }
 
+    public function validDataTypes()
+    {
+        return
+            [
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList')
+            ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -44,10 +53,7 @@ class TableFormatter implements FormatterInterface, ValidationInterface, RenderD
             throw new IncompatibleDataException(
                 $this,
                 $structuredData,
-                [
-                    new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
-                    new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList'),
-                ]
+                $this->validDataTypes()
             );
         }
         return $structuredData;

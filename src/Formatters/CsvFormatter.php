@@ -23,6 +23,16 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
 {
     use RenderTableDataTrait;
 
+    public function validDataTypes()
+    {
+        return
+            [
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList'),
+                [],
+            ];
+    }
+
     public function validate($structuredData)
     {
         // If the provided data was of class RowsOfFields
@@ -32,11 +42,7 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
             throw new IncompatibleDataException(
                 $this,
                 $structuredData,
-                [
-                    new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
-                    new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList'),
-                    [],
-                ]
+                $this->validDataTypes()
             );
         }
         // If the data was provided to us as a single array, then
