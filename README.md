@@ -20,7 +20,7 @@ Simple formatters are very easy to write.
 ```
 class YamlFormatter implements FormatterInterface
 {
-    public function write(OutputInterface $output, $data, $options)
+    public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         $dumper = new Dumper();
         $output->writeln($dumper->dump($data));
@@ -28,12 +28,6 @@ class YamlFormatter implements FormatterInterface
 }
 ```
 The formatter is passed the set of `$options` that the user provided on the command line. These may optionally be examined to alter the behavior of the formatter, if needed.
-
-## Configuring Formatters
-
-Some formatters take command-specific configuration data; the list of available fields and the default list of fields to display are two common examples.
-
-When configuration data is required, it is provided as annotations on the command method. Formatters that implement ConfigurationAwareInterface will be passed the annotations for the command that requested the formatter.
 
 ## Structured Data
 
@@ -48,7 +42,7 @@ Commands that return structured data with fields can be filtered and/or re-order
 
 By default, both the RowsOfFields and AssociativeList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or AssociativeList, as desired, and implement RenderCellInterface.  The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
 ```
-public function renderCell($key, $cellData, $configurationData, $options)
+public function renderCell($key, $cellData, FormatterOptions $options)
 {
     // 'my-field' is always an array; convert it to a comma-separated list.
     if ($key == 'my-field') {
@@ -74,18 +68,16 @@ The FormatterManager may also be used directly, if desired:
  * @param OutputInterface $output Output stream to write to
  * @param string $format Data format to output in
  * @param mixed $structuredOutput Data to output
- * @param array $annotationData Configuration information for formatter
- * @param array $options User options
+ * @param FormatterOptions $options Configuration informatin and User options
  */
 function doFormat(
     OutputInterface $output,
     string $format, 
     array $data,
-    array $configurationData, 
-    array $options) 
+    FormatterOptions $options) 
 {
     $formatterManager = new FormatterManager();
-    $formatterManager->write(output, $format, $data, $configurationData, $options);
+    $formatterManager->write(output, $format, $data, $options);
 }
 ```
 ## Comparison to Existing Solutions
