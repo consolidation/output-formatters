@@ -17,21 +17,28 @@ class IncompatibleDataException extends \Exception
         parent::__construct($message, 1);
     }
 
+    /**
+     * Return a description of the data type represented by the provided parameter.
+     *
+     * @param \ReflectionClass $data The data type to describe. Note that
+     *   \ArrayObject is used as a proxy to mean an array primitive (or an ArrayObject).
+     * @return string
+     */
     protected static function describeDataType($data)
     {
-        if ($data instanceof \ReflectionClass) {
+        if (is_array($data) || ($data instanceof \ReflectionClass)) {
+            if (is_array($data) || ($data->getName() == 'ArrayObject')) {
+                return 'an array';
+            }
             return 'an instance of ' . $data->getName();
-        }
-        if (is_object($data)) {
-            return 'an instance of ' . get_class($data);
-        }
-        if (is_array($data)) {
-            return 'an array';
         }
         if (is_string($data)) {
             return 'a string';
         }
-        return '<' . var_export($data) . '>';
+        if (is_object($data)) {
+            return 'an instance of ' . get_class($data);
+        }
+        throw new \Exception("Undescribable data error: " . var_export($data, true));
     }
 
     protected static function describeAllowedTypes($allowedTypes)
