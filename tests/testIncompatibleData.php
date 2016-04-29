@@ -15,7 +15,7 @@ class IncompatibleDataTests extends \PHPUnit_Framework_TestCase
 
     protected function assertIncompatibleDataMessage($expected, $formatter, $data)
     {
-        $e = new IncompatibleDataException($formatter, $data);
+        $e = new IncompatibleDataException($formatter, $data, $formatter->validDataTypes());
         $this->assertEquals($expected, $e->getMessage());
     }
 

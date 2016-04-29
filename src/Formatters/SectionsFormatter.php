@@ -43,7 +43,8 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
         if (!$structuredData instanceof TableDataInterface) {
             throw new IncompatibleDataException(
                 $this,
-                $structuredData
+                $structuredData,
+                $this->validDataTypes()
             );
         }
         return $structuredData;
