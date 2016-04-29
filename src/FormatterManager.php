@@ -60,6 +60,7 @@ class FormatterManager
                 $validFormats[] = $formatId;
             }
         }
+        sort($validFormats);
         return $validFormats;
     }
 
