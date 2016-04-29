@@ -4,6 +4,7 @@ namespace Consolidation\OutputFormatters;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
+use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -28,18 +29,19 @@ class FormatterManager
         ];
 
         // Make the empty format an alias for the 'string' formatter.
-        $this->formatters[''] = $this->formatters['string'];
+        $this->add('', $this->formatters['string']);
     }
 
     /**
      * Add a formatter
      *
-     * @param FormatterInterface $formatter the formatter to add
+     * @param string $key the identifier of the formatter to add
+     * @param string $formatterClassname the class name of the formatter to add
      * @return FormatterManager
      */
-    public function add(FormatterInterface $formatter)
+    public function add($key, $formatterClassname)
     {
-        $this->formatters[] = $formatter;
+        $this->formatters[$key] = $formatterClassname;
         return $this;
     }
 

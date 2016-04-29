@@ -8,9 +8,11 @@ use Consolidation\OutputFormatters\FormatterInterface;
  */
 class IncompatibleDataException extends \Exception
 {
-    public function __construct(FormatterInterface $formatter, $data)
+    public function __construct(FormatterInterface $formatter, $data, $allowedTypes = null)
     {
-        $allowedTypes = $formatter->validDataTypes();
+        if (!isset($allowedTypes)) {
+            $allowedTypes = $formatter->validDataTypes();
+        }
         $formatterDescription = get_class($formatter);
         $dataDescription = static::describeDataType($data);
         $allowedTypesDescription = static::describeAllowedTypes($allowedTypes);

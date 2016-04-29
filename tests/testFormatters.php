@@ -340,6 +340,16 @@ EOT;
         $this->assertFormattedOutputMatches('Will fail, not return', 'csv', 'String cannot be converted to csv');
     }
 
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\JsonFormatter must be an array. Instead, a string was provided.
+     */
+    function testBadDataTypeForJson()
+    {
+        $this->assertFormattedOutputMatches('Will fail, not return', 'json', 'String cannot be converted to json');
+    }
+
     function testSimpleCsv()
     {
         $data = ['a', 'b', 'c'];
