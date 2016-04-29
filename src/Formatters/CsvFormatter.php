@@ -41,8 +41,7 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
         if (!is_array($structuredData) && (!$structuredData instanceof TableTransformation)) {
             throw new IncompatibleDataException(
                 $this,
-                $structuredData,
-                $this->validDataTypes()
+                $structuredData
             );
         }
         // If the data was provided to us as a single array, then

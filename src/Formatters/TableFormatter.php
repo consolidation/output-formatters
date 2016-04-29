@@ -52,8 +52,7 @@ class TableFormatter implements FormatterInterface, ValidationInterface, RenderD
         if (!$structuredData instanceof TableDataInterface) {
             throw new IncompatibleDataException(
                 $this,
-                $structuredData,
-                $this->validDataTypes()
+                $structuredData
             );
         }
         return $structuredData;

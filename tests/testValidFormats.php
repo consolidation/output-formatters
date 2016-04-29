@@ -1,17 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
-use Consolidation\TestUtils\AssociativeListWithCsvCells;
-use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputDefinition;
 
 class ValidFormatsTests extends \PHPUnit_Framework_TestCase
 {
