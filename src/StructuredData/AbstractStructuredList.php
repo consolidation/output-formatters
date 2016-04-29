@@ -23,9 +23,9 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         parent::__construct($data);
     }
 
-    public abstract function restructure(FormatterOptions $options);
+    abstract public function restructure(FormatterOptions $options);
 
-    public abstract function getListData();
+    abstract public function getListData();
 
     protected function createTableTransformation($data, $options)
     {

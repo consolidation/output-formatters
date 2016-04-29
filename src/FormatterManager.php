@@ -66,7 +66,7 @@ class FormatterManager
         if (is_array($dataType)) {
             $dataType = new \ReflectionClass('\ArrayObject');
         }
-        if (!$dataType instanceOf \ReflectionClass) {
+        if (!$dataType instanceof \ReflectionClass) {
             $dataType = new \ReflectionClass($dataType);
         }
         // If the formatter does not implement ValidationInterface, then
