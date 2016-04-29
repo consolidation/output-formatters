@@ -22,4 +22,11 @@ class RowsOfFields extends AbstractStructuredList
     {
         return array_keys($this->getArrayCopy());
     }
+
+    protected function defaultOptions()
+    {
+        return [
+            FormatterOptions::LIST_ORIENTATION => false,
+        ] + parent::defaultOptions();
+    }
 }

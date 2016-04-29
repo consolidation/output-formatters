@@ -32,6 +32,16 @@ class FormatterOptions
     /** var InputInterface */
     protected $input;
 
+    const FORMAT = 'format';
+    const DEFAULT_FORMAT = 'default-format';
+    const TABLE_STYLE = 'table-style';
+    const LIST_ORIENTATION = 'list-orientation';
+    const FIELDS = 'fields';
+    const INCLUDE_FIELD_LABELS = 'include-field-labels';
+    const ROW_LABELS = 'row-labels';
+    const FIELD_LABELS = 'field-labels';
+    const DEFAULT_FIELDS = 'default-fields';
+
     public function __construct($configurationData = [], $options = [])
     {
         $this->configurationData = $configurationData;

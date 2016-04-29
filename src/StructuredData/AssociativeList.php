@@ -27,4 +27,11 @@ class AssociativeList extends AbstractStructuredList
     {
         return $this->getArrayCopy();
     }
+
+    protected function defaultOptions()
+    {
+        return [
+            FormatterOptions::LIST_ORIENTATION => true,
+        ] + parent::defaultOptions();
+    }
 }

@@ -66,15 +66,15 @@ class TableFormatter implements FormatterInterface, ValidationInterface, RenderD
     public function write(OutputInterface $output, $tableTransformer, FormatterOptions $options)
     {
         $defaults = [
-            'table-style' => 'default',
-            'include-field-labels' => true,
+            FormatterOptions::TABLE_STYLE => 'default',
+            FormatterOptions::INCLUDE_FIELD_LABELS => true,
         ];
 
         $table = new Table($output);
-        $table->setStyle($options->get('table-style', $defaults));
+        $table->setStyle($options->get(FormatterOptions::TABLE_STYLE, $defaults));
         $headers = $tableTransformer->getHeaders();
         $isList = $tableTransformer->isList();
-        $includeHeaders = $options->get('include-field-labels', $defaults);
+        $includeHeaders = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
         if ($includeHeaders && !$isList && !empty($headers)) {
             $table->setHeaders($headers);
         }

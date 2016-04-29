@@ -65,7 +65,7 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
             'include-field-labels' => true,
         ];
 
-        if ($options->get('include-field-labels', $defaults) && ($data instanceof TableTransformation)) {
+        if ($options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults) && ($data instanceof TableTransformation)) {
             $headers = $data->getHeaders();
             $this->writeCsvLine($output, $headers, $options);
         }

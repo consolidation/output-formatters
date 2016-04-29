@@ -100,8 +100,6 @@ class FormatterManager
         $formatter->write($output, $structuredOutput, $options);
     }
 
-
-
     protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
     {
         // Give the formatter a chance to do something with the

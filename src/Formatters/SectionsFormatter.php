@@ -60,7 +60,7 @@ class SectionsFormatter implements FormatterInterface, ValidationInterface, Rend
         foreach ($tableTransformer as $rowid => $row) {
             $rowLabel = $tableTransformer->getRowLabel($rowid);
             $output->writeln('');
-            $output->writeln($rowLabel); // TODO: convert to a label
+            $output->writeln($rowLabel);
             $sectionData = new AssociativeList($row);
             $sectionOptions = new FormatterOptions([], $options->getOptions());
             $sectionTableTransformer = $sectionData->restructure($sectionOptions);

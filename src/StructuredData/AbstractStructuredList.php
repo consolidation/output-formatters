@@ -32,10 +32,10 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         $defaults = $this->defaultOptions();
 
         $reorderer = new ReorderFields();
-        $fieldLabels = $reorderer->reorder($options->get('fields', $defaults), $options->get('field-labels', $defaults), $data);
+        $fieldLabels = $reorderer->reorder($options->get(FormatterOptions::FIELDS, $defaults), $options->get(FormatterOptions::FIELD_LABELS, $defaults), $data);
 
-        $tableTransformer = new TableTransformation($data, $fieldLabels, $options->get('row-labels', $defaults));
-        if ($options->get('list-orientation', $defaults)) {
+        $tableTransformer = new TableTransformation($data, $fieldLabels, $options->get(FormatterOptions::ROW_LABELS, $defaults));
+        if ($options->get(FormatterOptions::LIST_ORIENTATION, $defaults)) {
             $tableTransformer->setLayout(TableTransformation::LIST_LAYOUT);
         }
 
@@ -45,11 +45,10 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
     protected function defaultOptions()
     {
         return [
-            'list-orientation' => false,
-            'fields' => [],
-            'field-labels' => [],
-            'row-labels' => [],
-            'default-fields' => [],
+            FormatterOptions::FIELDS => [],
+            FormatterOptions::FIELD_LABELS => [],
+            FormatterOptions::ROW_LABELS => [],
+            FormatterOptions::DEFAULT_FIELDS => [],
         ];
     }
 }
