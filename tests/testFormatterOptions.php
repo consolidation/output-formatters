@@ -64,6 +64,12 @@ class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
         $this->assertFalse($options->get('no-such-key', $defaults));
         $this->assertEquals('last-chance', $options->get('no-such-key', $defaults, 'last-chance'));
 
+        // Change a user option
+        $options = new FormatterOptions($configurationData, $userOptions);
+        $options->setOption('try', 'changed');
+        $this->assertEquals('changed', $options->get('try'));
+        $this->assertEquals('changed', $options->get('try', $defaults));
+        $this->assertEquals('changed', $options->get('try', $defaults, 'irrelevant'));
 
         // Configuration has higher priority than defaults
         $options = new FormatterOptions($configurationData, $userOptions);
