@@ -19,9 +19,6 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
 
     function setup() {
         $this->formatterManager = new FormatterManager();
-        //$this->output = new BufferedOutput();
-        //$this->output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
-        //$this->logger = new Logger($this->output);
     }
 
     function assertFormattedOutputMatches($expected, $format, $data, FormatterOptions $options = null, $userOptions = []) {
@@ -341,6 +338,16 @@ EOT;
     function testBadDataTypeForCsv()
     {
         $this->assertFormattedOutputMatches('Will fail, not return', 'csv', 'String cannot be converted to csv');
+    }
+
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\JsonFormatter must be an array. Instead, a string was provided.
+     */
+    function testBadDataTypeForJson()
+    {
+        $this->assertFormattedOutputMatches('Will fail, not return', 'json', 'String cannot be converted to json');
     }
 
     function testSimpleCsv()

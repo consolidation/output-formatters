@@ -13,15 +13,8 @@ use Consolidation\OutputFormatters\Transformations\TableTransformation;
  * key : value pair.  The keys must be unique, as is typically
  * the case for associative arrays.
  */
-class AssociativeList extends RowsOfFields implements ListDataInterface
+class AssociativeList extends AbstractStructuredList
 {
-    protected $data;
-
-    public function __construct($data)
-    {
-        parent::__construct($data);
-    }
-
     public function restructure(FormatterOptions $options)
     {
         $data = [$this->getArrayCopy()];

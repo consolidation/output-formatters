@@ -2,9 +2,9 @@
 namespace Consolidation\OutputFormatters;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
+use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -29,7 +29,60 @@ class FormatterManager
         ];
 
         // Make the empty format an alias for the 'string' formatter.
-        $this->formatters[''] = $this->formatters['string'];
+        $this->add('', $this->formatters['string']);
+    }
+
+    /**
+     * Add a formatter
+     *
+     * @param string $key the identifier of the formatter to add
+     * @param string $formatterClassname the class name of the formatter to add
+     * @return FormatterManager
+     */
+    public function add($key, $formatterClassname)
+    {
+        $this->formatters[$key] = $formatterClassname;
+        return $this;
+    }
+
+    /**
+     * Return the identifiers for all valid data types that have been registered.
+     *
+     * @param mixed $dataType \ReflectionObject or other description of the produced data type
+     * @return array
+     */
+    public function validFormats($dataType)
+    {
+        $validFormats = [];
+        foreach ($this->formatters as $formatId => $formatterName) {
+            $formatter = $this->getFormatter($formatId);
+            if ($this->isValidFormat($formatter, $dataType)) {
+                $validFormats[] = $formatId;
+            }
+        }
+        return $validFormats;
+    }
+
+    public function isValidFormat(FormatterInterface $formatter, $dataType)
+    {
+        if (is_array($dataType)) {
+            $dataType = new \ReflectionClass('\ArrayObject');
+        }
+        if (!$dataType instanceof \ReflectionClass) {
+            $dataType = new \ReflectionClass($dataType);
+        }
+        // If the formatter does not implement ValidationInterface, then
+        // it is presumed that the formatter only accepts arrays.
+        if (!$formatter instanceof ValidationInterface) {
+            return $dataType->isSubclassOf('ArrayObject') || ($dataType->getName() == 'ArrayObject');
+        }
+        $supportedTypes = $formatter->validDataTypes();
+        foreach ($supportedTypes as $supportedType) {
+            if (($dataType->getName() == $supportedType->getName()) || $dataType->isSubclassOf($supportedType->getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -46,6 +99,8 @@ class FormatterManager
         $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
         $formatter->write($output, $structuredOutput, $options);
     }
+
+
 
     protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
     {
@@ -84,6 +139,9 @@ class FormatterManager
         return $formatter;
     }
 
+    /**
+     * Test to see if the stipulated format exists
+     */
     public function hasFormatter($format)
     {
         return array_key_exists($format, $this->formatters);
@@ -126,7 +184,15 @@ class FormatterManager
         if ($structuredOutput instanceof \ArrayObject) {
             return $structuredOutput->getArrayCopy();
         }
-
+        // If the formatter does not implmeent ValidationInterface, then
+        // we will further presume that it will *only* accept arrays.
+        if (!is_array($structuredOutput)) {
+            throw new IncompatibleDataException(
+                $formatter,
+                $structuredOutput,
+                []
+            );
+        }
         return $structuredOutput;
     }
 

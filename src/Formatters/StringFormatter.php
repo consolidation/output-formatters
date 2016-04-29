@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\Formatters;
 
 use Consolidation\OutputFormatters\FormatterInterface;
+use Consolidation\OutputFormatters\ValidationInterface;
 use Consolidation\OutputFormatters\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * provided data only if it is a string; if any other
  * type is given, then nothing is printed.
  */
-class StringFormatter implements FormatterInterface
+class StringFormatter implements FormatterInterface, ValidationInterface
 {
     /**
      * @inheritdoc
@@ -23,5 +24,24 @@ class StringFormatter implements FormatterInterface
         if (is_string($data)) {
             $output->writeln($data);
         }
+    }
+
+    /**
+     * Do not return any valid data types -- this formatter will never show up
+     * in a list of valid formats.
+     */
+    public function validDataTypes()
+    {
+        return [];
+    }
+
+    /**
+     * Always validate any data, though. This format will never
+     * cause an error if it is selected for an incompatible data type; at
+     * worse, it simply does not print any data.
+     */
+    public function validate($structuredData)
+    {
+        return $structuredData;
     }
 }

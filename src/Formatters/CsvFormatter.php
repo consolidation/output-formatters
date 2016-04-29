@@ -29,7 +29,7 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
             [
                 new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
                 new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList'),
-                [],
+                new \ReflectionClass('\ArrayObject'),
             ];
     }
 
