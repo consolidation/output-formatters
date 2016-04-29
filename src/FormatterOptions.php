@@ -63,6 +63,11 @@ class FormatterOptions
         return $this->parse($key, $value);
     }
 
+    public function getFormat($defaults = [])
+    {
+        return $this->get(self::FORMAT, $defaults, $this->get(self::DEFAULT_FORMAT, $defaults, ''));
+    }
+
     protected function fetch($key, $defaults = [], $default = false)
     {
         $values = array_merge(
@@ -94,9 +99,9 @@ class FormatterOptions
     protected function getOptionFormat($key)
     {
         $propertyFormats = [
-            'row-labels' => 'PropertyList',
-            'field-labels' => 'PropertyList',
-            'default-fields' => 'PropertyList',
+            self::ROW_LABELS => 'PropertyList',
+            self::FIELD_LABELS => 'PropertyList',
+            self::DEFAULT_FIELDS => 'PropertyList',
         ];
         if (array_key_exists($key, $propertyFormats)) {
             return "parse{$propertyFormats[$key]}";
@@ -110,7 +115,7 @@ class FormatterOptions
         return $this;
     }
 
-    public function setConfigurationValue($key, $value)
+    protected function setConfigurationValue($key, $value)
     {
         $this->configurationData[$key] = $value;
         return $this;
@@ -159,7 +164,10 @@ class FormatterOptions
         $options = [];
         foreach ($defaults as $key => $value) {
             if ($this->input->hasOption($key)) {
-                $options[$key] = $this->input->getOption($key);
+                $result = $this->input->getOption($key);
+                if (isset($result)) {
+                    $options[$key] = $this->input->getOption($key);
+                }
             }
         }
         return $options;
