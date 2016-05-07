@@ -432,12 +432,12 @@ EOT;
         $data = $this->missingCellTableExampleData();
 
         $expected = <<<EOT
-+-----+-----+-------+
-| One | Two | Three |
-+-----+-----+-------+
-| a   | b   | c     |
-| x   |     | z     |
-+-----+-----+-------+
+ ----- ----- -------
+  One   Two   Three
+ ----- ----- -------
+  a     b     c
+  x           z
+ ----- ----- -------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
 
@@ -495,12 +495,12 @@ EOT;
         $data = $this->simpleTableExampleData();
 
         $expected = <<<EOT
-+-----+-----+-------+
-| One | Two | Three |
-+-----+-----+-------+
-| a   | b   | c     |
-| x   | y   | z     |
-+-----+-----+-------+
+ ----- ----- -------
+  One   Two   Three
+ ----- ----- -------
+  a     b     c
+  x     y     z
+ ----- ----- -------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
 
@@ -568,12 +568,12 @@ EOT;
         $data = $this->tableWithAlternativesExampleData();
 
         $expected = <<<EOT
-+-----+---------------------------+----------------+
-| One | Two                       | Three          |
-+-----+---------------------------+----------------+
-| a   | this|that|the other thing | c              |
-| x   | y                         | apples|oranges |
-+-----+---------------------------+----------------+
+ ----- --------------------------- ----------------
+  One   Two                         Three
+ ----- --------------------------- ----------------
+  a     this|that|the other thing   c
+  x     y                           apples|oranges
+ ----- --------------------------- ----------------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
 
@@ -640,49 +640,49 @@ EOT;
         );
 
         $expected = <<<EOT
-+------+----+-----+
-| Ichi | Ni | San |
-+------+----+-----+
-| a    | b  | c   |
-| x    | y  | z   |
-+------+----+-----+
+ ------ ---- -----
+  Ichi   Ni   San
+ ------ ---- -----
+  a      b    c
+  x      y    z
+ ------ ---- -----
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
 
         $expectedSidewaysTable = <<<EOT
-+------+---+---+
-| Ichi | a | x |
-| Ni   | b | y |
-| San  | c | z |
-+------+---+---+
+ ------ --- ---
+  Ichi   a   x
+  Ni     b   y
+  San    c   z
+ ------ --- ---
 EOT;
         $this->assertFormattedOutputMatches($expectedSidewaysTable, 'table', $data, $configurationData->override(['list-orientation' => true]));
 
         $expectedAnnotationFormatConfigData = <<<EOT
-+-----+-----+------+
-| Uno | Dos | Tres |
-+-----+-----+------+
-| a   | b   | c    |
-| x   | y   | z    |
-+-----+-----+------+
+ ----- ----- ------
+  Uno   Dos   Tres
+ ----- ----- ------
+  a     b     c
+  x     y     z
+ ----- ----- ------
 EOT;
         $this->assertFormattedOutputMatches($expectedAnnotationFormatConfigData, 'table', $data, $configurationDataAnnotationFormat);
 
         $expectedWithNoFields = <<<EOT
-+---+---+---+
-| a | b | c |
-| x | y | z |
-+---+---+---+
+ --- --- ---
+  a   b   c
+  x   y   z
+ --- --- ---
 EOT;
         $this->assertFormattedOutputMatches($expectedWithNoFields, 'table', $data, $configurationData, ['include-field-labels' => false]);
 
         $expectedWithReorderedFields = <<<EOT
-+-----+------+
-| San | Ichi |
-+-----+------+
-| c   | a    |
-| z   | x    |
-+-----+------+
+ ----- ------
+  San   Ichi
+ ----- ------
+  c     a
+  z     x
+ ----- ------
 EOT;
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
@@ -743,20 +743,20 @@ EOT;
         $data = $this->simpleListExampleData();
 
         $expected = <<<EOT
-+-------+--------+
-| One   | apple  |
-| Two   | banana |
-| Three | carrot |
-+-------+--------+
+ ------- --------
+  One     apple
+  Two     banana
+  Three   carrot
+ ------- --------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expectedRotated = <<<EOT
-+-------+--------+--------+
-| One   | Two    | Three  |
-+-------+--------+--------+
-| apple | banana | carrot |
-+-------+--------+--------+
+ ------- -------- --------
+  One     Two      Three
+ ------- -------- --------
+  apple   banana   carrot
+ ------- -------- --------
 EOT;
         $this->assertFormattedOutputMatches($expectedRotated, 'table', $data, new FormatterOptions(['list-orientation' => false]));
 
@@ -812,12 +812,12 @@ EOT;
         $data = $this->associativeListWithCsvCells();
 
         $expected = <<<EOT
-+-------+---------------------+
-| One   | apple               |
-| Two   | banana,plantain     |
-| Three | carrot              |
-| Four  | peaches,pumpkin pie |
-+-------+---------------------+
+ ------- ---------------------
+  One     apple
+  Two     banana,plantain
+  Three   carrot
+  Four    peaches,pumpkin pie
+ ------- ---------------------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
 
@@ -849,19 +849,19 @@ EOT;
         );
 
         $expected = <<<EOT
-+------+--------+
-| Ichi | apple  |
-| Ni   | banana |
-| San  | carrot |
-+------+--------+
+ ------ --------
+  Ichi   apple
+  Ni     banana
+  San    carrot
+ ------ --------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
 
         $expectedWithReorderedFields = <<<EOT
-+------+--------+
-| San  | carrot |
-| Ichi | apple  |
-+------+--------+
+ ------ --------
+  San    carrot
+  Ichi   apple
+ ------ --------
 EOT;
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['three', 'one']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);

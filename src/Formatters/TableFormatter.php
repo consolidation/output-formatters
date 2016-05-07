@@ -3,6 +3,7 @@ namespace Consolidation\OutputFormatters\Formatters;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableStyle;
 
 use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
@@ -66,11 +67,22 @@ class TableFormatter implements FormatterInterface, ValidationInterface, RenderD
     public function write(OutputInterface $output, $tableTransformer, FormatterOptions $options)
     {
         $defaults = [
-            FormatterOptions::TABLE_STYLE => 'default',
+            FormatterOptions::TABLE_STYLE => 'consolidation',
             FormatterOptions::INCLUDE_FIELD_LABELS => true,
         ];
 
         $table = new Table($output);
+
+        // The 'consolidation' style is the same as the 'symfony-style-guide'
+        // style, except it maintains the colored headers used in 'default'.
+        $consolidationStyle = new TableStyle();
+        $consolidationStyle
+            ->setHorizontalBorderChar('-')
+            ->setVerticalBorderChar(' ')
+            ->setCrossingChar(' ')
+        ;
+        $table->setStyleDefinition('consolidation', $consolidationStyle);
+
         $table->setStyle($options->get(FormatterOptions::TABLE_STYLE, $defaults));
         $headers = $tableTransformer->getHeaders();
         $isList = $tableTransformer->isList();
