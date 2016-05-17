@@ -11,6 +11,7 @@ use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
+use Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface;
 
 /**
  * Display a table of data with the Symfony Table class.
@@ -45,8 +46,9 @@ class XmlFormatter implements FormatterInterface, ValidationInterface
         if ($structuredData instanceof \DOMDocument) {
             return $structuredData;
         }
-        // TODO: if the structured data can convert itself into a
-        // DOMDocument, then convert it here.
+        if ($structuredData instanceof DomDataInterface) {
+            return $structuredData->getDomData();
+        }
         if (!is_array($structuredData)) {
             throw new IncompatibleDataException(
                 $this,
