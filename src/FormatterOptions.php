@@ -3,6 +3,8 @@ namespace Consolidation\OutputFormatters;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
+use Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema;
+use Consolidation\OutputFormatters\StructuredData\Xml\XmlSchemaInterface;
 
 /**
  * FormetterOptions holds information that affects the way a formatter
@@ -61,6 +63,11 @@ class FormatterOptions
     {
         $value = $this->fetch($key, $defaults, $default);
         return $this->parse($key, $value);
+    }
+
+    public function getXmlSchema()
+    {
+        return new XmlSchema();
     }
 
     public function getFormat($defaults = [])

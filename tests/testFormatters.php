@@ -32,6 +32,34 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
 
+    function testSimpleXml()
+    {
+        $data = [
+            'name' => 'primary',
+            'description' => 'The primary colors of the color wheel.',
+            'colors' =>
+            [
+                'red',
+                'yellow',
+                'blue',
+            ],
+        ];
+
+        $expected = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<document name="primary">
+  <description>The primary colors of the color wheel.</description>
+  <colors>
+    <color>red</color>
+    <color>yellow</color>
+    <color>blue</color>
+  </colors>
+</document>
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'xml', $data);
+    }
+
     function testSimpleYaml()
     {
         $data = [

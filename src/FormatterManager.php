@@ -18,6 +18,7 @@ class FormatterManager
         $this->formatters = [
             'string' => '\Consolidation\OutputFormatters\Formatters\StringFormatter',
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
+            'xml' => '\Consolidation\OutputFormatters\Formatters\XmlFormatter',
             'json' => '\Consolidation\OutputFormatters\Formatters\JsonFormatter',
             'print-r' => '\Consolidation\OutputFormatters\Formatters\PrintRFormatter',
             'php' => '\Consolidation\OutputFormatters\Formatters\SerializeFormatter',
