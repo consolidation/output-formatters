@@ -4,7 +4,7 @@ namespace Consolidation\OutputFormatters\StructuredData\Xml;
 
 class XmlSchema implements XmlSchemaInterface
 {
-    protected $eleentList;
+    protected $elementList;
 
     public function __construct($elementList = [])
     {
@@ -60,7 +60,7 @@ class XmlSchema implements XmlSchemaInterface
     protected function getDefaultElementName($parentElementName)
     {
         $singularName = $this->singularForm($parentElementName);
-        if ($singularName) {
+        if (isset($singularName)) {
             return $singularName;
         }
         return 'item';
