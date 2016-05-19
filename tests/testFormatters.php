@@ -32,34 +32,6 @@ class FormattersTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
 
-    function testSimpleXml()
-    {
-        $data = [
-            'name' => 'primary',
-            'description' => 'The primary colors of the color wheel.',
-            'colors' =>
-            [
-                'red',
-                'yellow',
-                'blue',
-            ],
-        ];
-
-        $expected = <<<EOT
-<?xml version="1.0" encoding="UTF-8"?>
-<document name="primary">
-  <description>The primary colors of the color wheel.</description>
-  <colors>
-    <color>red</color>
-    <color>yellow</color>
-    <color>blue</color>
-  </colors>
-</document>
-EOT;
-
-        $this->assertFormattedOutputMatches($expected, 'xml', $data);
-    }
-
     function testSimpleYaml()
     {
         $data = [
@@ -903,5 +875,92 @@ EOT;
 ]
 EOT;
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
+    }
+
+    function testSimpleXml()
+    {
+        $data = [
+            'name' => 'primary',
+            'description' => 'The primary colors of the color wheel.',
+            'colors' =>
+            [
+                'red',
+                'yellow',
+                'blue',
+            ],
+        ];
+
+        $expected = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<document name="primary">
+  <description>The primary colors of the color wheel.</description>
+  <colors>
+    <color>red</color>
+    <color>yellow</color>
+    <color>blue</color>
+  </colors>
+</document>
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'xml', $data);
+    }
+
+    function domDocumentData()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        $document = $dom->createElement('document');
+        $dom->appendChild($document);
+
+        $document->setAttribute('name', 'primary');
+        $description = $dom->createElement('description');
+        $document->appendChild($description);
+        $description->appendChild($dom->createTextNode('The primary colors of the color wheel.'));
+
+        $colors = $dom->createElement('colors');
+        $document->appendChild($colors);
+        foreach (['red', 'yellow', 'blue'] as $colorText) {
+            $color = $dom->createElement('color');
+            $colors->appendChild($color);
+            $color->appendChild($dom->createTextNode($colorText));
+        }
+        return $dom;
+    }
+
+    function testDomData()
+    {
+        $data = $this->domDocumentData();
+
+        $expectedXml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<document name="primary">
+  <description>The primary colors of the color wheel.</description>
+  <colors>
+    <color>red</color>
+    <color>yellow</color>
+    <color>blue</color>
+  </colors>
+</document>
+EOT;
+
+        $this->assertFormattedOutputMatches($expectedXml, 'xml', $data);
+
+        $expectedJson = <<<EOT
+{
+    "name": "primary",
+    "description": "The primary colors of the color wheel.",
+    "colors": [
+        "red",
+        "yellow",
+        "blue"
+    ]
+}
+EOT;
+        $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
+
+        // Check to see if we get the same xml data if we convert from
+        // DOM -> array -> DOM.
+        $expectedJsonAsArray = (array)json_decode($expectedJson);
+        $this->assertFormattedOutputMatches($expectedXml, 'xml', $expectedJsonAsArray);
     }
 }
