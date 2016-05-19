@@ -6,6 +6,7 @@ use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
+use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 
 /**
  * Manage a collection of formatters; return one on request.

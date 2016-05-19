@@ -29,14 +29,32 @@ class YamlFormatter implements FormatterInterface
 ```
 The formatter is passed the set of `$options` that the user provided on the command line. These may optionally be examined to alter the behavior of the formatter, if needed.
 
+Formatters may also implement different interfaces to alter the behavior of the rendering engine.
+
+- `ValidationInterface`: A formatter should implement this interface to test to see if the provided data type can be processed. Any formatter that does **not** implement this interface is presumed to operate exclusively on php arrays. The formatter manager will always convert any provided data into an array before passing it to a formatter that does not implement ValidationInterface. These formatters will not be made available when the returned data type cannot be converted into an array.
+- `OverrideRestructureInterface`: A formatter that implements this interface will be given the option to act on the provided structured data object before it restructures itself. See the section below on structured data for details on data restructuring.
+
 ## Structured Data
 
 Most formatters will operate on any array or ArrayObject data. Some formatters require that specific data types be used. The following data types, all of which are subclasses of ArrayObject, are available for use:
 
-- RowsOfFields: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
-- AssociativeList: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
+- `RowsOfFields`: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
+- `AssociativeList`: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
+- `DOMDocument`: The standard PHP DOM document class may be used by functions that need to be able to presicely specify the exact attributes and children when the XML output format is used.
 
-Commands that return structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array.
+Commands that return table structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array.
+
+The formatter manager will do its best to convert from an array to a DOMDocument, or from a DOMDocument to an array. It is important to note that a DOMDocument does not have a 1-to-1 mapping with a PHP array.  DOM elements contain both attributes and elements; a simple string property 'foo' may be represented either as <element foo="value"/> or <element><foo>value</foo></element>. Also, there may be multiple XML elements with the same name, whereas php associative arrays must always have unique keys. When converting from an array to a DOM document, the XML formatter will default to representing the string properties of an array as attributes of the element. Sets of elements with the same name may be used only if they are wrapped in a containing parent element--e.g. <element><foos><foo>one</foo><foo>two</foo></foos></element>. The XMLSchema class may be used to provide control over whether a property is rendered as an attribute or an element; however, in instances where the schema of the XML output is important, it is best for a function to return its result as a DOMDocument rather than an array.
+
+A function may also define its own structured data type to return, usually by extending one of the types mentioned above.  If a custom structured data class implements an appropriate interface, then it can provide its own conversion function to one of the other data types:
+
+- `DomDataInterface`: The data object may produce a DOMDocument via its `getDomData()` method, which will be called in any instance where a DOM document is needed--typically with the xml formatter.
+- `ListDataInterface`: Any structured data object that implements this interface may use the `getListData()` method to produce the data set that will be used with the list formatter.
+- `TableDataInterface`: Any structured data object that implements this interface may use the `getTableData()` method to produce the data set that will be used with the table formatter.
+- `RenderCellInterface`: Structured data can also provide fine-grain control over how each cell in a table is rendered by implementing the RenderCellInterface.  See the section below for information on how this is done.
+- `RestructureInterface`: The restructure interface can be implemented by a structured data object to restructure the data in response to options provided by the user. For example, the RowsOfFields and AssociativeList data types use this interface to select and reorder the fields that were selected to appear in the output. Custom data types usually will not need to implement this interface, as they can inherit this behavior by extending RowsOfFields or AssociativeList.
+
+Additionally, structured data may be simplified to arrays via an array simplification object. To provide an array simplifier, implement `SimplifyToArrayInterface`, and register the simplifier via `FormatterManager::addSimplifier()`.
 
 ## Rendering Table Cells
 
