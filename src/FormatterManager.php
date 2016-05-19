@@ -5,6 +5,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
+use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
+use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -12,12 +14,14 @@ use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 class FormatterManager
 {
     protected $formatters = [];
+    protected $arraySimplifiers = [];
 
     public function __construct()
     {
         $this->formatters = [
             'string' => '\Consolidation\OutputFormatters\Formatters\StringFormatter',
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
+            'xml' => '\Consolidation\OutputFormatters\Formatters\XmlFormatter',
             'json' => '\Consolidation\OutputFormatters\Formatters\JsonFormatter',
             'print-r' => '\Consolidation\OutputFormatters\Formatters\PrintRFormatter',
             'php' => '\Consolidation\OutputFormatters\Formatters\SerializeFormatter',
@@ -29,7 +33,10 @@ class FormatterManager
         ];
 
         // Make the empty format an alias for the 'string' formatter.
-        $this->add('', $this->formatters['string']);
+        $this->addFormatter('', $this->formatters['string']);
+
+        // Add our default array simplifier (DOMDocument to array)
+        $this->addSimplifier(new DomToArraySimplifier());
     }
 
     /**
@@ -39,9 +46,21 @@ class FormatterManager
      * @param string $formatterClassname the class name of the formatter to add
      * @return FormatterManager
      */
-    public function add($key, $formatterClassname)
+    public function addFormatter($key, $formatterClassname)
     {
         $this->formatters[$key] = $formatterClassname;
+        return $this;
+    }
+
+    /**
+     * Add a simplifier
+     *
+     * @param SimplifyToArrayInterface $simplifier the array simplifier to add
+     * @return FormatterManager
+     */
+    public function addSimplifier(SimplifyToArrayInterface $simplifier)
+    {
+        $this->arraySimplifiers[] = $simplifier;
         return $this;
     }
 
@@ -114,7 +133,7 @@ class FormatterManager
         $restructuredOutput = $this->restructureData($structuredOutput, $options);
 
         // Make sure that the provided data is in the correct format for the selected formatter.
-        $restructuredOutput = $this->validateData($formatter, $restructuredOutput);
+        $restructuredOutput = $this->validateData($formatter, $restructuredOutput, $options);
 
         // Give the original data a chance to re-render the structured
         // output after it has been restructured and validated.
@@ -170,7 +189,7 @@ class FormatterManager
      * @param mixed $structuredOutput Data to validate
      * @return mixed
      */
-    public function validateData(FormatterInterface $formatter, $structuredOutput)
+    public function validateData(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
     {
         // If the formatter implements ValidationInterface, then let it
         // test the data and throw or return an error
@@ -180,17 +199,30 @@ class FormatterManager
         // If the formatter does not implement ValidationInterface, then
         // it will never be passed an ArrayObject; we will always give
         // it a simple array.
-        if ($structuredOutput instanceof \ArrayObject) {
-            return $structuredOutput->getArrayCopy();
-        }
-        // If the formatter does not implmeent ValidationInterface, then
-        // we will further presume that it will *only* accept arrays.
+        $structuredOutput = $this->simplifyToArray($structuredOutput, $options);
+        // If we could not simplify to an array, then throw an exception.
+        // We will never give a formatter anything other than an array
+        // unless it validates that it can accept the data type.
         if (!is_array($structuredOutput)) {
             throw new IncompatibleDataException(
                 $formatter,
                 $structuredOutput,
                 []
             );
+        }
+        return $structuredOutput;
+    }
+
+    protected function simplifyToArray($structuredOutput, FormatterOptions $options)
+    {
+        // Check to see if any of the simplifiers can convert the given data
+        // set to an array.
+        foreach ($this->arraySimplifiers as $simplifier) {
+            $structuredOutput = $simplifier->simplifyToArray($structuredOutput, $options);
+        }
+        // Convert \ArrayObjects to a simple array.
+        if ($structuredOutput instanceof \ArrayObject) {
+            return $structuredOutput->getArrayCopy();
         }
         return $structuredOutput;
     }

@@ -1,7 +1,6 @@
 <?php
 namespace Consolidation\OutputFormatters\StructuredData;
 
-use Consolidation\OutputFormatters\RestructureInterface;
 use Consolidation\OutputFormatters\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
@@ -15,6 +14,13 @@ use Consolidation\OutputFormatters\Transformations\TableTransformation;
  */
 class AssociativeList extends AbstractStructuredList
 {
+    /**
+     * Restructure this data for output by converting it into a table
+     * transformation object.
+     *
+     * @param FormatterOptions $options Options that affect output formatting.
+     * @return Consolidation\OutputFormatters\Transformations\TableTransformation
+     */
     public function restructure(FormatterOptions $options)
     {
         $data = [$this->getArrayCopy()];
