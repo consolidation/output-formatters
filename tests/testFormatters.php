@@ -963,4 +963,15 @@ EOT;
         $expectedJsonAsArray = (array)json_decode($expectedJson);
         $this->assertFormattedOutputMatches($expectedXml, 'xml', $expectedJsonAsArray);
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\XmlFormatter must be either an instance of DOMDocument or an array. Instead, a string was provided.
+     */
+    function testDataTypeForXmlFormatter()
+    {
+        $this->assertFormattedOutputMatches('Will fail, not return', 'xml', 'Strings cannot be converted to XML');
+    }
+
 }

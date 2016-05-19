@@ -32,12 +32,11 @@ class FormatterManager
             'sections' => '\Consolidation\OutputFormatters\Formatters\SectionsFormatter',
         ];
 
-        $this->arraySimplifiers = [
-            new DomToArraySimplifier(),
-        ];
-
         // Make the empty format an alias for the 'string' formatter.
-        $this->add('', $this->formatters['string']);
+        $this->addFormatter('', $this->formatters['string']);
+
+        // Add our default array simplifier (DOMDocument to array)
+        $this->addSimplifier(new DomToArraySimplifier());
     }
 
     /**
@@ -47,7 +46,7 @@ class FormatterManager
      * @param string $formatterClassname the class name of the formatter to add
      * @return FormatterManager
      */
-    public function add($key, $formatterClassname)
+    public function addFormatter($key, $formatterClassname)
     {
         $this->formatters[$key] = $formatterClassname;
         return $this;
