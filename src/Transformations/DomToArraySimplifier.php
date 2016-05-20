@@ -32,7 +32,7 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
      * Recursively convert the provided DOM element into a php array.
      *
      * @param \DOMNode $element
-     * @return type
+     * @return array
      */
     protected function elementToArray(\DOMNode $element)
     {
@@ -48,8 +48,8 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
     /**
      * Get all of the attributes of the provided element.
      *
-     * @param type $element
-     * @return type
+     * @param \DOMNode $element
+     * @return array
      */
     protected function getNodeAttributes($element)
     {
@@ -66,8 +66,8 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
     /**
      * Get all of the children of the provided element, with simplification.
      *
-     * @param type $element
-     * @return type
+     * @param \DOMNode $element
+     * @return array
      */
     protected function getNodeChildren($element)
     {
@@ -87,8 +87,8 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
      * Get the data from the children of the provided node in preliminary
      * form.
      *
-     * @param type $element
-     * @return type
+     * @param \DOMNode $element
+     * @return array
      */
     protected function getNodeChildrenData($element)
     {
@@ -103,8 +103,8 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
      * Determine whether the children of the provided element are uniform.
      * @see getUniformChildren(), below.
      *
-     * @param type $element
-     * @return type
+     * @param \DOMNode $element
+     * @return boolean
      */
     protected function hasUniformChildren($element)
     {
@@ -131,9 +131,9 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
      * store the children in, and the child list will be returned as a
      * simple list with their (duplicate) element names omitted.
      *
-     * @param type $parentKey
-     * @param type $element
-     * @return type
+     * @param string $parentKey
+     * @param \DOMNode $element
+     * @return array
      */
     protected function getUniformChildren($parentKey, $element)
     {
@@ -153,8 +153,8 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
      * nesting.  {"color": "red"} is converted to "red". No other
      * simplification is done.
      *
-     * @param type $value
-     * @return type
+     * @param \DOMNode $value
+     * @return boolean
      */
     protected function valueCanBeSimplified($value)
     {
@@ -175,9 +175,9 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
      * associative array that is returned, so duplicates are not supported.
      * If there are any duplicates, then an exception will be thrown.
      *
-     * @param type $parentKey
-     * @param type $element
-     * @return type
+     * @param string $parentKey
+     * @param \DOMNode $element
+     * @return array
      */
     protected function getUniqueChildren($parentKey, $element)
     {
