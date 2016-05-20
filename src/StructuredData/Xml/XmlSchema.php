@@ -27,7 +27,7 @@ class XmlSchema implements XmlSchemaInterface
     {
         $element = $dom->createElement($elementName);
         $xmlParent->appendChild($element);
-        if (!is_array($structuredData)) {
+        if (is_string($structuredData)) {
             $element->appendChild($dom->createTextNode($structuredData));
             return;
         }

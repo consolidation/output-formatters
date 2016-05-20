@@ -28,6 +28,12 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
         return $structuredData;
     }
 
+    /**
+     * Recursively convert the provided DOM element into a php array.
+     *
+     * @param \DOMNode $element
+     * @return type
+     */
     protected function elementToArray(\DOMNode $element)
     {
         if ($element->nodeType == XML_TEXT_NODE) {
@@ -39,6 +45,12 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
         return array_merge($attributes, $children);
     }
 
+    /**
+     * Get all of the attributes of the provided element.
+     *
+     * @param type $element
+     * @return type
+     */
     protected function getNodeAttributes($element)
     {
         if (empty($element->attributes)) {
@@ -51,37 +63,54 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
         return $attributes;
     }
 
+    /**
+     * Get all of the children of the provided element, with simplification.
+     *
+     * @param type $element
+     * @return type
+     */
     protected function getNodeChildren($element)
     {
         if (empty($element->childNodes)) {
             return [];
         }
-        $result = $this->getNodeChildrenUnique($element);
-        if ($this->hasUniformChildren($result)) {
-            $result = $this->simplifyUniformChildren($element->nodeName, $result);
+        $uniformChildrenName = $this->hasUniformChildren($element);
+        if ("{$uniformChildrenName}s" == $element->nodeName) {
+            $result = $this->getUniformChildren($element->nodeName, $element);
         } else {
-            $result = $this->simplifyUniqueChildren($result);
+            $result = $this->getUniqueChildren($element->nodeName, $element);
         }
         return $result;
     }
 
-    protected function getNodeChildrenUnique($element)
+    /**
+     * Get the data from the children of the provided node in preliminary
+     * form.
+     *
+     * @param type $element
+     * @return type
+     */
+    protected function getNodeChildrenData($element)
     {
         $children = [];
         foreach ($element->childNodes as $key => $value) {
             $children[$key] = $this->elementToArray($value);
         }
-        if ((count($children) == 1) && (is_string($children[0]))) {
-            return [$element->nodeName => $children[0]];
-        }
         return $children;
     }
 
-    protected function hasUniformChildren($data)
+    /**
+     * Determine whether the children of the provided element are uniform.
+     * @see getUniformChildren(), below.
+     *
+     * @param type $element
+     * @return type
+     */
+    protected function hasUniformChildren($element)
     {
         $last = false;
-        foreach ($data as $key => $value) {
-            $name = $this->getNameOfSingleResultElement($key, $value);
+        foreach ($element->childNodes as $key => $value) {
+            $name = $value->nodeName;
             if (!$name) {
                 return false;
             }
@@ -90,22 +119,74 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
             }
             $last = $name;
         }
-        return true;
+        return $last;
     }
 
-    protected function simplifyUniformChildren($parentKey, $data)
+    /**
+     * Convert the children of the provided DOM element into an array.
+     * Here, 'uniform' means that all of the element names of the children
+     * are identical, and further, the element name of the parent is the
+     * plural form of the child names.  When the children are uniform in
+     * this way, then the parent element name will be used as the key to
+     * store the children in, and the child list will be returned as a
+     * simple list with their (duplicate) element names omitted.
+     *
+     * @param type $parentKey
+     * @param type $element
+     * @return type
+     */
+    protected function getUniformChildren($parentKey, $element)
     {
+        $children = $this->getNodeChildrenData($element);
         $simplifiedChildren = [];
-        foreach ($data as $key => $value) {
-            $simplifiedChildren[$parentKey][] = array_shift($value);
+        foreach ($children as $key => $value) {
+            if ($this->valueCanBeSimplified($value)) {
+                $value = array_shift($value);
+            }
+            $simplifiedChildren[$parentKey][] = $value;
         }
         return $simplifiedChildren;
     }
 
-    protected function simplifyUniqueChildren($data)
+    /**
+     * Determine whether the provided value has additional unnecessary
+     * nesting.  {"color": "red"} is converted to "red". No other
+     * simplification is done.
+     *
+     * @param type $value
+     * @return type
+     */
+    protected function valueCanBeSimplified($value)
     {
+        if (!is_array($value)) {
+            return false;
+        }
+        if (count($value) != 1) {
+            return false;
+        }
+        $data = array_shift($value);
+        return is_string($data);
+    }
+
+    /**
+     * Convert the children of the provided DOM element into an array.
+     * Here, 'unique' means that all of the element names of the children are
+     * different.  Since the element names will become the key of the
+     * associative array that is returned, so duplicates are not supported.
+     * If there are any duplicates, then an exception will be thrown.
+     *
+     * @param type $parentKey
+     * @param type $element
+     * @return type
+     */
+    protected function getUniqueChildren($parentKey, $element)
+    {
+        $children = $this->getNodeChildrenData($element);
+        if ((count($children) == 1) && (is_string($children[0]))) {
+            return [$element->nodeName => $children[0]];
+        }
         $simplifiedChildren = [];
-        foreach ($data as $key => $value) {
+        foreach ($children as $key => $value) {
             if (is_numeric($key) && is_array($value) && (count($value) == 1)) {
                 $valueKeys = array_keys($value);
                 $key = $valueKeys[0];
@@ -117,20 +198,5 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
             $simplifiedChildren[$key] = $value;
         }
         return $simplifiedChildren;
-    }
-
-    protected function getNameOfSingleResultElement($key, $value)
-    {
-        if (!is_numeric($key)) {
-            return false;
-        }
-        if (!is_array($value)) {
-            return false;
-        }
-        if (count($value) != 1) {
-            return false;
-        }
-        $valueKeys = array_keys($value);
-        return $valueKeys[0];
     }
 }

@@ -917,19 +917,54 @@ EOT;
         $document->appendChild($description);
         $description->appendChild($dom->createTextNode('The primary colors of the color wheel.'));
 
-        $colors = $dom->createElement('colors');
-        $document->appendChild($colors);
-        foreach (['red', 'yellow', 'blue'] as $colorText) {
-            $color = $dom->createElement('color');
-            $colors->appendChild($color);
-            $color->appendChild($dom->createTextNode($colorText));
-        }
+        $this->domCreateElements($dom, $document, 'color', ['red', 'yellow', 'blue']);
+
         return $dom;
     }
 
-    function testDomData()
+    function domCreateElements($dom, $element, $name, $data)
     {
-        $data = $this->domDocumentData();
+        $container = $dom->createElement("{$name}s");
+        $element->appendChild($container);
+        foreach ($data as $value) {
+            $child = $dom->createElement($name);
+            $container->appendChild($child);
+            $child->appendChild($dom->createTextNode($value));
+        }
+    }
+
+    function complexDomDocumentData()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        $document = $dom->createElement('document');
+        $dom->appendChild($document);
+
+        $document->setAttribute('name', 'widget-collection');
+        $description = $dom->createElement('description');
+        $document->appendChild($description);
+        $description->appendChild($dom->createTextNode('A couple of widgets.'));
+
+        $widgets = $dom->createElement('widgets');
+        $document->appendChild($widgets);
+
+        $widget = $dom->createElement('widget');
+        $widgets->appendChild($widget);
+        $widget->setAttribute('name', 'usual');
+        $this->domCreateElements($dom, $widget, 'color', ['red', 'yellow', 'blue']);
+        $this->domCreateElements($dom, $widget, 'shape', ['square', 'circle', 'triangle']);
+
+        $widget = $dom->createElement('widget');
+        $widgets->appendChild($widget);
+        $widget->setAttribute('name', 'unusual');
+        $this->domCreateElements($dom, $widget, 'color', ['muave', 'puce', 'umber']);
+        $this->domCreateElements($dom, $widget, 'shape', ['elipse', 'rhombus', 'trapazoid']);
+
+        return $dom;
+    }
+
+    function domDocumentTestValues()
+    {
 
         $expectedXml = <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -943,8 +978,6 @@ EOT;
 </document>
 EOT;
 
-        $this->assertFormattedOutputMatches($expectedXml, 'xml', $data);
-
         $expectedJson = <<<EOT
 {
     "name": "primary",
@@ -956,6 +989,95 @@ EOT;
     ]
 }
 EOT;
+
+        $expectedComplexXml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<document name="widget-collection">
+  <description>A couple of widgets.</description>
+  <widgets>
+    <widget name="usual">
+      <colors>
+        <color>red</color>
+        <color>yellow</color>
+        <color>blue</color>
+      </colors>
+      <shapes>
+        <shape>square</shape>
+        <shape>circle</shape>
+        <shape>triangle</shape>
+      </shapes>
+    </widget>
+    <widget name="unusual">
+      <colors>
+        <color>muave</color>
+        <color>puce</color>
+        <color>umber</color>
+      </colors>
+      <shapes>
+        <shape>elipse</shape>
+        <shape>rhombus</shape>
+        <shape>trapazoid</shape>
+      </shapes>
+    </widget>
+  </widgets>
+</document>
+EOT;
+
+        $expectedComplexJson = <<<EOT
+{
+    "name": "widget-collection",
+    "description": "A couple of widgets.",
+    "widgets": [
+        {
+            "name": "usual",
+            "colors": [
+                "red",
+                "yellow",
+                "blue"
+            ],
+            "shapes": [
+                "square",
+                "circle",
+                "triangle"
+            ]
+        },
+        {
+            "name": "unusual",
+            "colors": [
+                "muave",
+                "puce",
+                "umber"
+            ],
+            "shapes": [
+                "elipse",
+                "rhombus",
+                "trapazoid"
+            ]
+        }
+    ]
+}
+EOT;
+
+        return [
+            [
+                $this->domDocumentData(),
+                $expectedXml,
+                $expectedJson,
+            ],
+            [
+                $this->complexDomDocumentData(),
+                $expectedComplexXml,
+                $expectedComplexJson,
+            ],
+        ];
+    }
+
+    /**
+     *  @dataProvider domDocumentTestValues
+     */
+    function testDomData($data, $expectedXml, $expectedJson)
+    {
+        $this->assertFormattedOutputMatches($expectedXml, 'xml', $data);
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data);
 
         // Check to see if we get the same xml data if we convert from
@@ -973,5 +1095,4 @@ EOT;
     {
         $this->assertFormattedOutputMatches('Will fail, not return', 'xml', 'Strings cannot be converted to XML');
     }
-
 }
