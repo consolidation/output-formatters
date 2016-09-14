@@ -3,8 +3,10 @@ namespace Consolidation\OutputFormatters\Formatters;
 
 use Consolidation\OutputFormatters\FormatterInterface;
 use Consolidation\OutputFormatters\ValidationInterface;
+use Consolidation\OutputFormatters\OverrideOptionsInterface;
 use Consolidation\OutputFormatters\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
+use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 
 /**
  * String formatter
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * provided data only if it is a string; if any other
  * type is given, then nothing is printed.
  */
-class StringFormatter implements FormatterInterface, ValidationInterface
+class StringFormatter implements FormatterInterface, ValidationInterface, OverrideOptionsInterface
 {
     /**
      * @inheritdoc
@@ -22,7 +24,40 @@ class StringFormatter implements FormatterInterface, ValidationInterface
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         if (is_string($data)) {
-            $output->writeln($data);
+            return $output->writeln($data);
+        }
+        return $this->reduceToSigleFieldAndWrite($output, $data, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function overrideOptions($structuredOutput, FormatterOptions $options)
+    {
+        $defaultField = $options->get(FormatterOptions::SINGLE_FIELD_DEFAULT, [], []);
+        return $options->override(
+            [
+                FormatterOptions::FIELDS => $defaultField,
+                FormatterOptions::INCLUDE_FIELD_LABELS => false,
+            ]
+        );
+    }
+
+    /**
+     * If the data provided to a 'string' formatter is a table, then try
+     * to emit it as a TSV value.
+     *
+     * @param OutputInterface $output
+     * @param mixed $data
+     * @param FormatterOptions $options
+     */
+    protected function reduceToSigleFieldAndWrite(OutputInterface $output, $data, FormatterOptions $options)
+    {
+        $alternateFormatter = new TsvFormatter();
+        try {
+            $data = $alternateFormatter->validate($data);
+            $alternateFormatter->write($output, $data, $options);
+        } catch (\Exception $e) {
         }
     }
 
