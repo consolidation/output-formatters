@@ -2,17 +2,17 @@
 
 Apply transformations to structured data to write output in different formats.
 
-[![Travis CI](https://travis-ci.org/consolidation-org/output-formatters.svg?branch=master)](https://travis-ci.org/consolidation-org/output-formatters) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation-org/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation-org/output-formatters/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/consolidation-org/output-formatters/badge.svg?branch=master)](https://coveralls.io/github/consolidation-org/output-formatters?branch=master) [![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
+[![Travis CI](https://travis-ci.org/consolidation/output-formatters.svg?branch=master)](https://travis-ci.org/consolidation/output-formatters) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation/output-formatters/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/consolidation/output-formatters/badge.svg?branch=master)](https://coveralls.io/github/consolidation/output-formatters?branch=master) [![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
 
 ## Component Status
 
-Currently in use in [Robo](https://github.com/Codegyre/Robo).
+Currently in use in [Robo](https://github.com/consolidation/Robo).
 
 ## Motivation
 
 Formatters are used to allow simple commandline tool commands to be implemented in a manner that is completely independent from the Symfony Console output interfaces.  A command receives its input via its method parameters, and returns its result as structured data (e.g. a php standard object or array).  The structured data is then formatted by a formatter, and the result is printed.
 
-This process is managed by the [Consolidation/AnnotationCommand](https://github.com/consolidation-org/annotation-command) project.
+This process is managed by the [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) project.
 
 ## Example Formatter
 
@@ -78,7 +78,7 @@ Note that if your data structure is printed with some formatter other than the t
 
 ## API Usage
 
-It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation-org/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation-org/annotation-command#api-usage) for details.
+It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation/annotation-command#api-usage) for details.
 
 The FormatterManager may also be used directly, if desired:
 ```
