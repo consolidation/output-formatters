@@ -357,6 +357,24 @@ EOT;
         $this->assertFormattedOutputMatches($expected, '', $data);
     }
 
+    function testRenderTableAsString()
+    {
+        $data = new RowsOfFields([['f1' => 'A', 'f2' => 'B', 'f3' => 'C'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
+        $expected = "A\tB\tC\nx\ty\tz";
+
+        $this->assertFormattedOutputMatches($expected, 'string', $data);
+    }
+
+    function testRenderTableAsStringWithSingleField()
+    {
+        $data = new RowsOfFields([['f1' => 'q', 'f2' => 'r', 'f3' => 's'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
+        $expected = "q\nx";
+
+        $options = new FormatterOptions([FormatterOptions::SINGLE_FIELD_DEFAULT => 'f1']);
+
+        $this->assertFormattedOutputMatches($expected, 'string', $data, $options);
+    }
+
     function testSimpleCsv()
     {
         $data = ['a', 'b', 'c'];

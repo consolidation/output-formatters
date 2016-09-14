@@ -75,7 +75,8 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
     {
         $defaults = $this->getDefaultFormatterOptions();
 
-        if ($options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults) && ($data instanceof TableTransformation)) {
+        $includeFieldLabels = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
+        if ($includeFieldLabels && ($data instanceof TableTransformation)) {
             $headers = $data->getHeaders();
             $this->writeOneLine($output, $headers, $options);
         }
