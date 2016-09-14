@@ -17,6 +17,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class TsvFormatter extends CsvFormatter
 {
+    protected function getDefaultFormatterOptions()
+    {
+        return [
+            FormatterOptions::INCLUDE_FIELD_LABELS => false,
+        ];
+    }
+
     protected function writeOneLine(OutputInterface $output, $data, $options)
     {
         $output->writeln($this->tsvEscape($data));

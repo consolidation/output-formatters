@@ -479,6 +479,19 @@ a,b,c
 x,,z
 EOT;
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
+
+        $expectedTsv = <<<EOT
+a\tb\tc
+x\t\tz
+EOT;
+        $this->assertFormattedOutputMatches($expectedTsv, 'tsv', $data);
+
+        $expectedTsvWithHeaders = <<<EOT
+One\tTwo\tThree
+a\tb\tc
+x\t\tz
+EOT;
+        $this->assertFormattedOutputMatches($expectedTsvWithHeaders, 'tsv', $data, new FormatterOptions(), ['include-field-labels' => true]);
     }
 
     protected function simpleTableExampleData()
