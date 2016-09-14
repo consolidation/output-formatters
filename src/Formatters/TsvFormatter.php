@@ -28,7 +28,7 @@ class TsvFormatter extends CsvFormatter
             function ($item) {
                 return str_replace(["\t", "\n"], ['\t', '\n'], $item);
             },
-            $data)
-        );
+            $data
+        ));
     }
 }
