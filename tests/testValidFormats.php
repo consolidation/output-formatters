@@ -47,15 +47,15 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
 
         // Check to see which formats can handle a simple array
         $validFormats = $this->formatterManager->validFormats([]);
-        $this->assertEquals('csv,json,list,php,print-r,var_export,xml,yaml', implode(',', $validFormats));
+        $this->assertEquals('csv,json,list,php,print-r,tsv,var_export,xml,yaml', implode(',', $validFormats));
 
         // Check to see which formats can handle an AssociativeList
         $validFormats = $this->formatterManager->validFormats($associativeListRef);
-        $this->assertEquals('csv,json,list,php,print-r,table,var_export,xml,yaml', implode(',', $validFormats));
+        $this->assertEquals('csv,json,list,php,print-r,table,tsv,var_export,xml,yaml', implode(',', $validFormats));
 
         // Check to see which formats can handle an RowsOfFields
         $validFormats = $this->formatterManager->validFormats($rowsOfFieldsRef);
-        $this->assertEquals('csv,json,list,php,print-r,sections,table,var_export,xml,yaml', implode(',', $validFormats));
+        $this->assertEquals('csv,json,list,php,print-r,sections,table,tsv,var_export,xml,yaml', implode(',', $validFormats));
 
         // Test error case: no formatter should handle something that is not a data type.
         $validFormats = $this->formatterManager->validFormats($notADataType);

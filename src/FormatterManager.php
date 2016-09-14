@@ -28,6 +28,7 @@ class FormatterManager
             'var_export' => '\Consolidation\OutputFormatters\Formatters\VarExportFormatter',
             'list' => '\Consolidation\OutputFormatters\Formatters\ListFormatter',
             'csv' => '\Consolidation\OutputFormatters\Formatters\CsvFormatter',
+            'tsv' => '\Consolidation\OutputFormatters\Formatters\TsvFormatter',
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
             'sections' => '\Consolidation\OutputFormatters\Formatters\SectionsFormatter',
         ];
