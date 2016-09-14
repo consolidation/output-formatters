@@ -394,6 +394,22 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    function testSimpleTsv()
+    {
+        $data = ['a', 'b', 'c'];
+        $expected = "a\tb\tc";
+
+        $this->assertFormattedOutputMatches($expected, 'tsv', $data);
+    }
+
+    function testLinesOfTsv()
+    {
+        $data = [['a', 'b', 'c'], ['x', 'y', 'z']];
+        $expected = "a\tb\tc\nx\ty\tz";
+
+        $this->assertFormattedOutputMatches($expected, 'tsv', $data);
+    }
+
     function testNoFormatterSelected()
     {
         $data = 'Hello';

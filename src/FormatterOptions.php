@@ -43,6 +43,7 @@ class FormatterOptions
     const ROW_LABELS = 'row-labels';
     const FIELD_LABELS = 'field-labels';
     const DEFAULT_FIELDS = 'default-fields';
+    const DELIMITER = 'delimiter';
 
     public function __construct($configurationData = [], $options = [])
     {

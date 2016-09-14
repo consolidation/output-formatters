@@ -57,27 +57,40 @@ class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDat
     }
 
     /**
+     * Return default values for formatter options
+     * @return array
+     */
+    protected function getDefaultFormatterOptions()
+    {
+        return [
+            FormatterOptions::INCLUDE_FIELD_LABELS => true,
+            FormatterOptions::DELIMITER => ',',
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
-        $defaults = [
-            'include-field-labels' => true,
-        ];
+        $defaults = $this->getDefaultFormatterOptions();
 
         if ($options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults) && ($data instanceof TableTransformation)) {
             $headers = $data->getHeaders();
-            $this->writeCsvLine($output, $headers, $options);
+            $this->writeOneLine($output, $headers, $options);
         }
 
         foreach ($data as $line) {
-            $this->writeCsvLine($output, $line, $options);
+            $this->writeOneLine($output, $line, $options);
         }
     }
 
-    protected function writeCsvLine(OutputInterface $output, $data, $options)
+    protected function writeOneLine(OutputInterface $output, $data, $options)
     {
-        $output->write($this->csvEscape($data));
+        $defaults = $this->getDefaultFormatterOptions();
+        $delimiter = $options->get(FormatterOptions::DELIMITER, $defaults);
+
+        $output->write($this->csvEscape($data, $delimiter));
     }
 
     protected function csvEscape($data, $delimiter = ',')
