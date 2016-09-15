@@ -117,6 +117,8 @@ class FormatterManager
     public function write(OutputInterface $output, $format, $structuredOutput, FormatterOptions $options)
     {
         $formatter = $this->getFormatter((string)$format);
+        // Give the formatter a chance to override the options
+        $options = $this->overrideOptions($formatter, $structuredOutput, $options);
         $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
         $formatter->write($output, $structuredOutput, $options);
     }
@@ -260,5 +262,21 @@ class FormatterManager
         if ($formatter instanceof OverrideRestructureInterface) {
             return $formatter->overrideRestructure($structuredOutput, $options);
         }
+    }
+
+    /**
+     * Allow the formatter to mess with the configuration options before any
+     * transformations et. al. get underway.
+     * @param FormatterInterface $formatter
+     * @param mixed $structuredOutput
+     * @param FormatterOptions $options
+     * @return FormatterOptions
+     */
+    public function overrideOptions(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
+    {
+        if ($formatter instanceof OverrideOptionsInterface) {
+            return $formatter->overrideOptions($structuredOutput, $options);
+        }
+        return $options;
     }
 }
