@@ -370,7 +370,7 @@ EOT;
         $data = new RowsOfFields([['f1' => 'q', 'f2' => 'r', 'f3' => 's'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
         $expected = "q\nx";
 
-        $options = new FormatterOptions([FormatterOptions::SINGLE_FIELD_DEFAULT => 'f1']);
+        $options = new FormatterOptions([FormatterOptions::DEFAULT_STRING_FIELD => 'f1']);
 
         $this->assertFormattedOutputMatches($expected, 'string', $data, $options);
     }
@@ -380,7 +380,7 @@ EOT;
         $data = new RowsOfFields([['f1' => 'q', 'f2' => 'r', 'f3' => 's'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
         $expected = "r\ny";
 
-        $options = new FormatterOptions([FormatterOptions::SINGLE_FIELD_DEFAULT => 'f1']);
+        $options = new FormatterOptions([FormatterOptions::DEFAULT_STRING_FIELD => 'f1']);
 
         $this->assertFormattedOutputMatches($expected, 'string', $data, $options, ['fields' => 'f2']);
     }

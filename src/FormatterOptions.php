@@ -43,7 +43,7 @@ class FormatterOptions
     const ROW_LABELS = 'row-labels';
     const FIELD_LABELS = 'field-labels';
     const DEFAULT_FIELDS = 'default-fields';
-    const SINGLE_FIELD_DEFAULT = 'single-field-default';
+    const DEFAULT_STRING_FIELD = 'default-string-field';
     const DELIMITER = 'delimiter';
 
     public function __construct($configurationData = [], $options = [])
@@ -64,19 +64,7 @@ class FormatterOptions
     public function get($key, $defaults = [], $default = false)
     {
         $value = $this->fetch($key, $defaults, $default);
-        $result = $this->parse($key, $value);
-        $result = $this->convert($key, $defaults, $result);
-        return $result;
-    }
-
-    public function convert($key, $defaults, $result)
-    {
-        if (array_key_exists($key, $defaults) && is_bool($defaults[$key])) {
-            if ($result === 'no') {
-                return false;
-            }
-        }
-        return $result;
+        return $this->parse($key, $value);
     }
 
     public function getXmlSchema()

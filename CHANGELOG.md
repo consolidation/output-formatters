@@ -4,7 +4,7 @@
 
 Have the default `string` format convert the result into a tab-separated-value table if possible.  Commands may select a single field to emit in this instance with an annotation:
 
-  @single-field-default email
+  @default-string-field email
 
 By this means, a given command may by default emit a single value, but also provide more rich output that may be shown by selecting --format=table, --format=yaml or the like.
 

@@ -34,13 +34,13 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
      */
     public function overrideOptions($structuredOutput, FormatterOptions $options)
     {
-        $defaultField = $options->get(FormatterOptions::SINGLE_FIELD_DEFAULT, [], []);
-        return $options->override(
-            [
-                FormatterOptions::FIELDS => $defaultField,
-                FormatterOptions::INCLUDE_FIELD_LABELS => false,
-            ]
-        );
+        $defaultField = $options->get(FormatterOptions::DEFAULT_STRING_FIELD, [], '');
+        $userFields = $options->get(FormatterOptions::FIELDS);
+        $optionsOverride = $options->override([]);
+        if (empty($userFields) && !empty($defaultField)) {
+            $optionsOverride->setOption(FormatterOptions::FIELDS, $defaultField);
+        }
+        return $optionsOverride;
     }
 
     /**
