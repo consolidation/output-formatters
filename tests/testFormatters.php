@@ -761,6 +761,17 @@ EOT;
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => 'San,Ichi']);
 
+        $expectedWithRegexField = <<<EOT
+ ------ -----
+  Ichi   San
+ ------ -----
+  a      c
+  x      z
+ ------ -----
+EOT;
+        $this->assertFormattedOutputMatches($expectedWithRegexField, 'table', $data, $configurationData, ['fields' => ['/e$/']]);
+        $this->assertFormattedOutputMatches($expectedWithRegexField, 'table', $data, $configurationData, ['fields' => ['*e']]);
+
         $expectedSections = <<<EOT
 
 Walrus

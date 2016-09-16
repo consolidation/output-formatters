@@ -1,6 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
+use Symfony\Component\Finder\Glob;
+
 /**
  * Reorder the field labels based on the user-selected fields
  * to display.
@@ -51,15 +53,64 @@ class ReorderFields
         if (is_string($fields)) {
             $fields = explode(',', $fields);
         }
-        $fieldLablesReverseMap = array_combine(array_values($fieldLabels), array_keys($fieldLabels));
         $selectedFields = [];
         foreach ($fields as $field) {
-            if (array_key_exists($field, $fieldLabels)) {
-                $selectedFields[] = $field;
-            } elseif (array_key_exists($field, $fieldLablesReverseMap)) {
-                $selectedFields[] = $fieldLablesReverseMap[$field];
-            }
+            $matchedFields = $this->matchFieldInLabelMap($field, $fieldLabels);
+            $selectedFields = array_merge($selectedFields, $matchedFields);
         }
         return $selectedFields;
+    }
+
+    protected function matchFieldInLabelMap($field, $fieldLabels)
+    {
+        $fieldRegex = $this->convertToRegex($field);
+        return
+            array_filter(
+                array_keys($fieldLabels),
+                function ($key) use ($fieldRegex, $fieldLabels) {
+                    $value = $fieldLabels[$key];
+                    return preg_match($fieldRegex, $value) || preg_match($fieldRegex, $key);
+                }
+            );
+    }
+
+    /**
+     * Convert the provided string into a regex suitable for use in
+     * preg_match.
+     *
+     * Matching occurs in the same way as the Symfony Finder component:
+     * http://symfony.com/doc/current/components/finder.html#file-name
+     */
+    protected function convertToRegex($str)
+    {
+        return $this->isRegex($str) ? $str : Glob::toRegex($str);
+    }
+
+    /**
+     * Checks whether the string is a regex.  This function is copied from
+     * MultiplePcreFilterIterator in the Symfony Finder component.
+     *
+     * @param string $str
+     *
+     * @return bool Whether the given string is a regex
+     */
+    protected function isRegex($str)
+    {
+        if (preg_match('/^(.{3,}?)[imsxuADU]*$/', $str, $m)) {
+            $start = substr($m[1], 0, 1);
+            $end = substr($m[1], -1);
+
+            if ($start === $end) {
+                return !preg_match('/[*?[:alnum:] \\\\]/', $start);
+            }
+
+            foreach (array(array('{', '}'), array('(', ')'), array('[', ']'), array('<', '>')) as $delimiters) {
+                if ($start === $delimiters[0] && $end === $delimiters[1]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
