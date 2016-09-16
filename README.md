@@ -27,7 +27,7 @@ This process is managed by the [Consolidation/AnnotationCommand](https://github.
 ## Example Formatter
 
 Simple formatters are very easy to write.
-```
+```php
 class YamlFormatter implements FormatterInterface
 {
     public function write(OutputInterface $output, $data, FormatterOptions $options)
@@ -69,7 +69,7 @@ Additionally, structured data may be simplified to arrays via an array simplific
 ## Rendering Table Cells
 
 By default, both the RowsOfFields and AssociativeList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or AssociativeList, as desired, and implement RenderCellInterface.  The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
-```
+```php
 public function renderCell($key, $cellData, FormatterOptions $options)
 {
     // 'my-field' is always an array; convert it to a comma-separated list.
@@ -91,7 +91,7 @@ Note that if your data structure is printed with some formatter other than the t
 It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation/annotation-command#api-usage) for details.
 
 The FormatterManager may also be used directly, if desired:
-```
+```php
 /**
  * @param OutputInterface $output Output stream to write to
  * @param string $format Data format to output in
