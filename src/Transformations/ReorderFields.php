@@ -64,15 +64,14 @@ class ReorderFields
     protected function matchFieldInLabelMap($field, $fieldLabels)
     {
         $fieldRegex = $this->convertToRegex($field);
-        return array_keys(
+        return
             array_filter(
-                $fieldLabels,
-                function ($value, $key) use ($fieldRegex) {
+                array_keys($fieldLabels),
+                function ($key) use ($fieldRegex, $fieldLabels) {
+                    $value = $fieldLabels[$key];
                     return preg_match($fieldRegex, $value) || preg_match($fieldRegex, $key);
-                },
-                ARRAY_FILTER_USE_BOTH
-            )
-        );
+                }
+            );
     }
 
     /**
