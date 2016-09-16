@@ -8,6 +8,12 @@ Apply transformations to structured data to write output in different formats.
 
 Currently in use in [Robo](https://github.com/consolidation/Robo).
 
+## Motivation
+
+Formatters are used to allow simple commandline tool commands to be implemented in a manner that is completely independent from the Symfony Console output interfaces.  A command receives its input via its method parameters, and returns its result as structured data (e.g. a php standard object or array).  The structured data is then formatted by a formatter, and the result is printed.
+
+This process is managed by the [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) project.
+
 ## Library Usage
 
 This is a library intended to be used in some other project.  Require from your composer.json file:
@@ -17,12 +23,6 @@ This is a library intended to be used in some other project.  Require from your 
     },
 ```
 If you require the feature that allows a data table to be automatically reduced to a single element when the `string` format is selected, then you should require version "~2" instead. In all other respects, the 1.x and 2.x versions are compatible.
-
-## Motivation
-
-Formatters are used to allow simple commandline tool commands to be implemented in a manner that is completely independent from the Symfony Console output interfaces.  A command receives its input via its method parameters, and returns its result as structured data (e.g. a php standard object or array).  The structured data is then formatted by a formatter, and the result is printed.
-
-This process is managed by the [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) project.
 
 ## Example Formatter
 
