@@ -1,12 +1,13 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
-use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
-use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
+use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -63,6 +64,43 @@ class FormatterManager
     {
         $this->arraySimplifiers[] = $simplifier;
         return $this;
+    }
+
+    /**
+     * Return a set of InputOption based on the annotations of a command.
+     * @param FormatterOptions $options
+     * @return InputOption[]
+     */
+    public function automaticOptions(FormatterOptions $options, $dataType)
+    {
+        $automaticOptions = [];
+        $defaultFormat = 'yaml';
+
+        // At the moment, we only support automatic options for --format
+        // and --fields, so exit if the command returns no data.
+        if (!isset($dataType)) {
+            return [];
+        }
+
+        $validFormats = $this->validFormats($dataType);
+        if (empty($validFormats)) {
+            return [];
+        }
+
+        if ($options->get(FormatterOptions::FIELDS, [], false)) {
+            // We have fields; that implies 'table', unless someone says something different
+            $defaultFormat = 'table';
+
+            // TODO: make an input option for --fields
+        }
+
+        if (count($validFormats) > 1) {
+            // Make an input option for --format
+            $description = 'Select what format to use to display the result data. Available formats are: ' . implode(',', $validFormats);
+            $automaticOptions['format'] = new InputOption('format', '', InputOption::VALUE_OPTIONAL, $description, $defaultFormat);
+        }
+
+        return $automaticOptions;
     }
 
     /**

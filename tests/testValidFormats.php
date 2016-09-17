@@ -61,4 +61,21 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
         $validFormats = $this->formatterManager->validFormats($notADataType);
         $this->assertEquals('', implode(',', $validFormats));
     }
+
+    function testAutomaticOptions()
+    {
+        $rowsOfFieldsRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields');
+        $formatterOptions = new FormatterOptions();
+        $inputOptions = $this->formatterManager->automaticOptions($formatterOptions, $rowsOfFieldsRef);
+        $this->assertInputOptionDescriptionsEquals('Select what format to use to display the result data. Available formats are: csv,json,list,php,print-r,sections,table,tsv,var_export,xml,yaml', $inputOptions);
+    }
+
+    function assertInputOptionDescriptionsEquals($expected, $inputOptions)
+    {
+        $descriptions = [];
+        foreach ($inputOptions as $inputOption) {
+            $descriptions[] = $inputOption->getDescription();
+        }
+        $this->assertEquals($expected, implode("\n", $descriptions));
+    }
 }
