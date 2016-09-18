@@ -135,8 +135,7 @@ class FormatterManager
             if (!empty($formatId) && $this->isValidFormatForSpecifiedDataType($formatter, $dataType)) {
                 $validFormats[] = $formatId;
                 $atLeastOneValidFormat = true;
-            }
-            elseif (!empty($formatId) && ($formatter instanceof ValidationInterface)) {
+            } elseif (!empty($formatId) && ($formatter instanceof ValidationInterface)) {
                 // A formatter that supports NO valid data types (e.g. the
                 // string formatter) can be used with any data type that
                 // is usable with at least one other data formatter.
