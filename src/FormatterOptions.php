@@ -110,7 +110,6 @@ class FormatterOptions
         $propertyFormats = [
             self::ROW_LABELS => 'PropertyList',
             self::FIELD_LABELS => 'PropertyList',
-            self::DEFAULT_FIELDS => 'PropertyList',
         ];
         if (array_key_exists($key, $propertyFormats)) {
             return "parse{$propertyFormats[$key]}";

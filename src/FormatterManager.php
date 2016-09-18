@@ -75,7 +75,6 @@ class FormatterManager
     public function automaticOptions(FormatterOptions $options, $dataType)
     {
         $automaticOptions = [];
-        $defaultFormat = 'yaml';
 
         // At the moment, we only support automatic options for --format
         // and --fields, so exit if the command returns no data.
@@ -88,17 +87,17 @@ class FormatterManager
             return [];
         }
 
+        $availableFields = $options->get(FormatterOptions::FIELD_LABELS, [], false);
+        $defaultFormat = $availableFields ? 'table' : 'yaml';
+
         if (count($validFormats) > 1) {
             // Make an input option for --format
             $description = 'Format the result data. Available formats: ' . implode(',', $validFormats);
             $automaticOptions[FormatterOptions::FORMAT] = new InputOption(FormatterOptions::FORMAT, '', InputOption::VALUE_OPTIONAL, $description, $defaultFormat);
         }
 
-        $availableFields = $options->get(FormatterOptions::FIELD_LABELS, [], false);
         if ($availableFields) {
-            // We have fields; that implies 'table', unless someone says something different
-            $defaultFormat = 'table';
-
+            $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], implode(',', $availableFields));
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
         }
