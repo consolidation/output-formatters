@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters;
 
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
+use Consolidation\OutputFormatters\Exception\InvalidFormatException;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
@@ -91,13 +92,14 @@ class FormatterManager
             // We have fields; that implies 'table', unless someone says something different
             $defaultFormat = 'table';
 
-            // TODO: make an input option for --fields
+            $description = 'Available fields: ';
+            $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
         }
 
         if (count($validFormats) > 1) {
             // Make an input option for --format
-            $description = 'Select what format to use to display the result data. Available formats are: ' . implode(',', $validFormats);
-            $automaticOptions['format'] = new InputOption('format', '', InputOption::VALUE_OPTIONAL, $description, $defaultFormat);
+            $description = 'Format the result data. Available formats: ' . implode(',', $validFormats);
+            $automaticOptions[FormatterOptions::FORMAT] = new InputOption(FormatterOptions::FORMAT, '', InputOption::VALUE_OPTIONAL, $description, $defaultFormat);
         }
 
         return $automaticOptions;
@@ -112,11 +114,25 @@ class FormatterManager
     public function validFormats($dataType)
     {
         $validFormats = [];
+        $atLeastOneValidFormat = false;
         foreach ($this->formatters as $formatId => $formatterName) {
             $formatter = $this->getFormatter($formatId);
-            if ($this->isValidFormat($formatter, $dataType)) {
+            if (!empty($formatId) && $this->isValidFormatForSpecifiedDataType($formatter, $dataType)) {
                 $validFormats[] = $formatId;
+                $atLeastOneValidFormat = true;
             }
+            elseif (!empty($formatId) && ($formatter instanceof ValidationInterface)) {
+                // A formatter that supports NO valid data types (e.g. the
+                // string formatter) can be used with any data type that
+                // is usable with at least one other data formatter.
+                $supportedTypes = $formatter->validDataTypes();
+                if (empty($supportedTypes)) {
+                    $validFormats[] = $formatId;
+                }
+            }
+        }
+        if (!$atLeastOneValidFormat) {
+            return [];
         }
         sort($validFormats);
         return $validFormats;
@@ -124,11 +140,36 @@ class FormatterManager
 
     public function isValidFormat(FormatterInterface $formatter, $dataType)
     {
+        // We should instead have a method of ValidationInterface that
+        // we can pass our inspected dataType to so that we do not need
+        // to have a special 'universal format' convention.
+        // @see ValidationInterface::validDataTypes()
+        return
+            $this->isValidFormatForSpecifiedDataType($formatter, $dataType) ||
+            $this->isUniversalFormat($formatter);
+    }
+
+    public function isUniversalFormat(FormatterInterface $formatter)
+    {
+        if (!$formatter instanceof ValidationInterface) {
+            return false;
+        }
+        $supportedTypes = $formatter->validDataTypes();
+        return empty($supportedTypes);
+    }
+
+    public function isValidFormatForSpecifiedDataType(FormatterInterface $formatter, $dataType)
+    {
         if (is_array($dataType)) {
             $dataType = new \ReflectionClass('\ArrayObject');
         }
         if (!$dataType instanceof \ReflectionClass) {
             $dataType = new \ReflectionClass($dataType);
+        }
+        if ($this->canSimplifyToArray($dataType)) {
+            if ($this->isValidFormat($formatter, [])) {
+                return true;
+            }
         }
         // If the formatter does not implement ValidationInterface, then
         // it is presumed that the formatter only accepts arrays.
@@ -155,6 +196,10 @@ class FormatterManager
     public function write(OutputInterface $output, $format, $structuredOutput, FormatterOptions $options)
     {
         $formatter = $this->getFormatter((string)$format);
+        if (!is_string($structuredOutput) && !$this->isValidFormat($formatter, $structuredOutput)) {
+            $validFormats = $this->validFormats($structuredOutput);
+            throw new InvalidFormatException((string)$format, $structuredOutput, $validFormats);
+        }
         // Give the formatter a chance to override the options
         $options = $this->overrideOptions($formatter, $structuredOutput, $options);
         $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
@@ -256,16 +301,33 @@ class FormatterManager
 
     protected function simplifyToArray($structuredOutput, FormatterOptions $options)
     {
+        // We can do nothing unless the provided data is an object.
+        if (!is_object($structuredOutput)) {
+            return $structuredOutput;
+        }
         // Check to see if any of the simplifiers can convert the given data
         // set to an array.
+        $outputDataType = new \ReflectionClass($structuredOutput);
         foreach ($this->arraySimplifiers as $simplifier) {
-            $structuredOutput = $simplifier->simplifyToArray($structuredOutput, $options);
+            if ($simplifier->canSimplify($outputDataType)) {
+                $structuredOutput = $simplifier->simplifyToArray($structuredOutput, $options);
+            }
         }
         // Convert \ArrayObjects to a simple array.
         if ($structuredOutput instanceof \ArrayObject) {
             return $structuredOutput->getArrayCopy();
         }
         return $structuredOutput;
+    }
+
+    protected function canSimplifyToArray($structuredOutput)
+    {
+        foreach ($this->arraySimplifiers as $simplifier) {
+            if ($simplifier->canSimplify($structuredOutput)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

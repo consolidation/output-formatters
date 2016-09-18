@@ -15,6 +15,17 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
     {
     }
 
+    /**
+     * @param ReflectionClass $dataType
+     */
+    public function canSimplify(\ReflectionClass $dataType)
+    {
+        return
+            $dataType->isSubclassOf('\Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface') ||
+            $dataType->isSubclassOf('DOMDocument') ||
+            ($dataType->getName() == 'DOMDocument');
+    }
+
     public function simplifyToArray($structuredData, FormatterOptions $options)
     {
         if ($structuredData instanceof DomDataInterface) {

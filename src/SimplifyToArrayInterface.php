@@ -16,4 +16,9 @@ interface SimplifyToArrayInterface
      * @return array
      */
     public function simplifyToArray($structuredOutput, FormatterOptions $options);
+
+    /**
+     * Indicate whether or not the given data type can be simplified to an array
+     */
+    public function canSimplify(\ReflectionClass $structuredOutput);
 }

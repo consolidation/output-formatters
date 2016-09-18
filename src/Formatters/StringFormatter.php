@@ -62,8 +62,7 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
     }
 
     /**
-     * Do not return any valid data types -- this formatter will never show up
-     * in a list of valid formats.
+     * An empty set of supported data types means that all data types are supported.
      */
     public function validDataTypes()
     {
