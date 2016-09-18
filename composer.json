@@ -31,7 +31,7 @@
     "scripts": {
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
-        "test": "phpunit"
+        "test": "phpunit --colors=always"
     },
     "extra": {
         "branch-alias": {

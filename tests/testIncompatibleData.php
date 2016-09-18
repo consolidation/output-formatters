@@ -36,6 +36,29 @@ class IncompatibleDataTests extends \PHPUnit_Framework_TestCase
     public function testUndescribableData()
     {
         $tableFormatter = $this->formatterManager->getFormatter('table');
-        $this->assertIncompatibleDataMessage('Will throw before comparing.', $tableFormatter, null);
+        $data = $tableFormatter->validate(null);
+        $this->assertEquals('Will throw before comparing.', $data);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be either an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields or an instance of Consolidation\OutputFormatters\StructuredData\AssociativeList. Instead, a string was provided.
+     */
+    public function testInvalidTableData()
+    {
+        $tableFormatter = $this->formatterManager->getFormatter('table');
+        $data = $tableFormatter->validate('bad data type');
+        $this->assertEquals('Will throw before comparing.', $data);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\SectionsFormatter must be an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields. Instead, a string was provided.
+     */
+    public function testInvalidSectionsData()
+    {
+        $tableFormatter = $this->formatterManager->getFormatter('sections');
+        $data = $tableFormatter->validate('bad data type');
+        $this->assertEquals('Will throw before comparing.', $data);
     }
 }
