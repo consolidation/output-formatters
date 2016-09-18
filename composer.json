@@ -29,8 +29,8 @@
         "squizlabs/php_codesniffer": "2.*"
     },
     "scripts": {
-        "sniff": "phpcs --standard=PSR2 -n src",
-        "fix": "phpcbf --standard=PSR2 -n src",
+        "cs": "phpcs --standard=PSR2 -n src",
+        "cbf": "phpcbf --standard=PSR2 -n src",
         "test": "phpunit"
     },
     "extra": {
