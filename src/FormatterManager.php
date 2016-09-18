@@ -88,11 +88,12 @@ class FormatterManager
             return [];
         }
 
-        if ($options->get(FormatterOptions::FIELDS, [], false)) {
+        $availableFields = $options->get(FormatterOptions::FIELDS, [], false);
+        if ($availableFields) {
             // We have fields; that implies 'table', unless someone says something different
             $defaultFormat = 'table';
 
-            $description = 'Available fields: ';
+            $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
         }
 
@@ -103,6 +104,20 @@ class FormatterManager
         }
 
         return $automaticOptions;
+    }
+
+    /**
+     * Given a list of available fields, return a list of field descriptions.
+     * @return string[]
+     */
+    protected function availableFieldsList($availableFields)
+    {
+        return array_map(
+            function ($key) use ($availableFields) {
+                return $availableFields[$key] . " ($key)";
+            },
+            array_keys($availableFields)
+        );
     }
 
     /**
