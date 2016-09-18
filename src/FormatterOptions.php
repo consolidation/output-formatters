@@ -61,6 +61,13 @@ class FormatterOptions
         return $override;
     }
 
+    /**
+     * Get a formatter option
+     * @param string $key
+     * @param array $defaults
+     * @param mixed $default
+     * @return mixed
+     */
     public function get($key, $defaults = [], $default = false)
     {
         $value = $this->fetch($key, $defaults, $default);
