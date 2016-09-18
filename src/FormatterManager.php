@@ -179,6 +179,11 @@ class FormatterManager
         if (!$dataType instanceof \ReflectionClass) {
             $dataType = new \ReflectionClass($dataType);
         }
+        return $this->isValidFormatForReflectionClass($formatter, $dataType);
+    }
+
+    public function isValidFormatForReflectionClass(FormatterInterface $formatter, $dataType)
+    {
         if ($this->canSimplifyToArray($dataType)) {
             if ($this->isValidFormat($formatter, [])) {
                 return true;
@@ -189,13 +194,16 @@ class FormatterManager
         if (!$formatter instanceof ValidationInterface) {
             return $dataType->isSubclassOf('ArrayObject') || ($dataType->getName() == 'ArrayObject');
         }
-        $supportedTypes = $formatter->validDataTypes();
-        foreach ($supportedTypes as $supportedType) {
-            if (($dataType->getName() == $supportedType->getName()) || $dataType->isSubclassOf($supportedType->getName())) {
-                return true;
-            }
-        }
-        return false;
+        return array_reduce(
+            $formatter->validDataTypes(),
+            function ($carry, $supportedType) use ($dataType) {
+                return
+                    $carry ||
+                    ($dataType->getName() == $supportedType->getName()) ||
+                    ($dataType->isSubclassOf($supportedType->getName()));
+            },
+            false
+        );
     }
 
     /**
