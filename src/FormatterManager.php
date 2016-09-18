@@ -88,19 +88,19 @@ class FormatterManager
             return [];
         }
 
-        $availableFields = $options->get(FormatterOptions::FIELDS, [], false);
+        if (count($validFormats) > 1) {
+            // Make an input option for --format
+            $description = 'Format the result data. Available formats: ' . implode(',', $validFormats);
+            $automaticOptions[FormatterOptions::FORMAT] = new InputOption(FormatterOptions::FORMAT, '', InputOption::VALUE_OPTIONAL, $description, $defaultFormat);
+        }
+
+        $availableFields = $options->get(FormatterOptions::FIELD_LABELS, [], false);
         if ($availableFields) {
             // We have fields; that implies 'table', unless someone says something different
             $defaultFormat = 'table';
 
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
-        }
-
-        if (count($validFormats) > 1) {
-            // Make an input option for --format
-            $description = 'Format the result data. Available formats: ' . implode(',', $validFormats);
-            $automaticOptions[FormatterOptions::FORMAT] = new InputOption(FormatterOptions::FORMAT, '', InputOption::VALUE_OPTIONAL, $description, $defaultFormat);
         }
 
         return $automaticOptions;

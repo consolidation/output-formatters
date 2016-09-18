@@ -65,9 +65,13 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
     function testAutomaticOptions()
     {
         $rowsOfFieldsRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields');
-        $formatterOptions = new FormatterOptions();
+        $formatterOptions = new FormatterOptions(
+            [
+                FormatterOptions::FIELD_LABELS => "name: Name\nphone_number: Phone Number",
+            ]
+        );
         $inputOptions = $this->formatterManager->automaticOptions($formatterOptions, $rowsOfFieldsRef);
-        $this->assertInputOptionDescriptionsEquals('Format the result data. Available formats: csv,json,list,php,print-r,sections,string,table,tsv,var_export,xml,yaml', $inputOptions);
+        $this->assertInputOptionDescriptionsEquals("Format the result data. Available formats: csv,json,list,php,print-r,sections,string,table,tsv,var_export,xml,yaml\nAvailable fields: Name (name), Phone Number (phone_number)", $inputOptions);
     }
 
     function assertInputOptionDescriptionsEquals($expected, $inputOptions)
