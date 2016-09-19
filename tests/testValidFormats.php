@@ -57,9 +57,9 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
         $validFormats = $this->formatterManager->validFormats($rowsOfFieldsRef);
         $this->assertEquals('csv,json,list,php,print-r,sections,string,table,tsv,var_export,xml,yaml', implode(',', $validFormats));
 
-        // Test error case: no formatter other than 'string' should handle something that is not a data type.
+        // TODO: it woud be better if this returned an empty set instead of 'string'.
         $validFormats = $this->formatterManager->validFormats($notADataType);
-        $this->assertEquals('', implode(',', $validFormats));
+        $this->assertEquals('string', implode(',', $validFormats));
     }
 
     function testAutomaticOptions()

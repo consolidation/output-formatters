@@ -128,24 +128,11 @@ class FormatterManager
     public function validFormats($dataType)
     {
         $validFormats = [];
-        $atLeastOneValidFormat = false;
         foreach ($this->formatters as $formatId => $formatterName) {
             $formatter = $this->getFormatter($formatId);
-            if (!empty($formatId) && $this->isValidFormatForSpecifiedDataType($formatter, $dataType)) {
+            if (!empty($formatId) && $this->isValidFormat($formatter, $dataType)) {
                 $validFormats[] = $formatId;
-                $atLeastOneValidFormat = true;
-            } elseif (!empty($formatId) && ($formatter instanceof ValidationInterface)) {
-                // A formatter that supports NO valid data types (e.g. the
-                // string formatter) can be used with any data type that
-                // is usable with at least one other data formatter.
-                $supportedTypes = $formatter->validDataTypes();
-                if (empty($supportedTypes)) {
-                    $validFormats[] = $formatId;
-                }
             }
-        }
-        if (!$atLeastOneValidFormat) {
-            return [];
         }
         sort($validFormats);
         return $validFormats;
@@ -153,36 +140,16 @@ class FormatterManager
 
     public function isValidFormat(FormatterInterface $formatter, $dataType)
     {
-        // We should instead have a method of ValidationInterface that
-        // we can pass our inspected dataType to so that we do not need
-        // to have a special 'universal format' convention.
-        // @see ValidationInterface::validDataTypes()
-        return
-            $this->isValidFormatForSpecifiedDataType($formatter, $dataType) ||
-            $this->isUniversalFormat($formatter);
-    }
-
-    public function isUniversalFormat(FormatterInterface $formatter)
-    {
-        if (!$formatter instanceof ValidationInterface) {
-            return false;
-        }
-        $supportedTypes = $formatter->validDataTypes();
-        return empty($supportedTypes);
-    }
-
-    public function isValidFormatForSpecifiedDataType(FormatterInterface $formatter, $dataType)
-    {
         if (is_array($dataType)) {
             $dataType = new \ReflectionClass('\ArrayObject');
         }
         if (!$dataType instanceof \ReflectionClass) {
             $dataType = new \ReflectionClass($dataType);
         }
-        return $this->isValidFormatForReflectionClass($formatter, $dataType);
+        return $this->isValidDataType($formatter, $dataType);
     }
 
-    public function isValidFormatForReflectionClass(FormatterInterface $formatter, $dataType)
+    public function isValidDataType(FormatterInterface $formatter, \ReflectionClass $dataType)
     {
         if ($this->canSimplifyToArray($dataType)) {
             if ($this->isValidFormat($formatter, [])) {
@@ -194,16 +161,7 @@ class FormatterManager
         if (!$formatter instanceof ValidationInterface) {
             return $dataType->isSubclassOf('ArrayObject') || ($dataType->getName() == 'ArrayObject');
         }
-        return array_reduce(
-            $formatter->validDataTypes(),
-            function ($carry, $supportedType) use ($dataType) {
-                return
-                    $carry ||
-                    ($dataType->getName() == $supportedType->getName()) ||
-                    ($dataType->isSubclassOf($supportedType->getName()));
-            },
-            false
-        );
+        return $formatter->isValidDataType($dataType);
     }
 
     /**
@@ -341,7 +299,7 @@ class FormatterManager
         return $structuredOutput;
     }
 
-    protected function canSimplifyToArray($structuredOutput)
+    protected function canSimplifyToArray(\ReflectionClass $structuredOutput)
     {
         foreach ($this->arraySimplifiers as $simplifier) {
             if ($simplifier->canSimplify($structuredOutput)) {

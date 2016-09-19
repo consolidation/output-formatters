@@ -1,16 +1,19 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
+/**
+ * Formatters may implement ValidationInterface in order to indicate
+ * whether a particular data structure is supported.  Any formatter that does
+ * not implement ValidationInterface is assumed to only operate on arrays,
+ * or data types that implement SimplifyToArrayInterface.
+ */
 interface ValidationInterface
 {
     /**
-     * Return the list of data types acceptable to this formatter
-     *
-     * TODO: Probably better to turn this around, and just have a
-     * method that asks 'is the provided data type acceptable?'
-     * @see FormatterManager::isUniversalFormat()
+     * Return true if the specified format is valid for use with
+     * this formatter.
      */
-    public function validDataTypes();
+    public function isValidDataType(\ReflectionClass $dataType);
 
     /**
      * Throw an IncompatibleDataException if the provided data cannot
