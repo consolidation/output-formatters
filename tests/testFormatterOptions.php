@@ -1,6 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;

@@ -1,8 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
-use Consolidation\OutputFormatters\SimplifyToArrayInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface;
 use Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema;
 
@@ -13,6 +12,17 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
 {
     public function __construct()
     {
+    }
+
+    /**
+     * @param ReflectionClass $dataType
+     */
+    public function canSimplify(\ReflectionClass $dataType)
+    {
+        return
+            $dataType->isSubclassOf('\Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface') ||
+            $dataType->isSubclassOf('DOMDocument') ||
+            ($dataType->getName() == 'DOMDocument');
     }
 
     public function simplifyToArray($structuredData, FormatterOptions $options)

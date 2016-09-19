@@ -1,5 +1,7 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Transformations;
+
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 
 interface SimplifyToArrayInterface
 {
@@ -16,4 +18,9 @@ interface SimplifyToArrayInterface
      * @return array
      */
     public function simplifyToArray($structuredOutput, FormatterOptions $options);
+
+    /**
+     * Indicate whether or not the given data type can be simplified to an array
+     */
+    public function canSimplify(\ReflectionClass $structuredOutput);
 }

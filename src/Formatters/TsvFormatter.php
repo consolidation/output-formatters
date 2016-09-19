@@ -1,9 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ValidationInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Symfony\Component\Console\Output\OutputInterface;

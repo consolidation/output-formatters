@@ -1,7 +1,7 @@
 <?php
 namespace Consolidation\TestUtils;
 
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Consolidation\OutputFormatters\StructuredData\RenderCellInterface;
 

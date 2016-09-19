@@ -2,7 +2,7 @@
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
@@ -42,6 +42,14 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         return $tableTransformer;
     }
 
+    /**
+     * A structured list may provide its own set of default options. These
+     * will be used in place of the command's default options (from the
+     * annotations) in instances where the user does not provide the options
+     * explicitly (on the commandline) or implicitly (via a configuration file).
+     *
+     * @return array
+     */
     protected function defaultOptions()
     {
         return [

@@ -1,5 +1,7 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Options;
+
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 
 interface OverrideOptionsInterface
 {

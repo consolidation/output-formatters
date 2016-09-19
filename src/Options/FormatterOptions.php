@@ -1,5 +1,5 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Options;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
@@ -61,6 +61,13 @@ class FormatterOptions
         return $override;
     }
 
+    /**
+     * Get a formatter option
+     * @param string $key
+     * @param array $defaults
+     * @param mixed $default
+     * @return mixed
+     */
     public function get($key, $defaults = [], $default = false)
     {
         $value = $this->fetch($key, $defaults, $default);
@@ -110,7 +117,6 @@ class FormatterOptions
         $propertyFormats = [
             self::ROW_LABELS => 'PropertyList',
             self::FIELD_LABELS => 'PropertyList',
-            self::DEFAULT_FIELDS => 'PropertyList',
         ];
         if (array_key_exists($key, $propertyFormats)) {
             return "parse{$propertyFormats[$key]}";

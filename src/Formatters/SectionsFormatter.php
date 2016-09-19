@@ -4,9 +4,9 @@ namespace Consolidation\OutputFormatters\Formatters;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ValidationInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
@@ -20,8 +20,9 @@ use Consolidation\OutputFormatters\StructuredData\AssociativeList;
  * is rendered in two columns, with the key in the first column
  * and the value in the second column.
  */
-class SectionsFormatter implements FormatterInterface, ValidationInterface, RenderDataInterface
+class SectionsFormatter implements FormatterInterface, ValidDataTypesInterface, RenderDataInterface
 {
+    use ValidDataTypesTrait;
     use RenderTableDataTrait;
 
     public function validDataTypes()

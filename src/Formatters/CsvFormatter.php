@@ -1,9 +1,9 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ValidationInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,8 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * accept a PHP array; this is also interpreted as a single-row of data
  * with no header.
  */
-class CsvFormatter implements FormatterInterface, ValidationInterface, RenderDataInterface
+class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, RenderDataInterface
 {
+    use ValidDataTypesTrait;
     use RenderTableDataTrait;
 
     public function validDataTypes()

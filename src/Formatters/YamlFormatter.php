@@ -2,8 +2,7 @@
 namespace Consolidation\OutputFormatters\Formatters;
 
 use Symfony\Component\Yaml\Yaml;
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

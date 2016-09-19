@@ -1,10 +1,10 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ValidationInterface;
-use Consolidation\OutputFormatters\OverrideOptionsInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidationInterface;
+use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 
@@ -18,6 +18,14 @@ use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
  */
 class StringFormatter implements FormatterInterface, ValidationInterface, OverrideOptionsInterface
 {
+    /**
+     * All data types are acceptable.
+     */
+    public function isValidDataType(\ReflectionClass $dataType)
+    {
+        return true;
+    }
+
     /**
      * @inheritdoc
      */
@@ -59,15 +67,6 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
             $alternateFormatter->write($output, $data, $options);
         } catch (\Exception $e) {
         }
-    }
-
-    /**
-     * Do not return any valid data types -- this formatter will never show up
-     * in a list of valid formats.
-     */
-    public function validDataTypes()
-    {
-        return [];
     }
 
     /**
