@@ -1,8 +1,6 @@
 <?php
 namespace Consolidation\OutputFormatters\Exception;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-
 /**
  * Represents an incompatibility between the output data and selected formatter.
  */

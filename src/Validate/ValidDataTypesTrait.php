@@ -1,11 +1,20 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Validate;
 
 /**
- * Provides a default implementation of
+ * Provides a default implementation of isValidDataType.
+ *
+ * Users of this trait are expected to implement ValidDataTypesInterface.
  */
 trait ValidDataTypesTrait
 {
+    /**
+     * Return the list of data types acceptable to this formatter
+     *
+     * @return \ReflectionClass[]
+     */
+    public abstract function validDataTypes();
+
     /**
      * Return the list of data types acceptable to this formatter
      */

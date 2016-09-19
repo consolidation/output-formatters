@@ -4,9 +4,15 @@ namespace Consolidation\OutputFormatters;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Consolidation\OutputFormatters\Exception\InvalidFormatException;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
+use Consolidation\OutputFormatters\Formatters\FormatterInterface;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
+use Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface;
+use Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface;
+use Consolidation\OutputFormatters\Validate\ValidationInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 

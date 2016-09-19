@@ -1,8 +1,6 @@
 <?php
 namespace Consolidation\OutputFormatters\Exception;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-
 /**
  * Contains some helper functions used by exceptions in this project.
  */

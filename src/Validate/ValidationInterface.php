@@ -1,5 +1,5 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Validate;
 
 /**
  * Formatters may implement ValidationInterface in order to indicate

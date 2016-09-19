@@ -1,7 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters\StructuredData;
 
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 
 interface RestructureInterface
 {

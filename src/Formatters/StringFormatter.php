@@ -1,11 +1,10 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ValidationInterface;
-use Consolidation\OutputFormatters\OverrideOptionsInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
-use Consolidation\OutputFormatters\ValidDataTypesTrait;
+use Consolidation\OutputFormatters\Validate\ValidationInterface;
+use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 

@@ -1,7 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RenderCellInterface;
 
 trait RenderTableDataTrait

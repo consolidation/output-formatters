@@ -1,6 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 

@@ -1,8 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
-use Consolidation\OutputFormatters\SimplifyToArrayInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface;
 use Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema;
 

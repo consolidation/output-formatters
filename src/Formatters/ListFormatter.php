@@ -1,12 +1,11 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Symfony\Component\Console\Output\OutputInterface;
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
-use Consolidation\OutputFormatters\OverrideRestructureInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\StructuredData\RenderCellInterface;
+use Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Display the data in a simple list.

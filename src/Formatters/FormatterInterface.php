@@ -1,6 +1,7 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Formatters;
 
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
 interface FormatterInterface

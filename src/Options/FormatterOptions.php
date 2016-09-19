@@ -1,5 +1,5 @@
 <?php
-namespace Consolidation\OutputFormatters;
+namespace Consolidation\OutputFormatters\Options;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;

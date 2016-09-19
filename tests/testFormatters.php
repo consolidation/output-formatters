@@ -3,6 +3,7 @@ namespace Consolidation\OutputFormatters;
 
 use Consolidation\TestUtils\AssociativeListWithCsvCells;
 use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Symfony\Component\Console\Output\BufferedOutput;

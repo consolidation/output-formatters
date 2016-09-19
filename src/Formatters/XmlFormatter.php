@@ -5,10 +5,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
 
-use Consolidation\OutputFormatters\FormatterInterface;
-use Consolidation\OutputFormatters\ValidDataTypesInterface;
-use Consolidation\OutputFormatters\FormatterOptions;
-use Consolidation\OutputFormatters\ValidDataTypesTrait;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesInterface;
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
