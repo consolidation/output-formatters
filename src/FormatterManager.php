@@ -93,8 +93,9 @@ class FormatterManager
             return [];
         }
 
-        $availableFields = $options->get(FormatterOptions::FIELD_LABELS, [], false);
-        $defaultFormat = $availableFields ? 'table' : 'yaml';
+        $availableFields = $options->get(FormatterOptions::FIELD_LABELS);
+        $hasDefaultStringField = $options->get(FormatterOptions::DEFAULT_STRING_FIELD);
+        $defaultFormat = $hasDefaultStringField ? 'string' : ($availableFields ? 'table' : 'yaml');
 
         if (count($validFormats) > 1) {
             // Make an input option for --format
@@ -103,7 +104,7 @@ class FormatterManager
         }
 
         if ($availableFields) {
-            $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], implode(',', $availableFields));
+            $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], '');
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
         }
