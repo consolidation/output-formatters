@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\Transformations;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
+
 interface OverrideRestructureInterface
 {
     /**
