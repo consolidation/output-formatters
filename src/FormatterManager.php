@@ -149,6 +149,9 @@ class FormatterManager
         if (is_array($dataType)) {
             $dataType = new \ReflectionClass('\ArrayObject');
         }
+        if (!is_object($dataType) && !class_exists($dataType)) {
+            return false;
+        }
         if (!$dataType instanceof \ReflectionClass) {
             $dataType = new \ReflectionClass($dataType);
         }
