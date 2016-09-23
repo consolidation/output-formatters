@@ -772,6 +772,7 @@ EOT;
 EOT;
         $this->assertFormattedOutputMatches($expectedWithRegexField, 'table', $data, $configurationData, ['fields' => ['/e$/']]);
         $this->assertFormattedOutputMatches($expectedWithRegexField, 'table', $data, $configurationData, ['fields' => ['*e']]);
+        $this->assertFormattedOutputMatches($expectedWithRegexField, 'table', $data, $configurationData, ['default-fields' => ['*e']]);
 
         $expectedSections = <<<EOT
 

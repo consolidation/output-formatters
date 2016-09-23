@@ -52,7 +52,11 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         if (!empty($fieldShortcut)) {
             return [$fieldShortcut];
         }
-        return $options->get(FormatterOptions::FIELDS, $defaults);
+        $result = $options->get(FormatterOptions::FIELDS, $defaults);
+        if (!empty($result)) {
+            return $result;
+        }
+        return $options->get(FormatterOptions::DEFAULT_FIELDS, $defaults);
     }
 
     /**
