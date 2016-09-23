@@ -33,12 +33,15 @@ class FormatterOptions
     protected $options = [];
     /** var InputInterface */
     protected $input;
+    /** var boolean */
+    protected $initialized;
 
     const FORMAT = 'format';
     const DEFAULT_FORMAT = 'default-format';
     const TABLE_STYLE = 'table-style';
     const LIST_ORIENTATION = 'list-orientation';
     const FIELDS = 'fields';
+    const FIELD = 'field';
     const INCLUDE_FIELD_LABELS = 'include-field-labels';
     const ROW_LABELS = 'row-labels';
     const FIELD_LABELS = 'field-labels';
@@ -50,6 +53,26 @@ class FormatterOptions
     {
         $this->configurationData = $configurationData;
         $this->options = $options;
+    }
+
+    protected function initialize()
+    {
+        if ($this->initialized) {
+            return;
+        }
+        $this->initialized = true;
+        $this->intializeFieldOption();
+    }
+
+    protected function intializeFieldOption()
+    {
+        $field = $this->get(self::FIELD);
+        if (empty($field)) {
+            return;
+        }
+
+        $this->configurationData[self::FORMAT] = 'string';
+        $this->configurationData[self::FIELDS] = $field;
     }
 
     public function override($configurationData)
@@ -70,6 +93,7 @@ class FormatterOptions
      */
     public function get($key, $defaults = [], $default = false)
     {
+        $this->initialize();
         $value = $this->fetch($key, $defaults, $default);
         return $this->parse($key, $value);
     }
@@ -81,7 +105,7 @@ class FormatterOptions
 
     public function getFormat($defaults = [])
     {
-        return $this->get(self::FORMAT, $defaults, $this->get(self::DEFAULT_FORMAT, $defaults, ''));
+        return $this->get(self::FORMAT, [], $this->get(self::DEFAULT_FORMAT, $defaults, ''));
     }
 
     protected function fetch($key, $defaults = [], $default = false)

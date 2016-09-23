@@ -72,7 +72,7 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
             ]
         );
         $inputOptions = $this->formatterManager->automaticOptions($formatterOptions, $rowsOfFieldsRef);
-        $this->assertInputOptionDescriptionsEquals("Format the result data. Available formats: csv,json,list,php,print-r,sections,string,table,tsv,var_export,xml,yaml [Default: 'table']\nAvailable fields: Name (name), Phone Number (phone_number) [Default: '']", $inputOptions);
+        $this->assertInputOptionDescriptionsEquals("Format the result data. Available formats: csv,json,list,php,print-r,sections,string,table,tsv,var_export,xml,yaml [Default: 'table']\nAvailable fields: Name (name), Phone Number (phone_number) [Default: '']\nSelect just one field, and force format to 'string'. [Default: '']", $inputOptions);
     }
 
     function assertInputOptionDescriptionsEquals($expected, $inputOptions)

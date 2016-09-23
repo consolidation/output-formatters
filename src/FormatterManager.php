@@ -107,6 +107,7 @@ class FormatterManager
             $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], '');
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
+            $automaticOptions[FormatterOptions::FIELD] = new InputOption(FormatterOptions::FIELD, '', InputOption::VALUE_OPTIONAL, "Select just one field, and force format to 'string'.", '');
         }
 
         return $automaticOptions;
