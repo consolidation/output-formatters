@@ -31,6 +31,11 @@ class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
         return $input;
     }
 
+    protected function getFormat(FormatterOptions $options, $defaults = [])
+    {
+        return $options->get(FormatterOptions::FORMAT, [], $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, ''));
+    }
+
     public function testFormatterOptions() {
         $configurationData = [
             FormatterOptions::DEFAULT_FORMAT => 'table',
@@ -75,22 +80,22 @@ class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
 
         // Configuration has higher priority than defaults
         $options = new FormatterOptions($configurationData, $userOptions);
-        $this->assertEquals('table', $options->getFormat());
-        $this->assertEquals('table', $options->getFormat($defaults));
+        $this->assertEquals('table', $this->getFormat($options));
+        $this->assertEquals('table', $this->getFormat($options, $defaults));
 
         // Override has higher priority than configuration and defaults
         $options = new FormatterOptions($configurationData, $userOptions);
         $newOptions = $options->override([FormatterOptions::DEFAULT_FORMAT => 'json']);
-        $this->assertEquals('json', $newOptions->getFormat());
-        $this->assertEquals('json', $newOptions->getFormat($defaults));
+        $this->assertEquals('json', $this->getFormat($newOptions));
+        $this->assertEquals('json', $this->getFormat($newOptions, $defaults));
 
         $options = new FormatterOptions($configurationData, $userOptions);
         $options->setConfigurationDefault(FormatterOptions::DEFAULT_FORMAT, 'php');
-        $this->assertEquals('table', $options->getFormat());
+        $this->assertEquals('table', $this->getFormat($options));
 
         $options = new FormatterOptions($configurationData, $userOptions);
         $options->setConfigurationData([]);
-        $this->assertEquals('', $options->getFormat());
+        $this->assertEquals('', $this->getFormat($options));
 
         // It is only possible to override options that appear in '$default'
         // with $input; if there are no defaults, then the --format=yaml
@@ -103,17 +108,5 @@ class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
         // We won't see the default value unless the configuration value is empty.
         $options = new FormatterOptions([], $userOptions);
         $this->assertEquals('var_export', $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, 'irrelevant'));
-
-        $options = new FormatterOptions([], ['field' => 'id']);
-        $this->assertEquals('id', $options->get(FormatterOptions::FIELD));
-        $this->assertEquals('id', $options->get(FormatterOptions::FIELDS));
-        $this->assertEquals('string', $options->get(FormatterOptions::FORMAT));
-
-        $input = $this->createStringInput('test --field=id');
-        $this->assertEquals('id', $input->getOption(FormatterOptions::FIELD));
-        $options->setInput($input);
-        $this->assertEquals('id', $options->get(FormatterOptions::FIELD));
-        $this->assertEquals('id', $options->get(FormatterOptions::FIELDS));
-        $this->assertEquals('string', $options->get(FormatterOptions::FORMAT));
     }
 }

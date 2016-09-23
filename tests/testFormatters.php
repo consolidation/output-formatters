@@ -800,6 +800,16 @@ EOT;
 }
 EOT;
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
+
+        $expectedSingleField = <<<EOT
+ -----
+  San
+ -----
+  c
+  z
+ -----
+EOT;
+        $this->assertFormattedOutputMatches($expectedSingleField, 'table', $data, $configurationData, ['field' => 'San']);
     }
 
     protected function simpleListExampleData()

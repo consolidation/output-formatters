@@ -32,7 +32,18 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         $defaults = $this->defaultOptions();
 
         $reorderer = new ReorderFields();
-        $fieldLabels = $reorderer->reorder($options->get(FormatterOptions::FIELDS, $defaults), $options->get(FormatterOptions::FIELD_LABELS, $defaults), $data);
+        $fieldLabels = $reorderer->reorder(
+            $options->get(
+                FormatterOptions::FIELDS,
+                [
+                    FormatterOptions::FIELDS => [$options->get(FormatterOptions::FIELD)]
+                ] + $defaults
+            ),
+            $options->get(
+                FormatterOptions::FIELD_LABELS, $defaults
+            ),
+            $data
+        );
 
         $tableTransformer = new TableTransformation($data, $fieldLabels, $options->get(FormatterOptions::ROW_LABELS, $defaults));
         if ($options->get(FormatterOptions::LIST_ORIENTATION, $defaults)) {

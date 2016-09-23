@@ -33,8 +33,6 @@ class FormatterOptions
     protected $options = [];
     /** var InputInterface */
     protected $input;
-    /** var boolean */
-    protected $initialized;
 
     const FORMAT = 'format';
     const DEFAULT_FORMAT = 'default-format';
@@ -55,26 +53,6 @@ class FormatterOptions
         $this->options = $options;
     }
 
-    protected function initialize()
-    {
-        if ($this->initialized) {
-            return;
-        }
-        $this->initialized = true;
-        $this->intializeFieldOption();
-    }
-
-    protected function intializeFieldOption()
-    {
-        $field = $this->get(self::FIELD);
-        if (empty($field)) {
-            return;
-        }
-
-        $this->configurationData[self::FORMAT] = 'string';
-        $this->configurationData[self::FIELDS] = $field;
-    }
-
     public function override($configurationData)
     {
         $override = new self();
@@ -93,7 +71,6 @@ class FormatterOptions
      */
     public function get($key, $defaults = [], $default = false)
     {
-        $this->initialize();
         $value = $this->fetch($key, $defaults, $default);
         return $this->parse($key, $value);
     }

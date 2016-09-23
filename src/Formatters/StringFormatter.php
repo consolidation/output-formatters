@@ -43,7 +43,7 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
     public function overrideOptions($structuredOutput, FormatterOptions $options)
     {
         $defaultField = $options->get(FormatterOptions::DEFAULT_STRING_FIELD, [], '');
-        $userFields = $options->get(FormatterOptions::FIELDS);
+        $userFields = $options->get(FormatterOptions::FIELDS, [FormatterOptions::FIELDS => $options->get(FormatterOptions::FIELD)]);
         $optionsOverride = $options->override([]);
         if (empty($userFields) && !empty($defaultField)) {
             $optionsOverride->setOption(FormatterOptions::FIELDS, $defaultField);
