@@ -33,15 +33,8 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
 
         $reorderer = new ReorderFields();
         $fieldLabels = $reorderer->reorder(
-            $options->get(
-                FormatterOptions::FIELDS,
-                [
-                    FormatterOptions::FIELDS => [$options->get(FormatterOptions::FIELD)]
-                ] + $defaults
-            ),
-            $options->get(
-                FormatterOptions::FIELD_LABELS, $defaults
-            ),
+            $this->getFields($options, $defaults),
+            $options->get(FormatterOptions::FIELD_LABELS, $defaults),
             $data
         );
 
@@ -51,6 +44,15 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         }
 
         return $tableTransformer;
+    }
+
+    protected function getFields($options, $defaults)
+    {
+        $fieldShortcut = $options->get(FormatterOptions::FIELD);
+        if (!empty($fieldShortcut)) {
+            return [$fieldShortcut];
+        }
+        return $options->get(FormatterOptions::FIELDS, $defaults);
     }
 
     /**
