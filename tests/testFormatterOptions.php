@@ -16,6 +16,7 @@ class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
             new InputArgument('unused', InputArgument::REQUIRED),
             new InputOption(FormatterOptions::FORMAT, null, InputOption::VALUE_REQUIRED),
             new InputOption(FormatterOptions::TABLE_STYLE, null, InputOption::VALUE_REQUIRED),
+            new InputOption(FormatterOptions::FIELD, null, InputOption::VALUE_REQUIRED),
             new InputOption(FormatterOptions::FIELDS, null, InputOption::VALUE_REQUIRED),
             new InputOption(FormatterOptions::INCLUDE_FIELD_LABELS, null, InputOption::VALUE_NONE),
             new InputOption(FormatterOptions::ROW_LABELS, null, InputOption::VALUE_REQUIRED),
@@ -102,5 +103,17 @@ class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
         // We won't see the default value unless the configuration value is empty.
         $options = new FormatterOptions([], $userOptions);
         $this->assertEquals('var_export', $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, 'irrelevant'));
+
+        $options = new FormatterOptions([], ['field' => 'id']);
+        $this->assertEquals('id', $options->get(FormatterOptions::FIELD));
+        $this->assertEquals('id', $options->get(FormatterOptions::FIELDS));
+        $this->assertEquals('string', $options->get(FormatterOptions::FORMAT));
+
+        $input = $this->createStringInput('test --field=id');
+        $this->assertEquals('id', $input->getOption(FormatterOptions::FIELD));
+        $options->setInput($input);
+        $this->assertEquals('id', $options->get(FormatterOptions::FIELD));
+        $this->assertEquals('id', $options->get(FormatterOptions::FIELDS));
+        $this->assertEquals('string', $options->get(FormatterOptions::FORMAT));
     }
 }
