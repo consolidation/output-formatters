@@ -21,7 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class FormatterManager
 {
+    /** var FormatterInterface[] */
     protected $formatters = [];
+    /** var SimplifyToArrayInterface[] */
     protected $arraySimplifiers = [];
 
     public function __construct()
@@ -61,7 +63,7 @@ class FormatterManager
      * Add a formatter
      *
      * @param string $key the identifier of the formatter to add
-     * @param string $formatterClassname the class name of the formatter to add
+     * @param string $formatter the class name of the formatter to add
      * @return FormatterManager
      */
     public function addFormatter($key, FormatterInterface $formatter)
