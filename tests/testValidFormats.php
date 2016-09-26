@@ -11,6 +11,8 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
 
     function setup() {
         $this->formatterManager = new FormatterManager();
+        $this->formatterManager->addDefaultFormatters();
+        $this->formatterManager->addDefaultSimplifiers();
     }
 
     function testValidFormats()

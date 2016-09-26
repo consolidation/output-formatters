@@ -26,7 +26,11 @@ class FormatterManager
 
     public function __construct()
     {
-        $this->formatters = [
+    }
+
+    public function addDefaultFormatters()
+    {
+        $defaultFormatters = [
             'string' => '\Consolidation\OutputFormatters\Formatters\StringFormatter',
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
             'xml' => '\Consolidation\OutputFormatters\Formatters\XmlFormatter',
@@ -40,10 +44,15 @@ class FormatterManager
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
             'sections' => '\Consolidation\OutputFormatters\Formatters\SectionsFormatter',
         ];
-
-        // Make the empty format an alias for the 'string' formatter.
+        foreach ($defaultFormatters as $id => $formatterClassname) {
+            $formatter = new $formatterClassname;
+            $this->addFormatter($id, $formatter);
+        }
         $this->addFormatter('', $this->formatters['string']);
+    }
 
+    public function addDefaultSimplifiers()
+    {
         // Add our default array simplifier (DOMDocument to array)
         $this->addSimplifier(new DomToArraySimplifier());
     }
@@ -55,9 +64,9 @@ class FormatterManager
      * @param string $formatterClassname the class name of the formatter to add
      * @return FormatterManager
      */
-    public function addFormatter($key, $formatterClassname)
+    public function addFormatter($key, FormatterInterface $formatter)
     {
-        $this->formatters[$key] = $formatterClassname;
+        $this->formatters[$key] = $formatter;
         return $this;
     }
 
@@ -226,10 +235,17 @@ class FormatterManager
      */
     public function getFormatter($format)
     {
+        // The client must inject at least one formatter before asking for
+        // any formatters; if not, we will provide all of the usual defaults
+        // as a convenience.
+        if (empty($this->formatters)) {
+            $this->addDefaultFormatters();
+            $this->addDefaultSimplifiers();
+        }
         if (!$this->hasFormatter($format)) {
             throw new UnknownFormatException($format);
         }
-        $formatter = new $this->formatters[$format];
+        $formatter = $this->formatters[$format];
         return $formatter;
     }
 
