@@ -89,7 +89,7 @@ class TableTransformation extends \ArrayObject implements TableDataInterface
     {
         $data = $this->getArrayCopy();
         if ($this->isList()) {
-            $data = $this->getListData();
+            $data = $this->convertTableToList();
         }
         if ($includeRowKey) {
             $data = $this->getRowDataWithKey($data);
@@ -97,7 +97,7 @@ class TableTransformation extends \ArrayObject implements TableDataInterface
         return $data;
     }
 
-    protected function getListData()
+    protected function convertTableToList()
     {
         $result = [];
         foreach ($this as $row) {

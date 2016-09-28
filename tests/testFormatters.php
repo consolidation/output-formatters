@@ -863,6 +863,13 @@ carrot
 EOT;
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
 
+        $expectedReorderedList = <<< EOT
+carrot
+apple
+EOT;
+        $options = new FormatterOptions([FormatterOptions::FIELDS => 'three,one']);
+        $this->assertFormattedOutputMatches($expectedReorderedList, 'list', $data, $options);
+
         $expectedCsv = <<< EOT
 One,Two,Three
 apple,banana,carrot

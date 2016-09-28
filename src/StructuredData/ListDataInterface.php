@@ -1,6 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\StructuredData;
 
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+
 interface ListDataInterface
 {
     /**
@@ -10,5 +12,5 @@ interface ListDataInterface
      *
      * @return array
      */
-    public function getListData();
+    public function getListData(FormatterOptions $options);
 }
