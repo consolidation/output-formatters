@@ -25,18 +25,12 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
 
     abstract public function restructure(FormatterOptions $options);
 
-    abstract public function getListData();
+    abstract public function getListData(FormatterOptions $options);
 
     protected function createTableTransformation($data, $options)
     {
         $defaults = $this->defaultOptions();
-
-        $reorderer = new ReorderFields();
-        $fieldLabels = $reorderer->reorder(
-            $this->getFields($options, $defaults),
-            $options->get(FormatterOptions::FIELD_LABELS, $defaults),
-            $data
-        );
+        $fieldLabels = $this->getReorderedFieldLabels($data, $options, $defaults);
 
         $tableTransformer = new TableTransformation($data, $fieldLabels, $options->get(FormatterOptions::ROW_LABELS, $defaults));
         if ($options->get(FormatterOptions::LIST_ORIENTATION, $defaults)) {
@@ -44,6 +38,17 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         }
 
         return $tableTransformer;
+    }
+
+    protected function getReorderedFieldLabels($data, $options, $defaults)
+    {
+        $reorderer = new ReorderFields();
+        $fieldLabels = $reorderer->reorder(
+            $this->getFields($options, $defaults),
+            $options->get(FormatterOptions::FIELD_LABELS, $defaults),
+            $data
+        );
+        return $fieldLabels;
     }
 
     protected function getFields($options, $defaults)

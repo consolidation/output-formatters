@@ -25,7 +25,7 @@ class RowsOfFields extends AbstractStructuredList
         return $this->createTableTransformation($data, $options);
     }
 
-    public function getListData()
+    public function getListData(FormatterOptions $options)
     {
         return array_keys($this->getArrayCopy());
     }

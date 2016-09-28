@@ -29,9 +29,18 @@ class AssociativeList extends AbstractStructuredList
         return $tableTransformer;
     }
 
-    public function getListData()
+    public function getListData(FormatterOptions $options)
     {
-        return $this->getArrayCopy();
+        $data = $this->getArrayCopy();
+
+        $defaults = $this->defaultOptions();
+        $fieldLabels = $this->getReorderedFieldLabels([$data], $options, $defaults);
+
+        $result = [];
+        foreach ($fieldLabels as $id => $label) {
+            $result[$id] = $data[$id];
+        }
+        return $result;
     }
 
     protected function defaultOptions()

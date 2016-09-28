@@ -34,7 +34,7 @@ class ListFormatter implements FormatterInterface, OverrideRestructureInterface,
         // then we will render whatever data its 'getListData'
         // method provides.
         if ($structuredOutput instanceof ListDataInterface) {
-            return $this->renderData($structuredOutput, $structuredOutput->getListData(), $options);
+            return $this->renderData($structuredOutput, $structuredOutput->getListData($options), $options);
         }
     }
 
