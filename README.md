@@ -22,7 +22,7 @@ This is a library intended to be used in some other project.  Require from your 
         "consolidation/output-formatters": "~1|~2"
     },
 ```
-If you require the feature that allows a data table to be automatically reduced to a single element when the `string` format is selected, then you should require version "~2" instead. In all other respects, the 1.x and 2.x versions are compatible.
+If you require the feature that allows a data table to be automatically reduced to a single element when the `string` format is selected, then you should require version "~2" instead. In most other respects, the 1.x and 2.x versions are compatible. See the [CHANGELOG](CHANGELOG.md) for details.
 
 ## Example Formatter
 
