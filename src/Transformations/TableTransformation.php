@@ -2,8 +2,9 @@
 namespace Consolidation\OutputFormatters\Transformations;
 
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
+use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
 
-class TableTransformation extends \ArrayObject implements TableDataInterface
+class TableTransformation extends \ArrayObject implements TableDataInterface, OriginalDataInterface
 {
     protected $headers;
     protected $rowLabels;
@@ -80,7 +81,7 @@ class TableTransformation extends \ArrayObject implements TableDataInterface
         return $rowid;
     }
 
-    public function getData()
+    public function getOriginalData()
     {
         return $this->getArrayCopy();
     }

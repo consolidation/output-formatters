@@ -970,12 +970,10 @@ EOT;
         $this->assertFormattedOutputMatches($expectedWithReorderedFields, 'table', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
 
         $expectedJson = <<<EOT
-[
-    {
-        "three": "carrot",
-        "one": "apple"
-    }
-]
+{
+    "three": "carrot",
+    "one": "apple"
+}
 EOT;
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
     }

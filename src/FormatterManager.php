@@ -15,6 +15,7 @@ use Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface;
 use Consolidation\OutputFormatters\Validate\ValidationInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -320,6 +321,10 @@ class FormatterManager
             if ($simplifier->canSimplify($outputDataType)) {
                 $structuredOutput = $simplifier->simplifyToArray($structuredOutput, $options);
             }
+        }
+        // Convert data structure back into its original form, if necessary.
+        if ($structuredOutput instanceof OriginalDataInterface) {
+            return $structuredOutput->getOriginalData();
         }
         // Convert \ArrayObjects to a simple array.
         if ($structuredOutput instanceof \ArrayObject) {

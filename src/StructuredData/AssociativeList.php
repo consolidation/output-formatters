@@ -6,6 +6,7 @@ use Consolidation\OutputFormatters\StructuredData\ListDataInterface;
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Transformations\TableTransformation;
+use Consolidation\OutputFormatters\Transformations\AssociativeListTableTransformation;
 
 /**
  * Holds an array where each element of the array is one
@@ -48,5 +49,10 @@ class AssociativeList extends AbstractStructuredList
         return [
             FormatterOptions::LIST_ORIENTATION => true,
         ] + parent::defaultOptions();
+    }
+
+    protected function instantiateTableTransformation($data, $fieldLabels, $rowLabels)
+    {
+        return new AssociativeListTableTransformation($data, $fieldLabels, $rowLabels);
     }
 }
