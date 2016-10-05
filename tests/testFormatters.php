@@ -813,6 +813,23 @@ EOT;
         $this->assertFormattedOutputMatches($expectedSingleField, 'table', $data, $configurationData, ['field' => 'San']);
     }
 
+    /**
+     * @expectedException \Consolidation\OutputFormatters\Exception\UnknownFieldException
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage The requested field, 'Shi', is not defined.
+     */
+    function testNoSuchFieldException()
+    {
+        $configurationData = new FormatterOptions(
+            [
+                'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
+                'row-labels' => ['id-123' => 'Walrus', 'id-456' => 'Carpenter'],
+            ]
+        );
+        $data = $this->simpleTableExampleData();
+        $this->assertFormattedOutputMatches('Will throw before comparing', 'table', $data, $configurationData, ['field' => 'Shi']);
+    }
+
     protected function simpleListExampleData()
     {
         $data = [
