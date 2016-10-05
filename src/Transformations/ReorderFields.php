@@ -2,6 +2,7 @@
 namespace Consolidation\OutputFormatters\Transformations;
 
 use Symfony\Component\Finder\Glob;
+use Consolidation\OutputFormatters\Exception\UnknownFieldException;
 
 /**
  * Reorder the field labels based on the user-selected fields
@@ -56,6 +57,9 @@ class ReorderFields
         $selectedFields = [];
         foreach ($fields as $field) {
             $matchedFields = $this->matchFieldInLabelMap($field, $fieldLabels);
+            if (empty($matchedFields)) {
+                throw new UnknownFieldException($field);
+            }
             $selectedFields = array_merge($selectedFields, $matchedFields);
         }
         return $selectedFields;
