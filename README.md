@@ -6,7 +6,7 @@ Apply transformations to structured data to write output in different formats.
 
 ## Component Status
 
-Currently in use in [Robo](https://github.com/consolidation/Robo).
+Currently in use in [Robo](https://github.com/consolidation/Robo) (1.x+), [Drush](https://github.com/drush-ops/drush) (9.x+) and [Terminus](https://pantheon-systems/terminus) (1.x+).
 
 ## Motivation
 
