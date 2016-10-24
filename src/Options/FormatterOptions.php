@@ -47,12 +47,27 @@ class FormatterOptions
     const DEFAULT_STRING_FIELD = 'default-string-field';
     const DELIMITER = 'delimiter';
 
+    /**
+     * Create a new FormatterOptions with the configuration data and the
+     * user-specified options for this request.
+     *
+     * @see FormatterOptions::setInput()
+     * @param array $configurationData
+     * @param array $options
+     */
     public function __construct($configurationData = [], $options = [])
     {
         $this->configurationData = $configurationData;
         $this->options = $options;
     }
 
+    /**
+     * Create a new FormatterOptions object with new configuration data (provided),
+     * and the same options data as this instance.
+     *
+     * @param array $configurationData
+     * @return FormatterOptions
+     */
     public function override($configurationData)
     {
         $override = new self();
@@ -64,6 +79,7 @@ class FormatterOptions
 
     /**
      * Get a formatter option
+     *
      * @param string $key
      * @param array $defaults
      * @param mixed $default
@@ -75,16 +91,36 @@ class FormatterOptions
         return $this->parse($key, $value);
     }
 
+    /**
+     * Return the XmlSchema to use with --format=xml for data types that support
+     * that.  This is used when an array needs to be converted into xml.
+     *
+     * @return XmlSchema
+     */
     public function getXmlSchema()
     {
         return new XmlSchema();
     }
 
+    /**
+     * Determine the format that was requested by the caller.
+     *
+     * @param array $defaults
+     * @return string
+     */
     public function getFormat($defaults = [])
     {
         return $this->get(self::FORMAT, [], $this->get(self::DEFAULT_FORMAT, $defaults, ''));
     }
 
+    /**
+     * Look up a key, and return its raw value.
+     *
+     * @param string $key
+     * @param array $defaults
+     * @param mixed $default
+     * @return mixed
+     */
     protected function fetch($key, $defaults = [], $default = false)
     {
         $values = array_merge(
@@ -99,6 +135,14 @@ class FormatterOptions
         return $default;
     }
 
+    /**
+     * Given the raw value for a specific key, do any type conversion
+     * (e.g. from a textual list to an array) needed for the data.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
     protected function parse($key, $value)
     {
         $optionFormat = $this->getOptionFormat($key);
@@ -108,11 +152,24 @@ class FormatterOptions
         return $value;
     }
 
+    /**
+     * Convert from a textual list to an array
+     *
+     * @param string $value
+     * @return array
+     */
     public function parsePropertyList($value)
     {
         return PropertyParser::parse($value);
     }
 
+    /**
+     * Given a specific key, return the class method name of the
+     * parsing method for data stored under this key.
+     *
+     * @param string $key
+     * @return string
+     */
     protected function getOptionFormat($key)
     {
         $propertyFormats = [
@@ -125,18 +182,39 @@ class FormatterOptions
         return false;
     }
 
+    /**
+     * Change the configuration data for this formatter options object.
+     *
+     * @param array $configurationData
+     * @return FormatterOptions
+     */
     public function setConfigurationData($configurationData)
     {
         $this->configurationData = $configurationData;
         return $this;
     }
 
+    /**
+     * Change one configuration value for this formatter option.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return FormetterOptions
+     */
     protected function setConfigurationValue($key, $value)
     {
         $this->configurationData[$key] = $value;
         return $this;
     }
 
+    /**
+     * Change one configuration value for this formatter option, but only
+     * if it does not already have a value set.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return FormetterOptions
+     */
     public function setConfigurationDefault($key, $value)
     {
         if (!array_key_exists($key, $this->configurationData)) {
@@ -145,33 +223,70 @@ class FormatterOptions
         return $this;
     }
 
+    /**
+     * Return a reference to the configuration data for this object.
+     *
+     * @return array
+     */
     public function getConfigurationData()
     {
         return $this->configurationData;
     }
 
+    /**
+     * Set all of the options that were specified by the user for this request.
+     *
+     * @param array $options
+     * @return FormatterOptions
+     */
     public function setOptions($options)
     {
         $this->options = $options;
         return $this;
     }
 
+    /**
+     * Change one option value specified by the user for this request.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return FormatterOptions
+     */
     public function setOption($key, $value)
     {
         $this->options[$key] = $value;
         return $this;
     }
 
+    /**
+     * Return a reference to the user-specified options for this request.
+     *
+     * @return array
+     */
     public function getOptions()
     {
         return $this->options;
     }
 
+    /**
+     * Provide a Symfony Console InputInterface containing the user-specified
+     * options for this request.
+     *
+     * @param InputInterface $input
+     * @return type
+     */
     public function setInput(InputInterface $input)
     {
         $this->input = $input;
     }
 
+    /**
+     * Return all of the options from the provided $defaults array that
+     * exist in our InputInterface object.
+     *
+     * @param array $defaults
+     * @return array
+     */
     public function getInputOptions($defaults)
     {
         if (!isset($this->input)) {
