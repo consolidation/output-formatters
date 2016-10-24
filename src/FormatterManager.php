@@ -105,8 +105,8 @@ class FormatterManager
             return [];
         }
 
-        $availableFields = $options->get(FormatterOptions::FIELD_LABELS);
-        $hasDefaultStringField = $options->get(FormatterOptions::DEFAULT_STRING_FIELD);
+        $availableFields = $options->getFieldLabels();
+        $hasDefaultStringField = $options->getDefaultStringField();
         $defaultFormat = $hasDefaultStringField ? 'string' : ($availableFields ? 'table' : 'yaml');
 
         if (count($validFormats) > 1) {
@@ -116,7 +116,7 @@ class FormatterManager
         }
 
         if ($availableFields) {
-            $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], '');
+            $defaultFields = $options->getDefaultFields();
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_OPTIONAL, $description, $defaultFields);
             $automaticOptions[FormatterOptions::FIELD] = new InputOption(FormatterOptions::FIELD, '', InputOption::VALUE_OPTIONAL, "Select just one field, and force format to 'string'.", '');

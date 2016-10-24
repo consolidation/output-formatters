@@ -32,8 +32,8 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         $defaults = $this->defaultOptions();
         $fieldLabels = $this->getReorderedFieldLabels($data, $options, $defaults);
 
-        $tableTransformer = $this->instantiateTableTransformation($data, $fieldLabels, $options->get(FormatterOptions::ROW_LABELS, $defaults));
-        if ($options->get(FormatterOptions::LIST_ORIENTATION, $defaults)) {
+        $tableTransformer = $this->instantiateTableTransformation($data, $fieldLabels, $options->getRowLabels($defaults));
+        if ($options->getListOrientation($defaults)) {
             $tableTransformer->setLayout(TableTransformation::LIST_LAYOUT);
         }
 
@@ -50,7 +50,7 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
         $reorderer = new ReorderFields();
         $fieldLabels = $reorderer->reorder(
             $this->getFields($options, $defaults),
-            $options->get(FormatterOptions::FIELD_LABELS, $defaults),
+            $options->getFieldLabels($defaults),
             $data
         );
         return $fieldLabels;
@@ -58,15 +58,11 @@ abstract class AbstractStructuredList extends \ArrayObject implements Restructur
 
     protected function getFields($options, $defaults)
     {
-        $fieldShortcut = $options->get(FormatterOptions::FIELD);
+        $fieldShortcut = $options->getField();
         if (!empty($fieldShortcut)) {
             return [$fieldShortcut];
         }
-        $result = $options->get(FormatterOptions::FIELDS, $defaults);
-        if (!empty($result)) {
-            return $result;
-        }
-        return $options->get(FormatterOptions::DEFAULT_FIELDS, $defaults);
+        return $options->getFields($defaults);
     }
 
     /**

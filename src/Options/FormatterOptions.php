@@ -92,6 +92,21 @@ class FormatterOptions
     }
 
     /**
+     * Get a formatter option. If the option does not exist, then fetch
+     * a fallback option instead.
+     *
+     * @param string $key
+     * @param string $fallbackKey
+     * @param array $defaults
+     * @param mixed $default
+     * @return mixed
+     */
+    protected function getWithFallback($key, $fallbackKey, $defaults = [], $default = false)
+    {
+        return $this->get($key, [], $this->get($fallbackKey, $defaults, $default));
+    }
+
+    /**
      * Return the XmlSchema to use with --format=xml for data types that support
      * that.  This is used when an array needs to be converted into xml.
      *
@@ -110,7 +125,125 @@ class FormatterOptions
      */
     public function getFormat($defaults = [])
     {
-        return $this->get(self::FORMAT, [], $this->get(self::DEFAULT_FORMAT, $defaults, ''));
+        return $this->getWithFallback(self::FORMAT, self::DEFAULT_FORMAT, $defaults, '');
+    }
+
+    /**
+     * Get the table style. Used by the table formatter to set the Symfony Table style.
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getTableStyle($defaults = [])
+    {
+        return $this->get(self::TABLE_STYLE, $defaults);
+    }
+
+    /**
+     * Determine whether or not field labels should be included.
+     *
+     * @param array $defaults
+     * @return boolean
+     */
+    public function getIncludeFieldLables($defaults = [])
+    {
+        return $this->get(self::INCLUDE_FIELD_LABELS, $defaults);
+    }
+
+    /**
+     * Set the table orientation. The RowsOfFields data type uses 'horizontal'
+     * orientation, which means the headers (keys) are in the first row.  The
+     * AssociativeList data type uses 'vertical' orientation, which means that
+     * the headers (keys) are in the first column.
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getListOrientation($defaults = [])
+    {
+        return $this->get(self::LIST_ORIENTATION, $defaults);
+    }
+
+    /**
+     * Get the row labels. These are used by structured list data structure during
+     * list tranformation to replace row machine IDs with human-readable labels
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getRowLabels($defaults = [])
+    {
+        return $this->get(self::ROW_LABELS, $defaults);
+    }
+
+    /**
+     * Get the user-specified set of fields to include in the table.
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getFields($defaults = [])
+    {
+        return $this->getWithFallback(self::FIELDS, self::DEFAULT_FIELDS, $defaults, '');
+    }
+
+    /**
+     * Get the list of fields that are displayed when the user does not
+     * explicitly request specific fields.
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getDefaultFields($defaults = [])
+    {
+        return $this->get(self::DEFAULT_FIELDS, $defaults, '');
+    }
+
+    /**
+     * Get the single-field user selection, specified by --field. The
+     * single-field option is just like the regular --fields option,
+     * except that it also forces the output format to 'string'.
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getField($defaults = [])
+    {
+        return $this->get(self::FIELD, $defaults);
+    }
+
+    /**
+     * Get the field labels
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getFieldLabels($defaults = [])
+    {
+        return $this->get(self::FIELD_LABELS, $defaults);
+    }
+
+    /**
+     * Get the single field that should be returned when a table is requested
+     * in 'string' format.
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getDefaultStringField($defaults = [])
+    {
+        return $this->get(self::DEFAULT_STRING_FIELD, $defaults, '');
+    }
+
+    /**
+     * Get the delimiter to use in a list
+     *
+     * @param array $defaults
+     * @return string
+     */
+    public function getDelimiter($defaults = [])
+    {
+        return $this->get(self::DELIMITER, $defaults);
     }
 
     /**
@@ -298,11 +431,12 @@ class FormatterOptions
      * options for this request.
      *
      * @param InputInterface $input
-     * @return type
+     * @return FormatterOptions
      */
     public function setInput(InputInterface $input)
     {
         $this->input = $input;
+        return $this;
     }
 
     /**
