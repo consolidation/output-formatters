@@ -61,7 +61,6 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         return $structuredData;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -84,10 +83,10 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         ;
         $table->setStyleDefinition('consolidation', $consolidationStyle);
 
-        $table->setStyle($options->get(FormatterOptions::TABLE_STYLE, $defaults));
+        $table->setStyle($options->getTableStyle($defaults));
         $headers = $tableTransformer->getHeaders();
         $isList = $tableTransformer->isList();
-        $includeHeaders = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
+        $includeHeaders = $options->getIncludeFieldLables($defaults);
         if ($includeHeaders && !$isList && !empty($headers)) {
             $table->setHeaders($headers);
         }
