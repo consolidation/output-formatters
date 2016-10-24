@@ -139,6 +139,11 @@ class FormatterOptions
         return $this->get(self::TABLE_STYLE, $defaults);
     }
 
+    public function setTableStyle($style)
+    {
+        return $this->setConfigurationValue(self::TABLE_STYLE, $style);
+    }
+
     /**
      * Determine whether or not field labels should be included.
      *
@@ -148,6 +153,11 @@ class FormatterOptions
     public function getIncludeFieldLables($defaults = [])
     {
         return $this->get(self::INCLUDE_FIELD_LABELS, $defaults);
+    }
+
+    public function setIncludeFieldLables($includFieldLables)
+    {
+        return $this->setConfigurationValue(self::INCLUDE_FIELD_LABELS, $includFieldLables);
     }
 
     /**
@@ -164,6 +174,11 @@ class FormatterOptions
         return $this->get(self::LIST_ORIENTATION, $defaults);
     }
 
+    public function setListOrientation($listOrientation)
+    {
+        return $this->setConfigurationValue(self::LIST_ORIENTATION, $listOrientation);
+    }
+
     /**
      * Get the row labels. These are used by structured list data structure during
      * list tranformation to replace row machine IDs with human-readable labels
@@ -174,6 +189,11 @@ class FormatterOptions
     public function getRowLabels($defaults = [])
     {
         return $this->get(self::ROW_LABELS, $defaults);
+    }
+
+    public function setRowLabels($rowLabels)
+    {
+        return $this->setConfigurationValue(self::ROW_LABELS, $rowLabels);
     }
 
     /**
@@ -197,6 +217,11 @@ class FormatterOptions
     public function getDefaultFields($defaults = [])
     {
         return $this->get(self::DEFAULT_FIELDS, $defaults, '');
+    }
+
+    public function setDefaultFields($fields)
+    {
+        return $this->setConfigurationValue(self::DEFAULT_FIELDS, $fields);
     }
 
     /**
@@ -223,6 +248,11 @@ class FormatterOptions
         return $this->get(self::FIELD_LABELS, $defaults);
     }
 
+    public function setFieldLabels($fieldLabels)
+    {
+        return $this->setConfigurationValue(self::FIELD_LABELS, $fieldLabels);
+    }
+
     /**
      * Get the single field that should be returned when a table is requested
      * in 'string' format.
@@ -235,6 +265,11 @@ class FormatterOptions
         return $this->get(self::DEFAULT_STRING_FIELD, $defaults, '');
     }
 
+    public function setDefaultStringField($defaultStringField)
+    {
+        return $this->setConfigurationValue(self::DEFAULT_STRING_FIELD, $defaultStringField);
+    }
+
     /**
      * Get the delimiter to use in a list
      *
@@ -244,6 +279,11 @@ class FormatterOptions
     public function getDelimiter($defaults = [])
     {
         return $this->get(self::DELIMITER, $defaults);
+    }
+
+    public function setDelimiter($delimiter)
+    {
+        return $this->setConfigurationValue(self::DELIMITER, $delimiter);
     }
 
     /**
