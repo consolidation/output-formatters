@@ -344,7 +344,7 @@ class FormatterOptions
     protected function parse($key, $value)
     {
         $optionFormat = $this->getOptionFormat($key);
-        if (!empty($optionFormat)) {
+        if (!empty($optionFormat) && is_string($value)) {
             return $this->$optionFormat($value);
         }
         return $value;

@@ -108,6 +108,20 @@ function doFormat(
     $formatterManager->write(output, $format, $data, $options);
 }
 ```
+The FormatterOptions class is used to hold the configuration for the command output--things such as the default field list for tabular output, and so on--and also the current user-selected options to use during rendering, which may be provided using a Symfony InputInterface object:
+```
+public function execute(InputInterface $input, OutputInterface $output)
+{
+    $options = new FormatterOptions();
+    $options
+      ->setInput($input)
+      ->setFieldLabels(['id' => 'ID', 'one' => 'First', 'two' => 'Second'])
+      ->setDefaultStringField('id');
+
+    $data = new RowsOfFields($this->getSomeData($input));
+    return $this->doFormat($output, $options->getFormat(), $data, $options);
+}
+```
 ## Comparison to Existing Solutions
 
 Formatters have been in use in Drush since version 5. Drush allows formatters to be defined using simple classes, some of which may be configured using metadata. Furthermore, nested formatters are also allowed; for example, a list formatter may be given another formatter to use to format each of its rows. Nested formatters also require nested metadata, causing the code that constructed formatters to become very complicated and unweildy.
