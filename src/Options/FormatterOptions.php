@@ -123,16 +123,41 @@ class FormatterOptions
      */
     protected function fetch($key, $defaults = [], $default = false)
     {
-        $values = array_merge(
+        $defaults = $this->defaultsForKey($key, $defaults, $default);
+        $values = $this->fetchRawValues($defaults);
+        return $values[$key];
+    }
+
+    /**
+     * Reduce provided defaults to the single item identified by '$key',
+     * if it exists, or an empty array otherwise.
+     *
+     * @param string $key
+     * @param array $defaults
+     * @return array
+     */
+    protected function defaultsForKey($key, $defaults, $default = false)
+    {
+        if (array_key_exists($key, $defaults)) {
+            return [$key => $defaults[$key]];
+        }
+        return [$key => $default];
+    }
+
+    /**
+     * Look up all of the items associated with the provided defaults.
+     *
+     * @param array $defaults
+     * @return array
+     */
+    protected function fetchRawValues($defaults = [])
+    {
+        return array_merge(
             $defaults,
             $this->getConfigurationData(),
             $this->getOptions(),
             $this->getInputOptions($defaults)
         );
-        if (array_key_exists($key, $values)) {
-            return $values[$key];
-        }
-        return $default;
     }
 
     /**
@@ -146,7 +171,7 @@ class FormatterOptions
     protected function parse($key, $value)
     {
         $optionFormat = $this->getOptionFormat($key);
-        if ($optionFormat) {
+        if (!empty($optionFormat)) {
             return $this->$optionFormat($value);
         }
         return $value;
@@ -179,7 +204,7 @@ class FormatterOptions
         if (array_key_exists($key, $propertyFormats)) {
             return "parse{$propertyFormats[$key]}";
         }
-        return false;
+        return '';
     }
 
     /**
