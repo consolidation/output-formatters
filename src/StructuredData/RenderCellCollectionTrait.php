@@ -42,7 +42,7 @@ trait RenderCellCollectionTrait
     {
         $flattenedRendererList = array_reduce(
             $this->rendererList,
-            function ($carry , $item) {
+            function ($carry, $item) {
                 return array_merge($carry, $item);
             },
             []
