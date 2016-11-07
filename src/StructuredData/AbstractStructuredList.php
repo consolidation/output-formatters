@@ -14,8 +14,9 @@ use Consolidation\OutputFormatters\Transformations\TableTransformation;
  *
  * It is presumed that every row contains the same keys.
  */
-abstract class AbstractStructuredList extends \ArrayObject implements RestructureInterface, ListDataInterface
+abstract class AbstractStructuredList extends \ArrayObject implements RestructureInterface, ListDataInterface, RenderCellCollectionInterface
 {
+    use RenderCellCollectionTrait;
     protected $data;
 
     public function __construct($data)

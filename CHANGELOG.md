@@ -1,5 +1,9 @@
 # Change Log
 
+### 2.1.0 - 7 November 2016
+
+- Add RenderCellCollections to structured lists, so that commands may add renderers to structured data without defining a new structured data subclass.
+
 ### 2.0.1 - 4 October 2016
 
 - Throw an exception if the client requests a field that does not exist.

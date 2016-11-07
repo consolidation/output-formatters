@@ -916,6 +916,29 @@ EOT;
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data, $options);
     }
 
+    protected function associativeListWithRenderer()
+    {
+        $data = [
+            'one' => 'apple',
+            'two' => ['banana', 'plantain'],
+            'three' => 'carrot',
+            'four' => ['peaches', 'pumpkin pie'],
+        ];
+        $list = new AssociativeList($data);
+
+        $list->addRendererFunction(
+            function ($key, $cellData, FormatterOptions $options)
+            {
+                if (is_array($cellData)) {
+                    return implode(',', $cellData);
+                }
+                return $cellData;
+            }
+        );
+
+        return $list;
+    }
+
     protected function associativeListWithCsvCells()
     {
         $data = [
@@ -929,8 +952,12 @@ EOT;
 
     function testAssociativeListWithCsvCells()
     {
-        $data = $this->associativeListWithCsvCells();
+        $this->doAssociativeListWithCsvCells($this->associativeListWithRenderer());
+        $this->doAssociativeListWithCsvCells($this->associativeListWithCsvCells());
+    }
 
+    function doAssociativeListWithCsvCells($data)
+    {
         $expected = <<<EOT
  ------- ---------------------
   One     apple
