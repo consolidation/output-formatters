@@ -77,6 +77,41 @@ class FormatterOptions
         return $override;
     }
 
+    public function setTableStyle($style)
+    {
+        return $this->setConfigurationValue(self::TABLE_STYLE, $style);
+    }
+
+    public function setIncludeFieldLables($includFieldLables)
+    {
+        return $this->setConfigurationValue(self::INCLUDE_FIELD_LABELS, $includFieldLables);
+    }
+
+    public function setListOrientation($listOrientation)
+    {
+        return $this->setConfigurationValue(self::LIST_ORIENTATION, $listOrientation);
+    }
+
+    public function setRowLabels($rowLabels)
+    {
+        return $this->setConfigurationValue(self::ROW_LABELS, $rowLabels);
+    }
+
+    public function setDefaultFields($fields)
+    {
+        return $this->setConfigurationValue(self::DEFAULT_FIELDS, $fields);
+    }
+
+    public function setFieldLabels($fieldLabels)
+    {
+        return $this->setConfigurationValue(self::FIELD_LABELS, $fieldLabels);
+    }
+
+    public function setDefaultStringField($defaultStringField)
+    {
+        return $this->setConfigurationValue(self::DEFAULT_STRING_FIELD, $defaultStringField);
+    }
+
     /**
      * Get a formatter option
      *
