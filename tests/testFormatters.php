@@ -851,6 +851,7 @@ EOT;
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
     }
 
+
     function testSimpleList()
     {
         $data = $this->simpleListExampleData();
@@ -863,6 +864,25 @@ EOT;
  ------- --------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
+
+        $expected = <<<EOT
+ ----- --------
+  I     apple
+  II    banana
+  III   carrot
+ ----- --------
+EOT;
+        // If we provide field labels, then the output will change to reflect that.
+        $formatterOptionsWithFieldLables = new FormatterOptions();
+        $formatterOptionsWithFieldLables
+            ->setFieldLabels(['one' => 'I', 'two' => 'II', 'three' => 'III']);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $formatterOptionsWithFieldLables);
+
+        // Adding an extra field that does not exist in the data set should not change the output
+        $formatterOptionsWithExtraFieldLables = new FormatterOptions();
+        $formatterOptionsWithExtraFieldLables
+            ->setFieldLabels(['one' => 'I', 'two' => 'II', 'three' => 'III', 'four' => 'IV']);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $formatterOptionsWithExtraFieldLables);
 
         $expectedRotated = <<<EOT
  ------- -------- --------

@@ -24,13 +24,13 @@ class ReorderFields
      */
     public function reorder($fields, $fieldLabels, $data)
     {
+        $firstRow = reset($data);
         if (empty($fieldLabels) && !empty($data)) {
-            $firstRow = reset($data);
             $fieldLabels = array_combine(array_keys($firstRow), array_map('ucfirst', array_keys($firstRow)));
         }
         $fields = $this->getSelectedFieldKeys($fields, $fieldLabels);
         if (empty($fields)) {
-            return $fieldLabels;
+            return array_intersect_key($fieldLabels, $firstRow);
         }
         return $this->reorderFieldLabels($fields, $fieldLabels, $data);
     }
