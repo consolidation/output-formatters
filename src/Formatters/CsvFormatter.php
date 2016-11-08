@@ -76,7 +76,7 @@ class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, Rende
     {
         $defaults = $this->getDefaultFormatterOptions();
 
-        $includeFieldLabels = $options->getIncludeFieldLables($defaults);
+        $includeFieldLabels = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
         if ($includeFieldLabels && ($data instanceof TableTransformation)) {
             $headers = $data->getHeaders();
             $this->writeOneLine($output, $headers, $options);
@@ -90,7 +90,7 @@ class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, Rende
     protected function writeOneLine(OutputInterface $output, $data, $options)
     {
         $defaults = $this->getDefaultFormatterOptions();
-        $delimiter = $options->getDelimiter($defaults);
+        $delimiter = $options->get(FormatterOptions::DELIMITER, $defaults);
 
         $output->write($this->csvEscape($data, $delimiter));
     }
