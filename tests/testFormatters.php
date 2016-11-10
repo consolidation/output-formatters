@@ -851,6 +851,22 @@ EOT;
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
     }
 
+    function testEmptyList()
+    {
+        $data = new RowsOfFields([]);
+
+        $expected = <<<EOT
+ --- ---- -----
+  I   II   III
+ --- ---- -----
+EOT;
+
+        // If we provide field labels, then the output will change to reflect that.
+        $formatterOptionsWithFieldLables = new FormatterOptions();
+        $formatterOptionsWithFieldLables
+            ->setFieldLabels(['one' => 'I', 'two' => 'II', 'three' => 'III']);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $formatterOptionsWithFieldLables);
+    }
 
     function testSimpleList()
     {

@@ -25,6 +25,9 @@ class ReorderFields
     public function reorder($fields, $fieldLabels, $data)
     {
         $firstRow = reset($data);
+        if (!$firstRow) {
+            $firstRow = $fieldLabels;
+        }
         if (empty($fieldLabels) && !empty($data)) {
             $fieldLabels = array_combine(array_keys($firstRow), array_map('ucfirst', array_keys($firstRow)));
         }
