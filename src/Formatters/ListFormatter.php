@@ -52,7 +52,7 @@ class ListFormatter implements FormatterInterface, OverrideRestructureInterface,
     protected function renderEachCell($originalData, $restructuredData, FormatterOptions $options)
     {
         foreach ($restructuredData as $key => $cellData) {
-            $restructuredData[$key] = $originalData->renderCell($key, $cellData, $options);
+            $restructuredData[$key] = $originalData->renderCell($key, $cellData, $options, $restructuredData);
         }
         return $restructuredData;
     }
