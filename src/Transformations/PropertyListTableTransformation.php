@@ -1,7 +1,7 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
-class AssociativeListTableTransformation extends TableTransformation
+class PropertyListTableTransformation extends TableTransformation
 {
     public function getOriginalData()
     {

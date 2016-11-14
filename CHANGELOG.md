@@ -3,6 +3,7 @@
 ### 3.0.0 - 14 November 2016
 
 - **Breaking** The RenderCellInterface is now provided a reference to the entire row data. Existing clients need only add the new parameter to their method defnition to update.
+- Rename AssociativeList to PropertyList, as many people seemed to find the former name confusing. AssociativeList is still available for use to preserve backwards compatibility, but it is deprecated.
 
 
 ### 2.1.0 - 7 November 2016
@@ -13,7 +14,7 @@
 ### 2.0.1 - 4 October 2016
 
 - Throw an exception if the client requests a field that does not exist.
-- Remove unwanted extra layer of nesting when formatting an AssociativeList with an array formatter (json, yaml, etc.).
+- Remove unwanted extra layer of nesting when formatting an PropertyList with an array formatter (json, yaml, etc.).
 
 
 ### 2.0.0 - 30 September 2016

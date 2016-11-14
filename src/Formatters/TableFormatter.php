@@ -16,7 +16,7 @@ use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
  * Display a table of data with the Symfony Table class.
  *
  * This formatter takes data of either the RowsOfFields or
- * AssociativeList data type.  Tables can be rendered with the
+ * PropertyList data type.  Tables can be rendered with the
  * rows running either vertically (the normal orientation) or
  * horizontally.  By default, associative lists will be displayed
  * as two columns, with the key in the first column and the
@@ -39,7 +39,7 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         return
             [
                 new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
-                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList')
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\PropertyList')
             ];
     }
 
@@ -49,7 +49,7 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
     public function validate($structuredData)
     {
         // If the provided data was of class RowsOfFields
-        // or AssociativeList, it will be converted into
+        // or PropertyList, it will be converted into
         // a TableTransformation object by the restructure call.
         if (!$structuredData instanceof TableDataInterface) {
             throw new IncompatibleDataException(

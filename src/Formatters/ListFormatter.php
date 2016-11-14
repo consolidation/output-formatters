@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This formatter prints a plain, unadorned list of data,
  * with each data item appearing on a separate line.  If you
  * wish your list to contain headers, then use the table
- * formatter, and wrap your data in an AssociativeList.
+ * formatter, and wrap your data in an PropertyList.
  */
 class ListFormatter implements FormatterInterface, OverrideRestructureInterface, RenderDataInterface
 {
