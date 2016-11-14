@@ -70,7 +70,7 @@ Additionally, structured data may be simplified to arrays via an array simplific
 
 By default, both the RowsOfFields and AssociativeList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or AssociativeList, as desired, and implement RenderCellInterface.  The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
 ```php
-public function renderCell($key, $cellData, FormatterOptions $options)
+public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
 {
     // 'my-field' is always an array; convert it to a comma-separated list.
     if ($key == 'my-field') {
@@ -84,7 +84,7 @@ public function renderCell($key, $cellData, FormatterOptions $options)
     return $cellData;
 }
 ```
-Note that if your data structure is printed with some formatter other than the table formatter, it will still be reordered per the selected fields, but cell rendering will **not** be done.
+Note that if your data structure is printed with a formatter other than one such as the table formatter, it will still be reordered per the selected fields, but cell rendering will **not** be done.
 
 ## API Usage
 

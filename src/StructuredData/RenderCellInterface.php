@@ -13,8 +13,10 @@ interface RenderCellInterface
      *
      * @param string $key Identifier of the cell being rendered
      * @param mixed $cellData The data to render
+     * @param FormatterOptions $options The formatting options
+     * @param array $rowData The rest of the row data
      *
      * @return mixed
      */
-    public function renderCell($key, $cellData, FormatterOptions $options);
+    public function renderCell($key, $cellData, FormatterOptions $options, $rowData);
 }

@@ -1,8 +1,14 @@
 # Change Log
 
+### 3.0.0 - 14 November 2016
+
+- **Breaking** The RenderCellInterface is now provided a reference to the entire row data. Existing clients need only add the new parameter to their method defnition to update.
+
+
 ### 2.1.0 - 7 November 2016
 
 - Add RenderCellCollections to structured lists, so that commands may add renderers to structured data without defining a new structured data subclass.
+
 
 ### 2.0.1 - 4 October 2016
 

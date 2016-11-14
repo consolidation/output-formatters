@@ -16,8 +16,8 @@ class CallableRenderer implements RenderCellInterface
     /**
      * {@inheritdoc}
      */
-    public function renderCell($key, $cellData, FormatterOptions $options)
+    public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
     {
-        return call_user_func($this->renderFunction, $key, $cellData, $options);
+        return call_user_func($this->renderFunction, $key, $cellData, $options, $rowData);
     }
 }

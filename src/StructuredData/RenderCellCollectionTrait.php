@@ -38,7 +38,7 @@ trait RenderCellCollectionTrait
     /**
      * {@inheritdoc}
      */
-    public function renderCell($key, $cellData, FormatterOptions $options)
+    public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
     {
         $flattenedRendererList = array_reduce(
             $this->rendererList,
@@ -49,7 +49,7 @@ trait RenderCellCollectionTrait
         );
 
         foreach ($flattenedRendererList as $renderer) {
-            $cellData = $renderer->renderCell($key, $cellData, $options);
+            $cellData = $renderer->renderCell($key, $cellData, $options, $rowData);
             if (is_string($cellData)) {
                 return $cellData;
             }
