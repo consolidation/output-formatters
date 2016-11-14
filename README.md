@@ -19,7 +19,7 @@ This process is managed by the [Consolidation/AnnotationCommand](https://github.
 This is a library intended to be used in some other project.  Require from your composer.json file:
 ```
     "require": {
-        "consolidation/output-formatters": "~1|~2"
+        "consolidation/output-formatters": "~3"
     },
 ```
 If you require the feature that allows a data table to be automatically reduced to a single element when the `string` format is selected, then you should require version "~2" instead. In most other respects, the 1.x and 2.x versions are compatible. See the [CHANGELOG](CHANGELOG.md) for details.
