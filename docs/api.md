@@ -27,6 +27,7 @@
 - [\Consolidation\OutputFormatters\StructuredData\CallableRenderer](#class-consolidationoutputformattersstructureddatacallablerenderer)
 - [\Consolidation\OutputFormatters\StructuredData\ListDataInterface (interface)](#interface-consolidationoutputformattersstructureddatalistdatainterface)
 - [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface (interface)](#interface-consolidationoutputformattersstructureddataoriginaldatainterface)
+- [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)
 - [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface)
 - [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellinterface)
 - [\Consolidation\OutputFormatters\StructuredData\RestructureInterface (interface)](#interface-consolidationoutputformattersstructureddatarestructureinterface)
@@ -35,9 +36,9 @@
 - [\Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface (interface)](#interface-consolidationoutputformattersstructureddataxmldomdatainterface)
 - [\Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema](#class-consolidationoutputformattersstructureddataxmlxmlschema)
 - [\Consolidation\OutputFormatters\StructuredData\Xml\XmlSchemaInterface (interface)](#interface-consolidationoutputformattersstructureddataxmlxmlschemainterface)
-- [\Consolidation\OutputFormatters\Transformations\AssociativeListTableTransformation](#class-consolidationoutputformatterstransformationsassociativelisttabletransformation)
 - [\Consolidation\OutputFormatters\Transformations\DomToArraySimplifier](#class-consolidationoutputformatterstransformationsdomtoarraysimplifier)
 - [\Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface (interface)](#interface-consolidationoutputformatterstransformationsoverriderestructureinterface)
+- [\Consolidation\OutputFormatters\Transformations\PropertyListTableTransformation](#class-consolidationoutputformatterstransformationspropertylisttabletransformation)
 - [\Consolidation\OutputFormatters\Transformations\PropertyParser](#class-consolidationoutputformatterstransformationspropertyparser)
 - [\Consolidation\OutputFormatters\Transformations\ReorderFields](#class-consolidationoutputformatterstransformationsreorderfields)
 - [\Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface (interface)](#interface-consolidationoutputformatterstransformationssimplifytoarrayinterface)
@@ -144,7 +145,7 @@
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Formatters\CsvFormatter
 
-> Comma-separated value formatters Display the provided structured data in a comma-separated list. If there are multiple records provided, then they will be printed one per line.  The primary data types accepted are RowsOfFields and AssociativeList. The later behaves exactly like the former, save for the fact that it contains but a single row. This formmatter can also accept a PHP array; this is also interpreted as a single-row of data with no header.
+> Comma-separated value formatters Display the provided structured data in a comma-separated list. If there are multiple records provided, then they will be printed one per line.  The primary data types accepted are RowsOfFields and PropertyList. The later behaves exactly like the former, save for the fact that it contains but a single row. This formmatter can also accept a PHP array; this is also interpreted as a single-row of data with no header.
 
 | Visibility | Function |
 |:-----------|:---------|
@@ -181,7 +182,7 @@
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Formatters\ListFormatter
 
-> Display the data in a simple list. This formatter prints a plain, unadorned list of data, with each data item appearing on a separate line.  If you wish your list to contain headers, then use the table formatter, and wrap your data in an AssociativeList.
+> Display the data in a simple list. This formatter prints a plain, unadorned list of data, with each data item appearing on a separate line.  If you wish your list to contain headers, then use the table formatter, and wrap your data in an PropertyList.
 
 | Visibility | Function |
 |:-----------|:---------|
@@ -255,7 +256,7 @@
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Formatters\TableFormatter
 
-> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or AssociativeList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
+> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or PropertyList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
 
 | Visibility | Function |
 |:-----------|:---------|
@@ -300,7 +301,7 @@
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Formatters\XmlFormatter
 
-> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or AssociativeList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
+> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or PropertyList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
 
 | Visibility | Function |
 |:-----------|:---------|
@@ -391,18 +392,14 @@
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\StructuredData\AssociativeList
 
-> Holds an array where each element of the array is one key : value pair.  The keys must be unique, as is typically the case for associative arrays.
+> Old name for PropertyList class.
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
-| public | <strong>restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\Consolidation\OutputFormatters\Transformations\TableTransformation</em><br /><em>Restructure this data for output by converting it into a table transformation object.</em> |
-| protected | <strong>defaultOptions()</strong> : <em>void</em> |
-| protected | <strong>instantiateTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>, <em>mixed</em> <strong>$rowLabels</strong>)</strong> : <em>void</em> |
 
-*This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)*
+*This class extends [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable*
+*This class implements \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
 
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\StructuredData\CallableRenderer
@@ -427,6 +424,22 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>getOriginalData()</strong> : <em>mixed</em><br /><em>Return the original data for this table.  Used by any formatter that expects an array.</em> |
+
+<hr /> 
+### Class: \Consolidation\OutputFormatters\StructuredData\PropertyList
+
+> Holds an array where each element of the array is one key : value pair.  The keys must be unique, as is typically the case for associative arrays.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
+| public | <strong>restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\Consolidation\OutputFormatters\Transformations\TableTransformation</em><br /><em>Restructure this data for output by converting it into a table transformation object.</em> |
+| protected | <strong>defaultOptions()</strong> : <em>void</em> |
+| protected | <strong>instantiateTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>, <em>mixed</em> <strong>$rowLabels</strong>)</strong> : <em>void</em> |
+
+*This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)*
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable*
 
 <hr /> 
 ### Interface: \Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface
@@ -510,17 +523,6 @@
 | public | <strong>arrayToXml(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>[\DOMDocument](http://php.net/manual/en/class.domdocument.php)</em><br /><em>Convert data to a format suitable for use in a list. By default, the array values will be used.  Implement ListDataInterface to use some other criteria (e.g. array keys).</em> |
 
 <hr /> 
-### Class: \Consolidation\OutputFormatters\Transformations\AssociativeListTableTransformation
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>getOriginalData()</strong> : <em>mixed</em> |
-
-*This class extends [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)*
-
-*This class implements [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface), [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable*
-
-<hr /> 
 ### Class: \Consolidation\OutputFormatters\Transformations\DomToArraySimplifier
 
 > Simplify a DOMDocument to an array.
@@ -547,6 +549,17 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>overrideRestructure(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Select data to use directly from the structured output, before the restructure operation has been executed.</em> |
+
+<hr /> 
+### Class: \Consolidation\OutputFormatters\Transformations\PropertyListTableTransformation
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>getOriginalData()</strong> : <em>mixed</em> |
+
+*This class extends [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)*
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface), [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable*
 
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Transformations\PropertyParser

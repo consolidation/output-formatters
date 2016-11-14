@@ -3,7 +3,7 @@ namespace Consolidation\OutputFormatters;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
-use Consolidation\OutputFormatters\StructuredData\AssociativeList;
+use Consolidation\OutputFormatters\StructuredData\PropertyList;
 
 class ValidFormatsTests extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
     function testValidFormats()
     {
         $arrayObjectRef = new \ReflectionClass('\ArrayObject');
-        $associativeListRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList');
+        $associativeListRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\PropertyList');
         $rowsOfFieldsRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields');
         $notADataType = new \ReflectionClass('\Consolidation\OutputFormatters\FormatterManager');
 
@@ -52,7 +52,7 @@ class ValidFormatsTests extends \PHPUnit_Framework_TestCase
         $validFormats = $this->formatterManager->validFormats([]);
         $this->assertEquals('csv,json,list,php,print-r,string,tsv,var_export,xml,yaml', implode(',', $validFormats));
 
-        // Check to see which formats can handle an AssociativeList
+        // Check to see which formats can handle an PropertyList
         $validFormats = $this->formatterManager->validFormats($associativeListRef);
         $this->assertEquals('csv,json,list,php,print-r,string,table,tsv,var_export,xml,yaml', implode(',', $validFormats));
 

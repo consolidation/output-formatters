@@ -1,11 +1,12 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
-use Consolidation\TestUtils\AssociativeListWithCsvCells;
+use Consolidation\TestUtils\PropertyListWithCsvCells;
 use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
+use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
+use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -334,7 +335,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\CsvFormatter must be one of an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields, an instance of Consolidation\OutputFormatters\StructuredData\AssociativeList or an array. Instead, a string was provided.
+     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\CsvFormatter must be one of an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields, an instance of Consolidation\OutputFormatters\StructuredData\PropertyList or an array. Instead, a string was provided.
      */
     function testBadDataTypeForCsv()
     {
@@ -837,6 +838,17 @@ EOT;
             'two' => 'banana',
             'three' => 'carrot',
         ];
+        return new PropertyList($data);
+    }
+
+    // Test with the deprecated data structure
+    protected function simpleListExampleDataUsingAssociativeList()
+    {
+        $data = [
+            'one' => 'apple',
+            'two' => 'banana',
+            'three' => 'carrot',
+        ];
         return new AssociativeList($data);
     }
 
@@ -870,7 +882,6 @@ EOT;
 
     function testSimpleList()
     {
-        $data = $this->simpleListExampleData();
 
         $expected = <<<EOT
  ------- --------
@@ -879,6 +890,12 @@ EOT;
   Three   carrot
  ------- --------
 EOT;
+        $data = $this->simpleListExampleDataUsingAssociativeList();
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data);
+
+        $data = $this->simpleListExampleData();
+
         $this->assertFormattedOutputMatches($expected, 'table', $data);
 
         $expected = <<<EOT
@@ -960,7 +977,7 @@ EOT;
             'three' => 'carrot',
             'four' => ['peaches', 'pumpkin pie'],
         ];
-        $list = new AssociativeList($data);
+        $list = new PropertyList($data);
 
         $list->addRendererFunction(
             function ($key, $cellData, FormatterOptions $options)
@@ -983,16 +1000,16 @@ EOT;
             'three' => 'carrot',
             'four' => ['peaches', 'pumpkin pie'],
         ];
-        return new AssociativeListWithCsvCells($data);
+        return new PropertyListWithCsvCells($data);
     }
 
-    function testAssociativeListWithCsvCells()
+    function testPropertyListWithCsvCells()
     {
-        $this->doAssociativeListWithCsvCells($this->associativeListWithRenderer());
-        $this->doAssociativeListWithCsvCells($this->associativeListWithCsvCells());
+        $this->doPropertyListWithCsvCells($this->associativeListWithRenderer());
+        $this->doPropertyListWithCsvCells($this->associativeListWithCsvCells());
     }
 
-    function doAssociativeListWithCsvCells($data)
+    function doPropertyListWithCsvCells($data)
     {
         $expected = <<<EOT
  ------- ---------------------

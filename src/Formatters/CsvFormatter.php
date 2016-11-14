@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Display the provided structured data in a comma-separated list. If
  * there are multiple records provided, then they will be printed
  * one per line.  The primary data types accepted are RowsOfFields and
- * AssociativeList. The later behaves exactly like the former, save for
+ * PropertyList. The later behaves exactly like the former, save for
  * the fact that it contains but a single row. This formmatter can also
  * accept a PHP array; this is also interpreted as a single-row of data
  * with no header.
@@ -29,7 +29,7 @@ class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, Rende
         return
             [
                 new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
-                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\AssociativeList'),
+                new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\PropertyList'),
                 new \ReflectionClass('\ArrayObject'),
             ];
     }
@@ -37,7 +37,7 @@ class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, Rende
     public function validate($structuredData)
     {
         // If the provided data was of class RowsOfFields
-        // or AssociativeList, it will be converted into
+        // or PropertyList, it will be converted into
         // a TableTransformation object.
         if (!is_array($structuredData) && (!$structuredData instanceof TableTransformation)) {
             throw new IncompatibleDataException(

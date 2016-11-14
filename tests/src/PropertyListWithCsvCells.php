@@ -2,10 +2,10 @@
 namespace Consolidation\TestUtils;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-use Consolidation\OutputFormatters\StructuredData\AssociativeList;
+use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\OutputFormatters\StructuredData\RenderCellInterface;
 
-class AssociativeListWithCsvCells extends AssociativeList implements RenderCellInterface
+class PropertyListWithCsvCells extends PropertyList implements RenderCellInterface
 {
     public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
     {
