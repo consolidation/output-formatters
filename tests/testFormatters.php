@@ -527,7 +527,7 @@ EOT;
     function testTableWithWordWrapping()
     {
         $options = new FormatterOptions();
-        $options->setWidth(40);
+        $options->setWidth(42);
 
         $data = [
             [
