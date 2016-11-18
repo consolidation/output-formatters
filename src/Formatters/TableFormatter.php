@@ -67,6 +67,7 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
      */
     public function write(OutputInterface $output, $tableTransformer, FormatterOptions $options)
     {
+        $headers = [];
         $defaults = [
             FormatterOptions::TABLE_STYLE => 'consolidation',
             FormatterOptions::INCLUDE_FIELD_LABELS => true,
@@ -77,14 +78,14 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         static::addCustomTableStyles($table);
 
         $table->setStyle($options->get(FormatterOptions::TABLE_STYLE, $defaults));
-        $headers = $tableTransformer->getHeaders();
         $isList = $tableTransformer->isList();
         $includeHeaders = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
-        if ($includeHeaders && !$isList && !empty($headers)) {
+        if ($includeHeaders && !$isList) {
+            $headers = $tableTransformer->getHeaders();
             $table->setHeaders($headers);
         }
         $data = $tableTransformer->getTableData($includeHeaders && $isList);
-        $data = $this->wrap($data, $table->getStyle(), $options);
+        $data = $this->wrap($headers, $data, $table->getStyle(), $options);
         $table->setRows($data);
         $table->render();
     }
@@ -96,10 +97,16 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
      * @param FormatterOptions $options
      * @return array
      */
-    protected function wrap($data, TableStyle $tableStyle, FormatterOptions $options)
+    protected function wrap($headers, $data, TableStyle $tableStyle, FormatterOptions $options)
     {
         $wrapper = new WordWrapper($options->get(FormatterOptions::TERMINAL_WIDTH));
         $wrapper->setPaddingFromStyle($tableStyle);
+        if (!empty($headers)) {
+            $headerLengths = array_map(function ($item) {
+                return strlen($item);
+            }, $headers);
+            $wrapper->setMinimumWidths($headerLengths);
+        }
         return $wrapper->wrap($data);
     }
 
