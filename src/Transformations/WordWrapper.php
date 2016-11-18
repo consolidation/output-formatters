@@ -30,7 +30,7 @@ class WordWrapper
 
         $this->extraPaddingAtBeginningOfLine = 0;
         $this->extraPaddingAtEndOfLine = $verticalBorderLen;
-        $this->paddingInEachCell = $verticalBorderLen + $paddingLen;
+        $this->paddingInEachCell = $verticalBorderLen + $paddingLen + 1;
     }
 
     /**
