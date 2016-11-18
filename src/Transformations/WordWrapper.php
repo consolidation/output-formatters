@@ -1,13 +1,36 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
+use Symfony\Component\Console\Helper\TableStyle;
+
 class WordWrapper
 {
     protected $width;
 
+    // For now, hardcode these to match what the Symfony Table helper does.
+    // Note that these might actually need to be adjusted depending on the
+    // table style.
+    protected $extraPaddingAtBeginningOfLine = 0;
+    protected $extraPaddingAtEndOfLine = 0;
+    protected $paddingInEachCell = 3;
+
     public function __construct($width)
     {
         $this->width = $width;
+    }
+
+    /**
+     * Calculate our padding widths from the specified table style.
+     * @param TableStyle $style
+     */
+    public function setPaddingFromStyle(TableStyle $style)
+    {
+        $verticalBorderLen = strlen($style->getVerticalBorderChar());
+        $paddingLen = strlen($style->getPaddingChar());
+
+        $this->extraPaddingAtBeginningOfLine = 0;
+        $this->extraPaddingAtEndOfLine = $verticalBorderLen;
+        $this->paddingInEachCell = $verticalBorderLen + $paddingLen;
     }
 
     /**
@@ -95,7 +118,7 @@ class WordWrapper
 
         // We determine what width we have available to use, and what width the
         // above "ideal" columns take up.
-        $available_width = $this->width - (count($auto_widths) * 2);
+        $available_width = $this->width - ($this->extraPaddingAtBeginningOfLine + $this->extraPaddingAtEndOfLine + (count($auto_widths) * $this->paddingInEachCell));
         $auto_width_current = array_sum($auto_widths);
 
         // If we need to reduce a column so that we can fit the space we use this

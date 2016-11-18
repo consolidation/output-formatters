@@ -84,7 +84,7 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
             $table->setHeaders($headers);
         }
         $data = $tableTransformer->getTableData($includeHeaders && $isList);
-        $data = $this->wrap($data, $options);
+        $data = $this->wrap($data, $table->getStyle(), $options);
         $table->setRows($data);
         $table->render();
     }
@@ -92,12 +92,14 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
     /**
      * Wrap the table data
      * @param array $data
+     * @param TableStyle $tableStyle
      * @param FormatterOptions $options
      * @return array
      */
-    protected function wrap($data, FormatterOptions $options)
+    protected function wrap($data, TableStyle $tableStyle, FormatterOptions $options)
     {
         $wrapper = new WordWrapper($options->get(FormatterOptions::TERMINAL_WIDTH));
+        $wrapper->setPaddingFromStyle($tableStyle);
         return $wrapper->wrap($data);
     }
 
