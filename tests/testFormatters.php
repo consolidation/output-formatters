@@ -1067,6 +1067,12 @@ EOT;
 
         $expectedCsvNoHeaders = 'apple,"banana,plantain",carrot,"peaches,pumpkin pie"';
         $this->assertFormattedOutputMatches($expectedCsvNoHeaders, 'csv', $data, new FormatterOptions(), ['include-field-labels' => false]);
+
+        $expectedTsv = <<< EOT
+apple\tbanana,plantain\tcarrot\tpeaches,pumpkin pie
+EOT;
+        $this->assertFormattedOutputMatches($expectedTsv, 'tsv', $data);
+
     }
 
     function testSimpleListWithFieldLabels()

@@ -626,7 +626,7 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$width</strong>)</strong> : <em>void</em> |
-| public | <strong>wrap(</strong><em>mixed</em> <strong>$rows</strong>, <em>array</em> <strong>$widths=array()</strong>)</strong> : <em>array</em><br /><em>Wrap the cells in each part of the provided data table</em> |
+| public | <strong>wrap(</strong><em>array</em> <strong>$rows</strong>, <em>array</em> <strong>$widths=array()</strong>)</strong> : <em>array</em><br /><em>Wrap the cells in each part of the provided data table</em> |
 | protected | <strong>columnAutowidth(</strong><em>array</em> <strong>$rows</strong>, <em>array</em> <strong>$widths</strong>)</strong> : <em>void</em><br /><em>Determine the best fit for column widths. Ported from Drush. (in characters) - these will be left as is.</em> |
 | protected | <strong>wrapCell(</strong><em>mixed</em> <strong>$cell</strong>, <em>string</em> <strong>$cellWidth</strong>)</strong> : <em>mixed</em><br /><em>Wrap one cell.  Guard against modifying non-strings and then call through to wordwrap().</em> |
 
