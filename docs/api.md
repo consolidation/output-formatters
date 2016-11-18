@@ -269,7 +269,7 @@
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
 | protected static | <strong>addCustomTableStyles(</strong><em>mixed</em> <strong>$table</strong>)</strong> : <em>void</em><br /><em>Add our custom table style(s) to the table.</em> |
 | protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
-| protected | <strong>wrap(</strong><em>array</em> <strong>$data</strong>, <em>\Symfony\Component\Console\Helper\TableStyle</em> <strong>$tableStyle</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Wrap the table data</em> |
+| protected | <strong>wrap(</strong><em>mixed</em> <strong>$headers</strong>, <em>array</em> <strong>$data</strong>, <em>\Symfony\Component\Console\Helper\TableStyle</em> <strong>$tableStyle</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Wrap the table data</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
 
@@ -626,9 +626,13 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$width</strong>)</strong> : <em>void</em> |
+| public | <strong>setMinimumWidths(</strong><em>array</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>If columns have minimum widths, then set them here.</em> |
 | public | <strong>setPaddingFromStyle(</strong><em>\Symfony\Component\Console\Helper\TableStyle</em> <strong>$style</strong>)</strong> : <em>void</em><br /><em>Calculate our padding widths from the specified table style.</em> |
 | public | <strong>wrap(</strong><em>array</em> <strong>$rows</strong>, <em>array</em> <strong>$widths=array()</strong>)</strong> : <em>array</em><br /><em>Wrap the cells in each part of the provided data table</em> |
 | protected | <strong>columnAutowidth(</strong><em>array</em> <strong>$rows</strong>, <em>array</em> <strong>$widths</strong>)</strong> : <em>void</em><br /><em>Determine the best fit for column widths. Ported from Drush. (in characters) - these will be left as is.</em> |
+| protected static | <strong>longestWordLength(</strong><em>string</em> <strong>$str</strong>)</strong> : <em>int</em><br /><em>Return the length of the longest word in the string.</em> |
+| protected | <strong>selectColumnToReduce(</strong><em>mixed</em> <strong>$col_dist</strong>, <em>mixed</em> <strong>$auto_widths</strong>, <em>mixed</em> <strong>$max_word_lens</strong>)</strong> : <em>void</em> |
+| protected | <strong>shouldSelectThisColumn(</strong><em>mixed</em> <strong>$count</strong>, <em>mixed</em> <strong>$counts</strong>, <em>mixed</em> <strong>$width</strong>)</strong> : <em>bool</em> |
 | protected | <strong>wrapCell(</strong><em>mixed</em> <strong>$cell</strong>, <em>string</em> <strong>$cellWidth</strong>)</strong> : <em>mixed</em><br /><em>Wrap one cell.  Guard against modifying non-strings and then call through to wordwrap().</em> |
 
 <hr /> 

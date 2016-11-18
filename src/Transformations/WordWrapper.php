@@ -6,6 +6,7 @@ use Symfony\Component\Console\Helper\TableStyle;
 class WordWrapper
 {
     protected $width;
+    protected $minimumWidths = [];
 
     // For now, hardcode these to match what the Symfony Table helper does.
     // Note that these might actually need to be adjusted depending on the
@@ -25,12 +26,21 @@ class WordWrapper
      */
     public function setPaddingFromStyle(TableStyle $style)
     {
-        $verticalBorderLen = strlen($style->getVerticalBorderChar());
+        $verticalBorderLen = strlen(sprintf($style->getBorderFormat(), $style->getVerticalBorderChar()));
         $paddingLen = strlen($style->getPaddingChar());
 
         $this->extraPaddingAtBeginningOfLine = 0;
         $this->extraPaddingAtEndOfLine = $verticalBorderLen;
         $this->paddingInEachCell = $verticalBorderLen + $paddingLen + 1;
+    }
+
+    /**
+     * If columns have minimum widths, then set them here.
+     * @param array $minimumWidths
+     */
+    public function setMinimumWidths($minimumWidths)
+    {
+        $this->minimumWidths = $minimumWidths;
     }
 
     /**
@@ -90,9 +100,15 @@ class WordWrapper
         // This is an array of descending character length keys (i.e. starting at
         // the rightmost character column), with the value indicating the number
         // of rows where that character column is present.
-        $col_dist = array();
+        $col_dist = [];
+        // We will also calculate the longest word in each column
+        $max_word_lens = [];
         foreach ($rows as $rowkey => $row) {
             foreach ($row as $col_id => $cell) {
+                $longest_word_len = static::longestWordLength($cell);
+                if ((!isset($max_word_lens[$col_id]) || ($max_word_lens[$col_id] < $longest_word_len))) {
+                    $max_word_lens[$col_id] = $longest_word_len;
+                }
                 if (empty($widths[$col_id])) {
                     $length = strlen($cell);
                     if ($length == 0) {
@@ -108,6 +124,7 @@ class WordWrapper
                 }
             }
         }
+
         foreach ($col_dist as $col_id => $count) {
             // Sort the distribution in decending key order.
             krsort($col_dist[$col_id]);
@@ -121,30 +138,20 @@ class WordWrapper
         $available_width = $this->width - ($this->extraPaddingAtBeginningOfLine + $this->extraPaddingAtEndOfLine + (count($auto_widths) * $this->paddingInEachCell));
         $auto_width_current = array_sum($auto_widths);
 
+        // If we cannot fit into the minimum width anyway, then just return
+        // the max word length of each column as the 'ideal'
+        $minimumIdealLength = array_sum($this->minimumWidths);
+        if ($minimumIdealLength && ($available_width < $minimumIdealLength)) {
+            return $max_word_lens;
+        }
+
         // If we need to reduce a column so that we can fit the space we use this
         // loop to figure out which column will cause the "least wrapping",
         // (relative to the other columns) and reduce the width of that column.
         while ($auto_width_current > $available_width) {
-            $count = 0;
-            $width = 0;
-            foreach ($col_dist as $col_id => $counts) {
-                // If we are just starting out, select the first column.
-                if ($count == 0 ||
-                 // OR: if this column would cause less wrapping than the currently
-                 // selected column, then select it.
-                 (current($counts) < $count) ||
-                 // OR: if this column would cause the same amount of wrapping, but is
-                 // longer, then we choose to wrap the longer column (proportionally
-                 // less wrapping, and helps avoid triple line wraps).
-                 (current($counts) == $count && key($counts) > $width)) {
-                    // Select the column number, and record the count and current width
-                    // for later comparisons.
-                    $column = $col_id;
-                    $count = current($counts);
-                    $width = key($counts);
-                }
-            }
-            if ($width <= 1) {
+            list($column, $width) = $this->selectColumnToReduce($col_dist, $auto_widths, $max_word_lens);
+
+            if (!$column || $width <= 1) {
                 // If we have reached a width of 1 then give up, so wordwrap can still progress.
                 break;
             }
@@ -157,5 +164,64 @@ class WordWrapper
             unset($col_dist[$column][$width]);
         }
         return $auto_widths;
+    }
+
+    protected function selectColumnToReduce($col_dist, $auto_widths, $max_word_lens)
+    {
+        $column = false;
+        $count = 0;
+        $width = 0;
+        foreach ($col_dist as $col_id => $counts) {
+            // Of the columns whose length is still > than the the lenght
+            // of their maximum word length
+            if ($auto_widths[$col_id] > $max_word_lens[$col_id]) {
+                if ($this->shouldSelectThisColumn($count, $counts, $width)) {
+                    $column = $col_id;
+                    $count = current($counts);
+                    $width = key($counts);
+                }
+            }
+        }
+        if ($column !== false) {
+            return [$column, $width];
+        }
+        foreach ($col_dist as $col_id => $counts) {
+            if (empty($this->minimumWidths) || ($auto_widths[$col_id] > $this->minimumWidths[$col_id])) {
+                if ($this->shouldSelectThisColumn($count, $counts, $width)) {
+                    $column = $col_id;
+                    $count = current($counts);
+                    $width = key($counts);
+                }
+            }
+        }
+        return [$column, $width];
+    }
+
+    protected function shouldSelectThisColumn($count, $counts, $width)
+    {
+        return
+            // If we are just starting out, select the first column.
+            ($count == 0) ||
+            // OR: if this column would cause less wrapping than the currently
+            // selected column, then select it.
+            (current($counts) < $count) ||
+            // OR: if this column would cause the same amount of wrapping, but is
+            // longer, then we choose to wrap the longer column (proportionally
+            // less wrapping, and helps avoid triple line wraps).
+            (current($counts) == $count && key($counts) > $width);
+    }
+
+    /**
+     * Return the length of the longest word in the string.
+     * @param string $str
+     * @return int
+     */
+    protected static function longestWordLength($str)
+    {
+        $words = preg_split('/[ -]/', $str);
+        $lengths = array_map(function ($s) {
+            return strlen($s);
+        }, $words);
+        return max($lengths);
     }
 }
