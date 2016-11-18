@@ -46,6 +46,7 @@ class FormatterOptions
     const DEFAULT_FIELDS = 'default-fields';
     const DEFAULT_STRING_FIELD = 'default-string-field';
     const DELIMITER = 'delimiter';
+    const TERMINAL_WIDTH = 'width';
 
     /**
      * Create a new FormatterOptions with the configuration data and the
@@ -110,6 +111,11 @@ class FormatterOptions
     public function setDefaultStringField($defaultStringField)
     {
         return $this->setConfigurationValue(self::DEFAULT_STRING_FIELD, $defaultStringField);
+    }
+
+    public function setWidth($width)
+    {
+        return $this->setConfigurationValue(self::TERMINAL_WIDTH, $width);
     }
 
     /**

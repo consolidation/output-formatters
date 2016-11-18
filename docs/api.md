@@ -43,6 +43,7 @@
 - [\Consolidation\OutputFormatters\Transformations\ReorderFields](#class-consolidationoutputformatterstransformationsreorderfields)
 - [\Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface (interface)](#interface-consolidationoutputformatterstransformationssimplifytoarrayinterface)
 - [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)
+- [\Consolidation\OutputFormatters\Transformations\WordWrapper](#class-consolidationoutputformatterstransformationswordwrapper)
 - [\Consolidation\OutputFormatters\Validate\ValidationInterface (interface)](#interface-consolidationoutputformattersvalidatevalidationinterface)
 - [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface (interface)](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface)
 
@@ -266,7 +267,9 @@
 | public | <strong>validDataTypes()</strong> : <em>void</em> |
 | public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+| protected static | <strong>addCustomTableStyles(</strong><em>mixed</em> <strong>$table</strong>)</strong> : <em>void</em><br /><em>Add our custom table style(s) to the table.</em> |
 | protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
+| protected | <strong>wrap(</strong><em>array</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Wrap the table data</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
 
@@ -352,6 +355,7 @@
 | public | <strong>setOptions(</strong><em>array</em> <strong>$options</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Set all of the options that were specified by the user for this request.</em> |
 | public | <strong>setRowLabels(</strong><em>mixed</em> <strong>$rowLabels</strong>)</strong> : <em>void</em> |
 | public | <strong>setTableStyle(</strong><em>mixed</em> <strong>$style</strong>)</strong> : <em>void</em> |
+| public | <strong>setWidth(</strong><em>mixed</em> <strong>$width</strong>)</strong> : <em>void</em> |
 | protected | <strong>defaultsForKey(</strong><em>string</em> <strong>$key</strong>, <em>array</em> <strong>$defaults</strong>, <em>bool</em> <strong>$default=false</strong>)</strong> : <em>array</em><br /><em>Reduce provided defaults to the single item identified by '$key', if it exists, or an empty array otherwise.</em> |
 | protected | <strong>fetch(</strong><em>string</em> <strong>$key</strong>, <em>array</em> <strong>$defaults=array()</strong>, <em>bool/mixed</em> <strong>$default=false</strong>)</strong> : <em>mixed</em><br /><em>Look up a key, and return its raw value.</em> |
 | protected | <strong>fetchRawValues(</strong><em>array</em> <strong>$defaults=array()</strong>)</strong> : <em>array</em><br /><em>Look up all of the items associated with the provided defaults.</em> |
@@ -615,6 +619,16 @@
 *This class extends \ArrayObject*
 
 *This class implements \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface)*
+
+<hr /> 
+### Class: \Consolidation\OutputFormatters\Transformations\WordWrapper
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$width</strong>)</strong> : <em>void</em> |
+| public | <strong>wrap(</strong><em>mixed</em> <strong>$rows</strong>, <em>array</em> <strong>$widths=array()</strong>)</strong> : <em>array</em><br /><em>Wrap the cells in each part of the provided data table</em> |
+| protected | <strong>columnAutowidth(</strong><em>array</em> <strong>$rows</strong>, <em>array</em> <strong>$widths</strong>)</strong> : <em>void</em><br /><em>Determine the best fit for column widths. Ported from Drush. (in characters) - these will be left as is.</em> |
+| protected | <strong>wrapCell(</strong><em>mixed</em> <strong>$cell</strong>, <em>string</em> <strong>$cellWidth</strong>)</strong> : <em>mixed</em><br /><em>Wrap one cell.  Guard against modifying non-strings and then call through to wordwrap().</em> |
 
 <hr /> 
 ### Interface: \Consolidation\OutputFormatters\Validate\ValidationInterface

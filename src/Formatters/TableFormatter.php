@@ -11,6 +11,7 @@ use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\Transformations\ReorderFields;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
+use Consolidation\OutputFormatters\Transformations\WordWrapper;
 
 /**
  * Display a table of data with the Symfony Table class.
@@ -61,7 +62,6 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         return $structuredData;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -74,6 +74,38 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
 
         $table = new Table($output);
 
+        static::addCustomTableStyles($table);
+
+        $table->setStyle($options->get(FormatterOptions::TABLE_STYLE, $defaults));
+        $headers = $tableTransformer->getHeaders();
+        $isList = $tableTransformer->isList();
+        $includeHeaders = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
+        if ($includeHeaders && !$isList && !empty($headers)) {
+            $table->setHeaders($headers);
+        }
+        $data = $tableTransformer->getTableData($includeHeaders && $isList);
+        $data = $this->wrap($data, $options);
+        $table->setRows($data);
+        $table->render();
+    }
+
+    /**
+     * Wrap the table data
+     * @param array $data
+     * @param FormatterOptions $options
+     * @return array
+     */
+    protected function wrap($data, FormatterOptions $options)
+    {
+        $wrapper = new WordWrapper($options->get(FormatterOptions::TERMINAL_WIDTH));
+        return $wrapper->wrap($data);
+    }
+
+    /**
+     * Add our custom table style(s) to the table.
+     */
+    protected static function addCustomTableStyles($table)
+    {
         // The 'consolidation' style is the same as the 'symfony-style-guide'
         // style, except it maintains the colored headers used in 'default'.
         $consolidationStyle = new TableStyle();
@@ -83,15 +115,5 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
             ->setCrossingChar(' ')
         ;
         $table->setStyleDefinition('consolidation', $consolidationStyle);
-
-        $table->setStyle($options->get(FormatterOptions::TABLE_STYLE, $defaults));
-        $headers = $tableTransformer->getHeaders();
-        $isList = $tableTransformer->isList();
-        $includeHeaders = $options->get(FormatterOptions::INCLUDE_FIELD_LABELS, $defaults);
-        if ($includeHeaders && !$isList && !empty($headers)) {
-            $table->setHeaders($headers);
-        }
-        $table->setRows($tableTransformer->getTableData($includeHeaders && $isList));
-        $table->render();
     }
 }

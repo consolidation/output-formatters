@@ -524,6 +524,36 @@ EOT;
         $this->assertFormattedOutputMatches($expectedTsvWithHeaders, 'tsv', $data, new FormatterOptions(), ['include-field-labels' => true]);
     }
 
+    function testTableWithWordWrapping()
+    {
+        $options = new FormatterOptions();
+        $options->setWidth(40);
+
+        $data = [
+            [
+                'first' => 'This is a really long cell that contains a lot of data. When it is rendered, it should be wrapped across multiple lines.',
+                'second' => 'This is the second column of the same table. It is also very long, and should be wrapped across multiple lines, just like the first column.',
+            ]
+        ];
+        $data = new RowsOfFields($data);
+
+        $expected = <<<EOT
+ ------------------- --------------------
+  First               Second
+ ------------------- --------------------
+  This is a really    This is the second
+  long cell that      column of the same
+  contains a lot of   table. It is also
+  data. When it is    very long, and
+  rendered, it        should be wrapped
+  should be wrapped   across multiple
+  across multiple     lines, just like
+  lines.              the first column.
+ ------------------- --------------------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
     protected function simpleTableExampleData()
     {
         $data = [
