@@ -941,6 +941,20 @@ EOT;
             ->setFieldLabels(['one' => 'I', 'two' => 'II', 'three' => 'III']);
         $this->assertFormattedOutputMatches($expected, 'table', $data, $formatterOptionsWithFieldLables);
 
+        $expectedDrushStyleTable = <<<EOT
+ One   : apple
+ Two   : banana
+ Three : carrot
+EOT;
+
+        // If we provide field labels, then the output will change to reflect that.
+        $formatterOptionsWithFieldLables = new FormatterOptions();
+        $formatterOptionsWithFieldLables
+            ->setTableStyle('compact')
+            ->setListDelimiter(':');
+        $this->assertFormattedOutputMatches($expectedDrushStyleTable, 'table', $data, $formatterOptionsWithFieldLables);
+
+
         // Adding an extra field that does not exist in the data set should not change the output
         $formatterOptionsWithExtraFieldLables = new FormatterOptions();
         $formatterOptionsWithExtraFieldLables
