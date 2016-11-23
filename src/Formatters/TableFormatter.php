@@ -99,6 +99,7 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
             $table->setHeaders($headers);
         }
 
+        // todo: $output->getFormatter();
         $data = $this->wrap($headers, $data, $table->getStyle(), $options);
         $table->setRows($data);
         $table->render();
