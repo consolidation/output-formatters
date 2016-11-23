@@ -1275,8 +1275,8 @@ EOT;
 {
     "name": "widget-collection",
     "description": "A couple of widgets.",
-    "widgets": [
-        {
+    "widgets": {
+        "usual": {
             "name": "usual",
             "colors": [
                 "red",
@@ -1289,7 +1289,7 @@ EOT;
                 "triangle"
             ]
         },
-        {
+        "unusual": {
             "name": "unusual",
             "colors": [
                 "muave",
@@ -1302,7 +1302,7 @@ EOT;
                 "trapazoid"
             ]
         }
-    ]
+    }
 }
 EOT;
 
