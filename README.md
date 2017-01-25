@@ -2,7 +2,11 @@
 
 Apply transformations to structured data to write output in different formats.
 
-[![Travis CI](https://travis-ci.org/consolidation/output-formatters.svg?branch=master)](https://travis-ci.org/consolidation/output-formatters) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation/output-formatters/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/consolidation/output-formatters/badge.svg?branch=master)](https://coveralls.io/github/consolidation/output-formatters?branch=master) [![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
+[![Travis CI](https://travis-ci.org/consolidation/output-formatters.svg?branch=master)](https://travis-ci.org/consolidation/output-formatters)
+[![Windows CI](https://ci.appveyor.com/api/projects/status/umyfuujca6d2g2k6?svg=true)](https://ci.appveyor.com/project/greg-1-anderson/output-formatters)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation/output-formatters/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/consolidation/output-formatters/badge.svg?branch=master)](https://coveralls.io/github/consolidation/output-formatters?branch=master)
+[![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
 
 ## Component Status
 
