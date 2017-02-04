@@ -2,12 +2,13 @@
 namespace Consolidation\OutputFormatters;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 
-class APIDocsTests extends \PHPUnit_Framework_TestCase
+class APIDocsTests extends TestCase
 {
     function testAPIDocs()
     {

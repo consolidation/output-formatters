@@ -1,11 +1,12 @@
 <?php
 namespace Consolidation\OutputFormatters;
 
+use PHPUnit\Framework\TestCase;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 
-class ValidFormatsTests extends \PHPUnit_Framework_TestCase
+class ValidFormatsTests extends TestCase
 {
     protected $formatterManager;
 
