@@ -842,6 +842,17 @@ EOT;
  -----
 EOT;
         $this->assertFormattedOutputMatches($expectedSingleField, 'table', $data, $configurationData, ['field' => 'San']);
+
+        $expectedEmptyColumn = <<<EOT
+ -----
+  San
+ -----
+EOT;
+
+        $this->assertFormattedOutputMatches($expectedEmptyColumn, 'table', new RowsOfFields([]), $configurationData, ['field' => 'San']);
+
+        $this->assertFormattedOutputMatches('', '', new RowsOfFields([]), $configurationData, ['field' => 'San']);
+        $this->assertFormattedOutputMatches('[]', 'json', new RowsOfFields([]), $configurationData, ['field' => 'San']);
     }
 
     /**
