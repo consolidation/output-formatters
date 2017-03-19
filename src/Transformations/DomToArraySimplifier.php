@@ -85,7 +85,8 @@ class DomToArraySimplifier implements SimplifyToArrayInterface
             return [];
         }
         $uniformChildrenName = $this->hasUniformChildren($element);
-        if ("{$uniformChildrenName}s" == $element->nodeName) {
+        // Check for plurals.
+        if (in_array($element->nodeName, ["{$uniformChildrenName}s", "{$uniformChildrenName}es"])) {
             $result = $this->getUniformChildren($element->nodeName, $element);
         } else {
             $result = $this->getUniqueChildren($element->nodeName, $element);
