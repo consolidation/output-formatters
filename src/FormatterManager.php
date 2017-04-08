@@ -46,6 +46,7 @@ class FormatterManager
             'tsv' => '\Consolidation\OutputFormatters\Formatters\TsvFormatter',
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
             'sections' => '\Consolidation\OutputFormatters\Formatters\SectionsFormatter',
+            'help' => '\Consolidation\OutputFormatters\Formatters\HelpFormatter',
         ];
         foreach ($defaultFormatters as $id => $formatterClassname) {
             $formatter = new $formatterClassname;
