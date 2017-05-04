@@ -10,9 +10,9 @@ class DataCellWidths
 {
     protected $widths;
 
-    public function __consturct()
+    public function __construct($widths = [])
     {
-        $this->widths = [];
+        $this->widths = $widths;
     }
 
     /**
@@ -56,8 +56,9 @@ class DataCellWidths
     public function paddingSpace(
         $paddingInEachCell,
         $extraPaddingAtEndOfLine = 0,
-        $extraPaddingAtBeginningOfLine = 0)
-    {
+        $extraPaddingAtBeginningOfLine = 0
+    ) {
+
         return ($extraPaddingAtBeginningOfLine + $extraPaddingAtEndOfLine + (count($this->widths) * $paddingInEachCell));
     }
 
@@ -69,7 +70,7 @@ class DataCellWidths
     public function removeShortColumns($thresholdWidth)
     {
         $shortColWidths = $this->findShortColumns($thresholdWidth);
-        $this->removeColumns(array_keys($shortColWidths));
+        $this->removeColumns($shortColWidths->keys());
         return $shortColWidths;
     }
 
@@ -86,7 +87,7 @@ class DataCellWidths
             }
         }
 
-        return $shortColWidths;
+        return new DataCellWidths($shortColWidths);
     }
 
     /**
@@ -100,6 +101,14 @@ class DataCellWidths
     }
 
     /**
+     * Need to think about the name of this function a bit.
+     * Maybe second parameter is just a column count.
+     */
+    public function adjustMinimumWidths($availableWidth, DataCellWidths $dataCellWidths)
+    {
+    }
+
+    /**
      * Return proportional weights
      */
     public function distribute($availableWidth)
@@ -108,16 +117,19 @@ class DataCellWidths
         $totalWidth = $this->totalWidth();
         $lastColumn = $this->lastColumn();
         $widths = $this->widths();
-        array_pop($widths);
 
+        // Take off the last column, and calculate proportional weights
+        // for the first N-1 columns.
+        array_pop($widths);
         foreach ($widths as $key => $width) {
             $result[$key] = round(($width / $totalWidth) * $availableWidth);
         }
 
+        // Give the last column the rest of the available width
         $usedWidth = $this->sumWidth($result);
         $result[$lastColumn] = $availableWidth - $usedWidth;
 
-        return $result;
+        return new DataCellWidths($result);
     }
 
     public function lastColumn()
@@ -136,6 +148,14 @@ class DataCellWidths
     }
 
     /**
+     * Set the length of the specified column.
+     */
+    public function setWidth($key, $width)
+    {
+        $this->widths[$key] = $width;
+    }
+
+    /**
      * Return the length of the specified column.
      */
     public function width($key)
@@ -149,6 +169,14 @@ class DataCellWidths
     public function widths()
     {
         return $this->widths;
+    }
+
+    /**
+     * Return true if there is no data in this object
+     */
+    public function isEmpty()
+    {
+        return empty($this->widths);
     }
 
     /**
@@ -170,6 +198,36 @@ class DataCellWidths
                 return $carry + $item;
             }
         );
+    }
+
+    /**
+     * Ensure that every item in $widths that has a corresponding entry
+     * in $minimumWidths is as least as large as the minimum value held there.
+     */
+    public function enforceMinimums($minimumWidths)
+    {
+        $result = [];
+        if ($minimumWidths instanceof DataCellWidths) {
+            $minimumWidths = $minimumWidths->widths();
+        }
+        $minimumWidths += $this->widths;
+
+        foreach ($this->widths as $key => $value) {
+            $result[$key] = min($value, $minimumWidths[$key]);
+        }
+
+        return new DataCellWidths($result);
+    }
+
+    /**
+     * Combine this set of widths with another set, and return
+     * a new set that contains the entries from both.
+     */
+    public function combine(DataCellWidths $combineWith)
+    {
+        $combined = array_merge($combineWith->widths(), $this->widths());
+
+        return new DataCellWidths($combined);
     }
 
     /**
