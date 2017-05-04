@@ -1,8 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
+use Consolidation\OutputFormatters\Transformations\Wrap\CalculateWidths;
 use Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths;
-use Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths;
 use Symfony\Component\Console\Helper\TableStyle;
 
 class WordWrapper
@@ -20,7 +20,7 @@ class WordWrapper
     public function __construct($width)
     {
         $this->width = $width;
-        $this->minimumWidths = new DataCellWidths();
+        $this->minimumWidths = new ColumnWidths();
     }
 
     /**
@@ -43,7 +43,7 @@ class WordWrapper
      */
     public function setMinimumWidths($minimumWidths)
     {
-        $this->minimumWidths = new DataCellWidths($minimumWidths);
+        $this->minimumWidths = new ColumnWidths($minimumWidths);
     }
 
     /**
@@ -61,20 +61,12 @@ class WordWrapper
      */
     public function wrap($rows, $widths = [])
     {
-        // If the width was not set, then disable wordwrap.
-        if (!$this->width) {
+        $auto_widths = $this->calculateWidths($rows, $widths);
+
+        // If no widths were provided, then disable wrapping
+        if ($auto_widths->isEmpty()) {
             return $rows;
         }
-
-        $dataCellWidths = new DataCellWidths();
-        $dataCellWidths->calculateLongestCell($rows);
-
-        $availableWidth = $this->width - $dataCellWidths->paddingSpace($this->paddingInEachCell, $this->extraPaddingAtEndOfLine, $this->extraPaddingAtBeginningOfLine);
-
-        $this->minimumWidths->adjustMinimumWidths($availableWidth, $dataCellWidths);
-
-        $columnWidths = new ColumnWidths();
-        $auto_widths = $columnWidths->calculate($availableWidth, $dataCellWidths, $this->minimumWidths);
 
         // Do wordwrap on all cells.
         $newrows = array();
@@ -85,6 +77,31 @@ class WordWrapper
         }
 
         return $newrows;
+    }
+
+    /**
+     * Determine what widths we'll use for wrapping.
+     */
+    protected function calculateWidths($rows, $widths = [])
+    {
+        // Widths must be provided in some form or another, or we won't wrap.
+        if (empty($widths) && !$this->width) {
+            return new ColumnWidths();
+        }
+
+        // Technically, `$widths`, if provided here, should be used
+        // as the exact widths to wrap to. For now we'll just treat
+        // these as minimum widths
+        $minimumWidths = $this->minimumWidths->combine(new ColumnWidths($widths));
+
+        $calculator = new CalculateWidths();
+        $dataCellWidths = $calculator->calculateLongestCell($rows);
+
+        $availableWidth = $this->width - $dataCellWidths->paddingSpace($this->paddingInEachCell, $this->extraPaddingAtEndOfLine, $this->extraPaddingAtBeginningOfLine);
+
+        $this->minimumWidths->adjustMinimumWidths($availableWidth, $dataCellWidths);
+
+        return $calculator->calculate($availableWidth, $dataCellWidths, $minimumWidths);
     }
 
     /**

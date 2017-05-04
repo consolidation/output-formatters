@@ -4,89 +4,251 @@ namespace Consolidation\OutputFormatters\Transformations\Wrap;
 use Symfony\Component\Console\Helper\TableStyle;
 
 /**
- * Calculate column widths for table cells.
- *
- * Influenced by Drush and webmozart/console.
+ * Calculate the width of data in table cells in preparation for word wrapping.
  */
 class ColumnWidths
 {
-    public function __construct()
+    protected $widths;
+
+    public function __construct($widths = [])
     {
+        $this->widths = $widths;
+    }
+
+    public function paddingSpace(
+        $paddingInEachCell,
+        $extraPaddingAtEndOfLine = 0,
+        $extraPaddingAtBeginningOfLine = 0
+    ) {
+
+        return ($extraPaddingAtBeginningOfLine + $extraPaddingAtEndOfLine + (count($this->widths) * $paddingInEachCell));
     }
 
     /**
-     * Given the total amount of available space, and the width of
-     * the columns to place, calculate the optimum column widths to use.
+     * Find all of the columns that are shorter than the specified threshold.
      */
-    public function calculate($availableWidth, DataCellWidths $dataWidths, DataCellWidths $minimumWidths)
+    public function findShortColumns($thresholdWidth)
     {
-        // First, check to see if all columns will fit at their full widths.
-        // If so, do no further calculations. (This may be redundant with
-        // the short column width calculation.)
-        if ($dataWidths->totalWidth() <= $availableWidth) {
-            return $dataWidths->enforceMinimums($minimumWidths);
-        }
+        $thresholdWidths = array_combine(array_keys($this->widths), array_fill(0, count($this->widths), $thresholdWidth));
 
-        // Get the short columns first. If there are none, then distribute all
-        // of the available width among the remaining columns.
-        $shortColWidths = $this->getShortColumns($availableWidth, $dataWidths, $minimumWidths);
-        if ($shortColWidths->isEmpty()) {
-            return $this->distributeLongColumns($availableWidth, $dataWidths, $minimumWidths);
-        }
-
-        // If some short columns were removed, then account for the length
-        // of the removed columns and make a recursive call (since the average
-        // width may be higher now, if the removed columns were shorter in
-        // length than the previous average).
-        $availableWidth -= $shortColWidths->totalWidth();
-        $remainingColWidths = $this->calculate($availableWidth, $dataWidths, $minimumWidths);
-
-        return $shortColWidths->combine($remainingColWidths);
+        return $this->findColumnsUnderThreshold($thresholdWidths);
     }
 
     /**
-     * Return all of the columns whose longest line length is less than or
-     * equal to the average width.
+     * Find all of the columns that are shorter than the corresponding minimum widths.
      */
-    public function getShortColumns($availableWidth, DataCellWidths $dataWidths, DataCellWidths $minimumWidths)
+    public function findUndersizedColumns($minimumWidths)
     {
-        $averageWidth = $this->averageWidth($availableWidth, $dataWidths);
-        $shortColWidths = $dataWidths->removeShortColumns($averageWidth);
-        return $shortColWidths->enforceMinimums($minimumWidths);
+        return $this->findColumnsUnderThreshold($minimumWidths->widths());
+    }
+
+    protected function findColumnsUnderThreshold(array $thresholdWidths)
+    {
+        $shortColWidths = [];
+        foreach ($this->widths as $key => $maxLength) {
+            if (isset($thresholdWidths[$key]) && ($maxLength <= $thresholdWidths[$key])) {
+                $shortColWidths[$key] = $maxLength;
+            }
+        }
+
+        return new ColumnWidths($shortColWidths);
     }
 
     /**
-     * Distribute the remainig space among the columns that were not
-     * included in the list of "short" columns.
+     * If the widths specified by this object do not fit within the
+     * provided avaiable width, then reduce them all proportionally.
      */
-    public function distributeLongColumns($availableWidth, DataCellWidths $dataWidths, DataCellWidths $minimumWidths)
+    public function adjustMinimumWidths($availableWidth, $dataCellWidths)
     {
-        // Just distribute the remainder without regard to the
-        // minimum widths. For now.
-        return $dataWidths->distribute($availableWidth);
-/*
-        // Check to see if there is only one column remaining.
-        // If so, give it all of the remaining width.
-        $remainingWidths = $dataWidths->widths();
-        if (count($remainingWidths) <= 1) {
-            return $remainingWidths;
+        $result = $this->selectColumns($dataCellWidths->keys());
+        $numberOfColumns = $dataCellWidths->count();
+
+        // How many unspecified columns are there?
+        $unspecifiedColumns = $numberOfColumns - $result->count();
+        $averageWidth = $this->averageWidth($availableWidth);
+
+        // Reserve some space for the columns that have no minimum.
+        // Make sure they collectively get at least half of the average
+        // width for each column. Or should it be a quarter?
+        $reservedSpacePerColumn = ($averageWidth / 2);
+        $reservedSpace = $reservedSpacePerColumn * $unspecifiedColumns;
+
+        // Calculate how much of the available space is remaining for use by
+        // the minimum column widths after the reserved space is accounted for.
+        $remainingAvailable = $availableWidth - $reservedSpace;
+
+        // Don't do anything if our widths fit inside the available widths.
+        if ($result->totalWidth() <= $remainingAvailable) {
+            return $result;
         }
 
-        // Start by giving each column its minimum width
-        $result = $minimumWidths;
-        $availableWidth -= DataCellWidths::sumWidth($result);
+        // Shrink the minimum widths if the table is too compressed.
+        return $result->distribute($remainingAvailable);
+    }
 
+    /**
+     * Return proportional weights
+     */
+    public function distribute($availableWidth)
+    {
+        $result = [];
+        $totalWidth = $this->totalWidth();
+        $lastColumn = $this->lastColumn();
+        $widths = $this->widths();
 
-        return $result;
-*/
+        // Take off the last column, and calculate proportional weights
+        // for the first N-1 columns.
+        array_pop($widths);
+        foreach ($widths as $key => $width) {
+            $result[$key] = round(($width / $totalWidth) * $availableWidth);
+        }
+
+        // Give the last column the rest of the available width
+        $usedWidth = $this->sumWidth($result);
+        $result[$lastColumn] = $availableWidth - $usedWidth;
+
+        return new ColumnWidths($result);
+    }
+
+    public function lastColumn()
+    {
+        $keys = $this->keys();
+        return array_pop($keys);
+    }
+
+    /**
+     * Return the number of columns.
+     */
+    public function count()
+    {
+        return count($this->widths);
     }
 
     /**
      * Calculate how much space is available on average for all columns.
      */
-    public function averageWidth($availableWidth, DataCellWidths $dataWidths)
+    public function averageWidth($availableWidth)
     {
-        $colkeys = $dataWidths->keys();
-        return $availableWidth / count($colkeys);
+        return $availableWidth / $this->count();
+    }
+
+    /**
+     * Return the available keys (column identifiers) from the calculated
+     * data set.
+     */
+    public function keys()
+    {
+        return array_keys($this->widths);
+    }
+
+    /**
+     * Set the length of the specified column.
+     */
+    public function setWidth($key, $width)
+    {
+        $this->widths[$key] = $width;
+    }
+
+    /**
+     * Return the length of the specified column.
+     */
+    public function width($key)
+    {
+        return isset($this->widths[$key]) ? $this->widths[$key] : 0;
+    }
+
+    /**
+     * Return all of the lengths
+     */
+    public function widths()
+    {
+        return $this->widths;
+    }
+
+    /**
+     * Return true if there is no data in this object
+     */
+    public function isEmpty()
+    {
+        return empty($this->widths);
+    }
+
+    /**
+     * Return the sum of the lengths of the provided widths.
+     */
+    public function totalWidth()
+    {
+        return static::sumWidth($this->widths());
+    }
+
+    /**
+     * Return the sum of the lengths of the provided widths.
+     */
+    public static function sumWidth($widths)
+    {
+        return array_reduce(
+            $widths,
+            function ($carry, $item) {
+                return $carry + $item;
+            }
+        );
+    }
+
+    /**
+     * Ensure that every item in $widths that has a corresponding entry
+     * in $minimumWidths is as least as large as the minimum value held there.
+     */
+    public function enforceMinimums($minimumWidths)
+    {
+        $result = [];
+        if ($minimumWidths instanceof ColumnWidths) {
+            $minimumWidths = $minimumWidths->widths();
+        }
+        $minimumWidths += $this->widths;
+
+        foreach ($this->widths as $key => $value) {
+            $result[$key] = min($value, $minimumWidths[$key]);
+        }
+
+        return new ColumnWidths($result);
+    }
+
+    /**
+     * Remove all of the specified columns from this data structure.
+     */
+    public function removeColumns($columnKeys)
+    {
+        $widths = $this->widths();
+
+        foreach ($columnKeys as $key) {
+            unset($widths[$key]);
+        }
+
+        return new ColumnWidths($widths);
+    }
+
+    /**
+     * Select all columns that exist in the provided list of keys.
+     */
+    public function selectColumns($columnKeys)
+    {
+        $widths = [];
+
+        foreach ($columnKeys as $key) {
+            $widths[$key] = $this->width($key);
+        }
+
+        return new ColumnWidths($widths);
+    }
+
+    /**
+     * Combine this set of widths with another set, and return
+     * a new set that contains the entries from both.
+     */
+    public function combine(ColumnWidths $combineWith)
+    {
+        $combined = array_merge($combineWith->widths(), $this->widths());
+
+        return new ColumnWidths($combined);
     }
 }
