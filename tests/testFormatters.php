@@ -538,18 +538,18 @@ EOT;
         $data = new RowsOfFields($data);
 
         $expected = <<<EOT
- ------------------- --------------------
-  First               Second
- ------------------- --------------------
-  This is a really    This is the second
-  long cell that      column of the same
-  contains a lot of   table. It is also
-  data. When it is    very long, and
-  rendered, it        should be wrapped
-  should be wrapped   across multiple
-  across multiple     lines, just like
-  lines.              the first column.
- ------------------- --------------------
+ ------------------ --------------------
+  First              Second
+ ------------------ --------------------
+  This is a really   This is the second
+  long cell that     column of the same
+  contains a lot     table. It is also
+  of data. When it   very long, and
+  is rendered, it    should be wrapped
+  should be          across multiple
+  wrapped across     lines, just like
+  multiple lines.    the first column.
+ ------------------ --------------------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }

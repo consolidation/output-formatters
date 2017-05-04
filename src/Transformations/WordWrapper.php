@@ -1,6 +1,8 @@
 <?php
 namespace Consolidation\OutputFormatters\Transformations;
 
+use Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths;
+use Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths;
 use Symfony\Component\Console\Helper\TableStyle;
 
 class WordWrapper
@@ -55,8 +57,13 @@ class WordWrapper
             return $rows;
         }
 
-        // Calculate the column widths to use based on the content.
-        $auto_widths = $this->columnAutowidth($rows, $widths);
+        $dataCellWidths = new DataCellWidths();
+        $dataCellWidths->calculateLongestCell($rows);
+
+        $availableWidth = $this->width - $dataCellWidths->paddingSpace($this->paddingInEachCell, $this->extraPaddingAtEndOfLine, $this->extraPaddingAtBeginningOfLine);
+
+        $columnWidths = new ColumnWidths();
+        $auto_widths = $columnWidths->calculate($availableWidth, $dataCellWidths, $this->minimumWidths);
 
         // Do wordwrap on all cells.
         $newrows = array();

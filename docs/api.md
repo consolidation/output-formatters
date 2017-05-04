@@ -45,6 +45,8 @@
 - [\Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface (interface)](#interface-consolidationoutputformatterstransformationssimplifytoarrayinterface)
 - [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)
 - [\Consolidation\OutputFormatters\Transformations\WordWrapper](#class-consolidationoutputformatterstransformationswordwrapper)
+- [\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)
+- [\Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths](#class-consolidationoutputformatterstransformationswrapdatacellwidths)
 - [\Consolidation\OutputFormatters\Validate\ValidationInterface (interface)](#interface-consolidationoutputformattersvalidatevalidationinterface)
 - [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface (interface)](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface)
 
@@ -90,8 +92,6 @@
 
 *This class extends \Exception*
 
-*This class implements \Throwable*
-
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\IncompatibleDataException
 
@@ -102,8 +102,6 @@
 | public | <strong>__construct(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
-
-*This class implements \Throwable*
 
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\InvalidFormatException
@@ -116,8 +114,6 @@
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
 
-*This class implements \Throwable*
-
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\UnknownFieldException
 
@@ -129,8 +125,6 @@
 
 *This class extends \Exception*
 
-*This class implements \Throwable*
-
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\UnknownFormatException
 
@@ -141,8 +135,6 @@
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$format</strong>)</strong> : <em>void</em> |
 
 *This class extends \Exception*
-
-*This class implements \Throwable*
 
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Formatters\CsvFormatter
@@ -650,6 +642,43 @@
 | protected | <strong>wrapCell(</strong><em>mixed</em> <strong>$cell</strong>, <em>string</em> <strong>$cellWidth</strong>)</strong> : <em>mixed</em><br /><em>Wrap one cell.  Guard against modifying non-strings and then call through to wordwrap().</em> |
 
 <hr /> 
+### Class: \Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths
+
+> Calculate column widths for table cells. Influenced by Drush and webmozart/console.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct()</strong> : <em>void</em> |
+| public | <strong>averageWidth(</strong><em>mixed</em> <strong>$totalWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths](#class-consolidationoutputformatterstransformationswrapdatacellwidths)</em> <strong>$dataWidths</strong>)</strong> : <em>void</em><br /><em>Calculate how much space is available on average for all columns.</em> |
+| public | <strong>calculate(</strong><em>mixed</em> <strong>$totalWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths](#class-consolidationoutputformatterstransformationswrapdatacellwidths)</em> <strong>$dataWidths</strong>, <em>array</em> <strong>$minimumWidths=array()</strong>)</strong> : <em>void</em><br /><em>Given the total amount of available space, and the width of the columns to place, calculate the optimum column widths to use.</em> |
+| public | <strong>distributeLongColumns(</strong><em>mixed</em> <strong>$totalWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths](#class-consolidationoutputformatterstransformationswrapdatacellwidths)</em> <strong>$dataWidths</strong>, <em>mixed</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>Distribute the remainig space among the columns that were not included in the list of "short" columns.</em> |
+| public | <strong>enforceMinimums(</strong><em>mixed</em> <strong>$widths</strong>, <em>mixed</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>Ensure that every item in $widths that has a corresponding entry in $minimumWidths is as least as large as the minimum value held there.</em> |
+| public | <strong>getShortColumns(</strong><em>mixed</em> <strong>$totalWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths](#class-consolidationoutputformatterstransformationswrapdatacellwidths)</em> <strong>$dataWidths</strong>, <em>mixed</em> <strong>$minimumWidths</strong>)</strong> : <em>mixed</em><br /><em>Return all of the columns whose longest line length is less than or equal to the average width.</em> |
+
+<hr /> 
+### Class: \Consolidation\OutputFormatters\Transformations\Wrap\DataCellWidths
+
+> Calculate the width of data in table cells in preparation for word wrapping.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__consturct()</strong> : <em>void</em> |
+| public | <strong>calculateLongestCell(</strong><em>mixed</em> <strong>$rows</strong>)</strong> : <em>void</em><br /><em>Calculate the longest cell data from any row of each of the cells.</em> |
+| public | <strong>calculateLongestWord(</strong><em>mixed</em> <strong>$rows</strong>)</strong> : <em>void</em><br /><em>Calculate the longest word and longest line in the provided data.</em> |
+| public | <strong>distribute(</strong><em>mixed</em> <strong>$availableWidth</strong>)</strong> : <em>void</em><br /><em>Return proportional weights</em> |
+| public | <strong>findShortColumns(</strong><em>mixed</em> <strong>$thresholdWidth</strong>)</strong> : <em>mixed</em><br /><em>Find all of the columns that are shorter than the specified threshold.</em> |
+| public | <strong>keys()</strong> : <em>void</em><br /><em>Return the available keys (column identifiers) from the calculated data set.</em> |
+| public | <strong>lastColumn()</strong> : <em>void</em> |
+| public | <strong>paddingSpace(</strong><em>mixed</em> <strong>$paddingInEachCell</strong>, <em>mixed</em> <strong>$extraPaddingAtEndOfLine</strong>, <em>mixed</em> <strong>$extraPaddingAtBeginningOfLine</strong>)</strong> : <em>void</em> |
+| public | <strong>removeColumns(</strong><em>mixed</em> <strong>$columnKeys</strong>)</strong> : <em>void</em><br /><em>Remove all of the specified columns from this data structure.</em> |
+| public | <strong>removeShortColumns(</strong><em>mixed</em> <strong>$thresholdWidth</strong>)</strong> : <em>void</em><br /><em>Find all columns that are shorter than the specified threshold width. These are removed from this object, and returned as the result of this method.</em> |
+| public static | <strong>sumWidth(</strong><em>mixed</em> <strong>$widths</strong>)</strong> : <em>void</em><br /><em>Return the sum of the lengths of the provided widths.</em> |
+| public | <strong>totalWidth()</strong> : <em>void</em><br /><em>Return the sum of the lengths of the provided widths.</em> |
+| public | <strong>width(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em><br /><em>Return the length of the specified column.</em> |
+| public | <strong>widths()</strong> : <em>void</em><br /><em>Return all of the lengths</em> |
+| protected static | <strong>longestWordLength(</strong><em>string</em> <strong>$str</strong>)</strong> : <em>int</em><br /><em>Return the length of the longest word in the string.</em> |
+
+<hr /> 
 ### Interface: \Consolidation\OutputFormatters\Validate\ValidationInterface
 
 > Formatters may implement ValidationInterface in order to indicate whether a particular data structure is supported.  Any formatter that does not implement ValidationInterface is assumed to only operate on arrays, or data types that implement SimplifyToArrayInterface.
@@ -666,7 +695,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass[]](http://php.net/manual/en/class.reflectionclass.php)</em><br /><em>Return the list of data types acceptable to this formatter</em> |
+| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)[]</em><br /><em>Return the list of data types acceptable to this formatter</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
 
