@@ -20,7 +20,6 @@ class ColumnWidths
         $extraPaddingAtEndOfLine = 0,
         $extraPaddingAtBeginningOfLine = 0
     ) {
-
         return ($extraPaddingAtBeginningOfLine + $extraPaddingAtEndOfLine + (count($this->widths) * $paddingInEachCell));
     }
 
@@ -61,6 +60,9 @@ class ColumnWidths
     public function adjustMinimumWidths($availableWidth, $dataCellWidths)
     {
         $result = $this->selectColumns($dataCellWidths->keys());
+        if ($result->isEmpty()) {
+            return $result;
+        }
         $numberOfColumns = $dataCellWidths->count();
 
         // How many unspecified columns are there?
@@ -129,6 +131,9 @@ class ColumnWidths
      */
     public function averageWidth($availableWidth)
     {
+        if ($this->isEmpty()) {
+            debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        }
         return $availableWidth / $this->count();
     }
 
@@ -207,7 +212,7 @@ class ColumnWidths
         $minimumWidths += $this->widths;
 
         foreach ($this->widths as $key => $value) {
-            $result[$key] = min($value, $minimumWidths[$key]);
+            $result[$key] = max($value, $minimumWidths[$key]);
         }
 
         return new ColumnWidths($result);
@@ -235,7 +240,9 @@ class ColumnWidths
         $widths = [];
 
         foreach ($columnKeys as $key) {
-            $widths[$key] = $this->width($key);
+            if (isset($this->widths[$key])) {
+                $widths[$key] = $this->width($key);
+            }
         }
 
         return new ColumnWidths($widths);
@@ -247,8 +254,11 @@ class ColumnWidths
      */
     public function combine(ColumnWidths $combineWith)
     {
-        $combined = array_merge($combineWith->widths(), $this->widths());
-
+        // Danger: array_merge renumbers numeric keys; that must not happen here.
+        $combined = $combineWith->widths();
+        foreach ($this->widths() as $key => $value) {
+            $combined[$key] = $value;
+        }
         return new ColumnWidths($combined);
     }
 }
