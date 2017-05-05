@@ -527,7 +527,6 @@ EOT;
     function testTableWithWordWrapping()
     {
         $options = new FormatterOptions();
-        $options->setWidth(42);
 
         $data = [
             [
@@ -551,7 +550,26 @@ EOT;
   multiple lines.    the first column.
  ------------------ --------------------
 EOT;
+        $options->setWidth(42);
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+
+        $expected = <<<EOT
+ ----------------------------------- ---------------------------------------
+  First                               Second
+ ----------------------------------- ---------------------------------------
+  This is a really long cell that     This is the second column of the same
+  contains a lot of data. When it     table. It is also very long, and
+  is rendered, it should be wrapped   should be wrapped across multiple
+  across multiple lines.              lines, just like the first column.
+ ----------------------------------- ---------------------------------------
+EOT;
+        $options->setWidth(78);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
+    function testTableWithWordWrapping2()
+    {
+        $options = new FormatterOptions();
 
         $data = [
             [
@@ -575,8 +593,13 @@ EOT;
   13   789   Why is six afraid of seven?
  ---- ----- -----------------------------
 EOT;
+        $options->setWidth(42);
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
 
+    function testTableWithWordWrapping3()
+    {
+        $options = new FormatterOptions();
         $data = [
             'name' => 'Rex',
             'species' => 'dog',
@@ -585,7 +608,8 @@ EOT;
             'description' => 'Rex is a very good dog, Brett. He likes kibble, and has four legs.',
         ];
         $data = new PropertyList($data);
-        // TODO: The second column is narrower than it could be.
+
+        // TODO: The second column is narrower than it should be.
         $expected = <<<EOT
  ------------- -------------
   Name          Rex
@@ -601,6 +625,42 @@ EOT;
                 legs.
  ------------- -------------
 EOT;
+        $options->setWidth(42);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
+    function testTableWithWordWrapping4()
+    {
+        $options = new FormatterOptions();
+
+        $data = [
+            'name' => ['label' => 'Name', 'sep' => ':', 'value' => 'Rex', ],
+            'species' => ['label' => 'Species', 'sep' => ':', 'value' => 'dog', ],
+            'food' => ['label' => 'Food', 'sep' => ':', 'value' => 'kibble', ],
+            'legs' => ['label' => 'Legs', 'sep' => ':', 'value' => '4', ],
+            'description' => ['label' => 'Description', 'sep' => ':', 'value' => 'Rex is a very good dog, Brett. He likes kibble, and has four legs.', ],
+        ];
+        $data = new RowsOfFields($data);
+        $expected = <<<EOT
+EOT;
+        $options->setWidth(78);
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
+    function testTableWithWordWrapping5()
+    {
+        $options = new FormatterOptions();
+        $data = [
+            'name' => ['Name', ':', 'Rex', ],
+            'species' => ['Species', ':', 'dog', ],
+            'food' => ['Food', ':', 'kibble', ],
+            'legs' => ['Legs', ':', '4', ],
+            'description' => ['Description', ':', 'Rex is a very good dog, Brett. He likes kibble, and has four legs.', ],
+        ];
+        $data = new RowsOfFields($data);
+        $expected = <<<EOT
+EOT;
+        $options->setWidth(78);
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
