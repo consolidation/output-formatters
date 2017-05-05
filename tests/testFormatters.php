@@ -552,6 +552,56 @@ EOT;
  ------------------ --------------------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+
+        $data = [
+            [
+                'id' => 42,
+                'vid' => 321,
+                'description' => 'Life, the Universe and Everything.',
+            ],
+            [
+                'id' => 13,
+                'vid' => 789,
+                'description' => 'Why is six afraid of seven?',
+            ],
+        ];
+        $data = new RowsOfFields($data);
+        $expected = <<<EOT
+ ---- ----- -----------------------------
+  Id   Vid   Description
+ ---- ----- -----------------------------
+  42   321   Life, the Universe and
+             Everything.
+  13   789   Why is six afraid of seven?
+ ---- ----- -----------------------------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+
+        $data = [
+            'name' => 'Rex',
+            'species' => 'dog',
+            'food' => 'kibble',
+            'legs' => '4',
+            'description' => 'Rex is a very good dog, Brett. He likes kibble, and has four legs.',
+        ];
+        $data = new PropertyList($data);
+        // TODO: The second column is narrower than it could be.
+        $expected = <<<EOT
+ ------------- -------------
+  Name          Rex
+  Species       dog
+  Food          kibble
+  Legs          4
+  Description   Rex is a
+                very good
+                dog, Brett.
+                He likes
+                kibble, and
+                has four
+                legs.
+ ------------- -------------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
     protected function simpleTableExampleData()

@@ -29,7 +29,7 @@ class ColumnWidths
      */
     public function findShortColumns($thresholdWidth)
     {
-        $thresholdWidths = array_combine(array_keys($this->widths), array_fill(0, count($this->widths), $thresholdWidth));
+        $thresholdWidths = array_fill_keys(array_keys($this->widths), $thresholdWidth);
 
         return $this->findColumnsUnderThreshold($thresholdWidths);
     }
