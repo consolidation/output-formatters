@@ -1,5 +1,17 @@
 # Change Log
 
+### 3.1.8 - 8 May 2017
+
+- Improve wrapping algorithm
+
+### 3.1.7 - 20 Jan 2017
+
+- Add Windows testing
+
+### 3.1.6 - 8 Jan 2017
+
+- Move victorjonsson/markdowndocs to require-dev
+
 ### 3.1.5 - 23 November 2016
 
 - When converting from XML to an array, use the 'id' or 'name' element as the array key value.
