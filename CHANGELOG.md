@@ -1,6 +1,10 @@
 # Change Log
 
-### 3.1.8 - 8 May 2017
+### 3.1.10 - 6 June 2017
+
+- Typo in CalculateWidths::distributeLongColumns causes failure for some column width distributions
+
+### 3.1.9 - 8 May 2017
 
 - Improve wrapping algorithm
 
