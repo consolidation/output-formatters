@@ -92,6 +92,8 @@
 
 *This class extends \Exception*
 
+*This class implements \Throwable*
+
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\IncompatibleDataException
 
@@ -102,6 +104,8 @@
 | public | <strong>__construct(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
+
+*This class implements \Throwable*
 
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\InvalidFormatException
@@ -114,6 +118,8 @@
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
 
+*This class implements \Throwable*
+
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\UnknownFieldException
 
@@ -125,6 +131,8 @@
 
 *This class extends \Exception*
 
+*This class implements \Throwable*
+
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Exception\UnknownFormatException
 
@@ -135,6 +143,8 @@
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$format</strong>)</strong> : <em>void</em> |
 
 *This class extends \Exception*
+
+*This class implements \Throwable*
 
 <hr /> 
 ### Class: \Consolidation\OutputFormatters\Formatters\CsvFormatter
@@ -701,7 +711,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)[]</em><br /><em>Return the list of data types acceptable to this formatter</em> |
+| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass[]](http://php.net/manual/en/class.reflectionclass.php)</em><br /><em>Return the list of data types acceptable to this formatter</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
 

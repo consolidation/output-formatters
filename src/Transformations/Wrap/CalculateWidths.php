@@ -119,7 +119,7 @@ class CalculateWidths
 
         // Take out the columns that are too small and redistribute the rest.
         $availableWidth -= $undersized->totalWidth();
-        $remaining = $dataWidths->removeColumns($undersized);
+        $remaining = $dataWidths->removeColumns($undersized->keys());
         $distributeRemaining = $this->distributeLongColumns($availableWidth, $remaining, $minimumWidths);
 
         return $undersized->combine($distributeRemaining);
