@@ -7,6 +7,7 @@ use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
+use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,8 +48,31 @@ one: a
 two: b
 three: c
 EOT;
-
         $this->assertFormattedOutputMatches($expected, 'yaml', $data);
+
+        $expected = <<<EOT
+a
+b
+c
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'list', $data);
+
+        $data = new ListDataFromKeys($data);
+
+        $expected = <<<EOT
+one: a
+two: b
+three: c
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $data);
+
+        $expected = <<<EOT
+one
+two
+three
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'list', $data);
     }
 
     function testNestedYaml()
