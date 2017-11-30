@@ -1,5 +1,10 @@
 # Change Log
 
+### 3.1.13 - 29 November 2017
+
+- Allow XML output for RowsOfFields (#60).
+- Allow Symfony 4 components and add make tests run on three versions of Symfony.
+
 ### 3.1.12 - 12 October 2017
 
 - Bugfix: Use InputOption::VALUE_REQUIRED instead of InputOption::VALUE_OPTIONAL
