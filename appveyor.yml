@@ -51,7 +51,7 @@ install:
   #Install dependencies via Composer.
   #Newer versions of the dependencies have whitespace differences that break tests.
   #Maybe we should fix and do highest/lowest here someday.
-  - copy composer.windows.lock composer.lock
+  - composer scenario symfony2
   - php composer.phar -q install --prefer-dist -n
   - SET PATH=%APPVEYOR_BUILD_FOLDER%;%APPVEYOR_BUILD_FOLDER%/vendor/bin;%PATH%
   #Create a sandbox for testing. Don't think we need this.
