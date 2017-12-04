@@ -6,6 +6,9 @@ branches:
     - master
     - /^[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+.*$/
 
+# Note: we explicitly use a 'symfony 3' scenario here because we
+# pin to Symfony Console 3.2.2 in our composer.lock for Apveyor testing.
+# We can remove this once we fix the whitespace problem in the Windows tests.
 matrix:
   include:
     - php: 7.2
@@ -19,7 +22,6 @@ matrix:
     - php: 5.6
       env: 'SCENARIO=symfony3'
     - php: 5.5
-      env: 'SCENARIO=symfony3'
     - php: 5.4
       env: 'SCENARIO=symfony2 HIGHEST_LOWEST="update --prefer-lowest'
 
