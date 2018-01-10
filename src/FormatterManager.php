@@ -47,6 +47,9 @@ class FormatterManager
             'table' => '\Consolidation\OutputFormatters\Formatters\TableFormatter',
             'sections' => '\Consolidation\OutputFormatters\Formatters\SectionsFormatter',
         ];
+        if (class_exists('Symfony\Component\VarDumper\Dumper\CliDumper')) {
+           $defaultFormatters['var_dump'] = '\Consolidation\OutputFormatters\Formatters\VarDumpFormatter';
+        }
         foreach ($defaultFormatters as $id => $formatterClassname) {
             $formatter = new $formatterClassname;
             $this->addFormatter($id, $formatter);
