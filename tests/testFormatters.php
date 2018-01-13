@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Output\StreamOutput;
 
 class FormattersTests extends \PHPUnit_Framework_TestCase
 {
@@ -327,6 +328,35 @@ array (
 EOT;
 
         $this->assertFormattedOutputMatches($expected, 'var_export', $data);
+    }
+
+    function testVarDump()
+    {
+        $data = [
+            'one' => 'foo',
+            'two' => 123,
+            'three' => [true],
+        ];
+
+      $expected = <<<EOT
+array:3 [
+  "one" => "foo"
+  "two" => 123
+  "three" => array:1 [
+    0 => true
+  ]
+]
+EOT;
+
+      // Not way to use self::assertFormattedOutputMatches() here because it
+      // relies on buffered output while VarDumpFormatter uses stream output.
+      $output = new StreamOutput(fopen('php://memory', 'w', false));
+      $this->formatterManager->write($output, 'var_dump', $data, new FormatterOptions());
+
+      rewind($output->getStream());
+      $display = stream_get_contents($output->getStream());
+
+      $this->assertEquals($expected, rtrim($display));
     }
 
     function testList()
@@ -771,7 +801,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_export,xml,yaml
+     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleDataForTableFormatter()
     {
@@ -782,7 +812,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_export,xml,yaml
+     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleDataForSectionsFormatter()
     {
@@ -1091,7 +1121,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_export,xml,yaml
+     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleListDataForTableFormatter()
     {

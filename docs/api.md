@@ -1,55 +1,56 @@
 ## Table of contents
 
 - [\Consolidation\OutputFormatters\FormatterManager](#class-consolidationoutputformattersformattermanager)
-- [\Consolidation\OutputFormatters\Exception\UnknownFormatException](#class-consolidationoutputformattersexceptionunknownformatexception)
 - [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException (abstract)](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)
-- [\Consolidation\OutputFormatters\Exception\IncompatibleDataException](#class-consolidationoutputformattersexceptionincompatibledataexception)
-- [\Consolidation\OutputFormatters\Exception\InvalidFormatException](#class-consolidationoutputformattersexceptioninvalidformatexception)
 - [\Consolidation\OutputFormatters\Exception\UnknownFieldException](#class-consolidationoutputformattersexceptionunknownfieldexception)
-- [\Consolidation\OutputFormatters\Formatters\ListFormatter](#class-consolidationoutputformattersformatterslistformatter)
+- [\Consolidation\OutputFormatters\Exception\InvalidFormatException](#class-consolidationoutputformattersexceptioninvalidformatexception)
+- [\Consolidation\OutputFormatters\Exception\IncompatibleDataException](#class-consolidationoutputformattersexceptionincompatibledataexception)
+- [\Consolidation\OutputFormatters\Exception\UnknownFormatException](#class-consolidationoutputformattersexceptionunknownformatexception)
+- [\Consolidation\OutputFormatters\Formatters\TsvFormatter](#class-consolidationoutputformattersformatterstsvformatter)
 - [\Consolidation\OutputFormatters\Formatters\SectionsFormatter](#class-consolidationoutputformattersformatterssectionsformatter)
+- [\Consolidation\OutputFormatters\Formatters\PrintRFormatter](#class-consolidationoutputformattersformattersprintrformatter)
+- [\Consolidation\OutputFormatters\Formatters\RenderDataInterface (interface)](#interface-consolidationoutputformattersformattersrenderdatainterface)
+- [\Consolidation\OutputFormatters\Formatters\VarDumpFormatter](#class-consolidationoutputformattersformattersvardumpformatter)
+- [\Consolidation\OutputFormatters\Formatters\SerializeFormatter](#class-consolidationoutputformattersformattersserializeformatter)
 - [\Consolidation\OutputFormatters\Formatters\JsonFormatter](#class-consolidationoutputformattersformattersjsonformatter)
 - [\Consolidation\OutputFormatters\Formatters\FormatterInterface (interface)](#interface-consolidationoutputformattersformattersformatterinterface)
 - [\Consolidation\OutputFormatters\Formatters\CsvFormatter](#class-consolidationoutputformattersformatterscsvformatter)
-- [\Consolidation\OutputFormatters\Formatters\SerializeFormatter](#class-consolidationoutputformattersformattersserializeformatter)
-- [\Consolidation\OutputFormatters\Formatters\StringFormatter](#class-consolidationoutputformattersformattersstringformatter)
-- [\Consolidation\OutputFormatters\Formatters\VarExportFormatter](#class-consolidationoutputformattersformattersvarexportformatter)
-- [\Consolidation\OutputFormatters\Formatters\YamlFormatter](#class-consolidationoutputformattersformattersyamlformatter)
-- [\Consolidation\OutputFormatters\Formatters\TableFormatter](#class-consolidationoutputformattersformatterstableformatter)
 - [\Consolidation\OutputFormatters\Formatters\XmlFormatter](#class-consolidationoutputformattersformattersxmlformatter)
-- [\Consolidation\OutputFormatters\Formatters\PrintRFormatter](#class-consolidationoutputformattersformattersprintrformatter)
-- [\Consolidation\OutputFormatters\Formatters\RenderDataInterface (interface)](#interface-consolidationoutputformattersformattersrenderdatainterface)
-- [\Consolidation\OutputFormatters\Formatters\TsvFormatter](#class-consolidationoutputformattersformatterstsvformatter)
-- [\Consolidation\OutputFormatters\Options\OverrideOptionsInterface (interface)](#interface-consolidationoutputformattersoptionsoverrideoptionsinterface)
+- [\Consolidation\OutputFormatters\Formatters\TableFormatter](#class-consolidationoutputformattersformatterstableformatter)
+- [\Consolidation\OutputFormatters\Formatters\ListFormatter](#class-consolidationoutputformattersformatterslistformatter)
+- [\Consolidation\OutputFormatters\Formatters\VarExportFormatter](#class-consolidationoutputformattersformattersvarexportformatter)
+- [\Consolidation\OutputFormatters\Formatters\StringFormatter](#class-consolidationoutputformattersformattersstringformatter)
+- [\Consolidation\OutputFormatters\Formatters\YamlFormatter](#class-consolidationoutputformattersformattersyamlformatter)
 - [\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)
-- [\Consolidation\OutputFormatters\StructuredData\ListDataInterface (interface)](#interface-consolidationoutputformattersstructureddatalistdatainterface)
-- [\Consolidation\OutputFormatters\StructuredData\TableDataInterface (interface)](#interface-consolidationoutputformattersstructureddatatabledatainterface)
-- [\Consolidation\OutputFormatters\StructuredData\HelpDocument](#class-consolidationoutputformattersstructureddatahelpdocument)
+- [\Consolidation\OutputFormatters\Options\OverrideOptionsInterface (interface)](#interface-consolidationoutputformattersoptionsoverrideoptionsinterface)
+- [\Consolidation\OutputFormatters\StructuredData\CallableRenderer](#class-consolidationoutputformattersstructureddatacallablerenderer)
 - [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface (interface)](#interface-consolidationoutputformattersstructureddataoriginaldatainterface)
+- [\Consolidation\OutputFormatters\StructuredData\TableDataInterface (interface)](#interface-consolidationoutputformattersstructureddatatabledatainterface)
+- [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellinterface)
+- [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)
+- [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface)
+- [\Consolidation\OutputFormatters\StructuredData\HelpDocument](#class-consolidationoutputformattersstructureddatahelpdocument)
+- [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList (abstract)](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)
+- [\Consolidation\OutputFormatters\StructuredData\ListDataInterface (interface)](#interface-consolidationoutputformattersstructureddatalistdatainterface)
 - [\Consolidation\OutputFormatters\StructuredData\RowsOfFields](#class-consolidationoutputformattersstructureddatarowsoffields)
 - [\Consolidation\OutputFormatters\StructuredData\RestructureInterface (interface)](#interface-consolidationoutputformattersstructureddatarestructureinterface)
-- [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList (abstract)](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)
-- [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)
-- [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)
-- [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellinterface)
-- [\Consolidation\OutputFormatters\StructuredData\CallableRenderer](#class-consolidationoutputformattersstructureddatacallablerenderer)
-- [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface)
 - [\Consolidation\OutputFormatters\StructuredData\AssociativeList](#class-consolidationoutputformattersstructureddataassociativelist)
+- [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)
 - [\Consolidation\OutputFormatters\StructuredData\Xml\XmlSchemaInterface (interface)](#interface-consolidationoutputformattersstructureddataxmlxmlschemainterface)
-- [\Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface (interface)](#interface-consolidationoutputformattersstructureddataxmldomdatainterface)
 - [\Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema](#class-consolidationoutputformattersstructureddataxmlxmlschema)
-- [\Consolidation\OutputFormatters\Transformations\PropertyParser](#class-consolidationoutputformatterstransformationspropertyparser)
-- [\Consolidation\OutputFormatters\Transformations\PropertyListTableTransformation](#class-consolidationoutputformatterstransformationspropertylisttabletransformation)
-- [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)
+- [\Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface (interface)](#interface-consolidationoutputformattersstructureddataxmldomdatainterface)
 - [\Consolidation\OutputFormatters\Transformations\ReorderFields](#class-consolidationoutputformatterstransformationsreorderfields)
 - [\Consolidation\OutputFormatters\Transformations\DomToArraySimplifier](#class-consolidationoutputformatterstransformationsdomtoarraysimplifier)
-- [\Consolidation\OutputFormatters\Transformations\WordWrapper](#class-consolidationoutputformatterstransformationswordwrapper)
-- [\Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface (interface)](#interface-consolidationoutputformatterstransformationsoverriderestructureinterface)
+- [\Consolidation\OutputFormatters\Transformations\PropertyListTableTransformation](#class-consolidationoutputformatterstransformationspropertylisttabletransformation)
 - [\Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface (interface)](#interface-consolidationoutputformatterstransformationssimplifytoarrayinterface)
-- [\Consolidation\OutputFormatters\Transformations\Wrap\CalculateWidths](#class-consolidationoutputformatterstransformationswrapcalculatewidths)
+- [\Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface (interface)](#interface-consolidationoutputformatterstransformationsoverriderestructureinterface)
+- [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)
+- [\Consolidation\OutputFormatters\Transformations\WordWrapper](#class-consolidationoutputformatterstransformationswordwrapper)
+- [\Consolidation\OutputFormatters\Transformations\PropertyParser](#class-consolidationoutputformatterstransformationspropertyparser)
 - [\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)
-- [\Consolidation\OutputFormatters\Validate\ValidationInterface (interface)](#interface-consolidationoutputformattersvalidatevalidationinterface)
+- [\Consolidation\OutputFormatters\Transformations\Wrap\CalculateWidths](#class-consolidationoutputformatterstransformationswrapcalculatewidths)
 - [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface (interface)](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface)
+- [\Consolidation\OutputFormatters\Validate\ValidationInterface (interface)](#interface-consolidationoutputformattersvalidatevalidationinterface)
 
 <hr />
 
@@ -83,20 +84,6 @@
 
 <hr />
 
-### Class: \Consolidation\OutputFormatters\Exception\UnknownFormatException
-
-> Indicates that the requested format does not exist.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct(</strong><em>mixed</em> <strong>$format</strong>)</strong> : <em>void</em> |
-
-*This class extends \Exception*
-
-*This class implements \Throwable*
-
-<hr />
-
 ### Class: \Consolidation\OutputFormatters\Exception\AbstractDataFormatException (abstract)
 
 > Contains some helper functions used by exceptions in this project.
@@ -108,34 +95,6 @@
 | protected static | <strong>describeListOfAllowedTypes(</strong><em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
 
 *This class extends \Exception*
-
-*This class implements \Throwable*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Exception\IncompatibleDataException
-
-> Represents an incompatibility between the output data and selected formatter.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
-
-*This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
-
-*This class implements \Throwable*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Exception\InvalidFormatException
-
-> Represents an incompatibility between the output data and selected formatter.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct(</strong><em>mixed</em> <strong>$format</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$validFormats</strong>)</strong> : <em>void</em> |
-
-*This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
 
 *This class implements \Throwable*
 
@@ -155,18 +114,63 @@
 
 <hr />
 
-### Class: \Consolidation\OutputFormatters\Formatters\ListFormatter
+### Class: \Consolidation\OutputFormatters\Exception\InvalidFormatException
 
-> Display the data in a simple list. This formatter prints a plain, unadorned list of data, with each data item appearing on a separate line.  If you wish your list to contain headers, then use the table formatter, and wrap your data in an PropertyList.
+> Represents an incompatibility between the output data and selected formatter.
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>overrideRestructure(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Select data to use directly from the structured output, before the restructure operation has been executed.</em> |
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$format</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$validFormats</strong>)</strong> : <em>void</em> |
+
+*This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
+
+*This class implements \Throwable*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Exception\IncompatibleDataException
+
+> Represents an incompatibility between the output data and selected formatter.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
+
+*This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
+
+*This class implements \Throwable*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Exception\UnknownFormatException
+
+> Indicates that the requested format does not exist.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$format</strong>)</strong> : <em>void</em> |
+
+*This class extends \Exception*
+
+*This class implements \Throwable*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\TsvFormatter
+
+> Tab-separated value formatters Display the provided structured data in a tab-separated list.  Output escaping is much lighter, since there is no allowance for altering the delimiter.
+
+| Visibility | Function |
+|:-----------|:---------|
 | public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-| protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
+| protected | <strong>getDefaultFormatterOptions()</strong> : <em>mixed</em> |
+| protected | <strong>tsvEscape(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
+| protected | <strong>writeOneLine(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>void</em> |
 
-*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface](#interface-consolidationoutputformatterstransformationsoverriderestructureinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
+*This class extends [\Consolidation\OutputFormatters\Formatters\CsvFormatter](#class-consolidationoutputformattersformatterscsvformatter)*
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
 
 <hr />
 
@@ -184,6 +188,50 @@
 | protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\PrintRFormatter
+
+> Print_r formatter Run provided date thruogh print_r.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\Formatters\RenderDataInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\VarDumpFormatter
+
+> Var_dump formatter Run provided data through Symfony VarDumper component.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\SerializeFormatter
+
+> Serialize formatter Run provided date thruogh serialize.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
 
 <hr />
 
@@ -227,9 +275,60 @@
 
 <hr />
 
-### Class: \Consolidation\OutputFormatters\Formatters\SerializeFormatter
+### Class: \Consolidation\OutputFormatters\Formatters\XmlFormatter
 
-> Serialize formatter Run provided date thruogh serialize.
+> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or PropertyList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct()</strong> : <em>void</em> |
+| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>Return the list of data types acceptable to this formatter</em> |
+| public | <strong>validDataTypes()</strong> : <em>void</em> |
+| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\TableFormatter
+
+> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or PropertyList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct()</strong> : <em>void</em> |
+| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>Return the list of data types acceptable to this formatter</em> |
+| public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
+| public | <strong>validDataTypes()</strong> : <em>void</em> |
+| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+| protected static | <strong>addCustomTableStyles(</strong><em>mixed</em> <strong>$table</strong>)</strong> : <em>void</em><br /><em>Add our custom table style(s) to the table.</em> |
+| protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
+| protected | <strong>wrap(</strong><em>mixed</em> <strong>$headers</strong>, <em>array</em> <strong>$data</strong>, <em>\Symfony\Component\Console\Helper\TableStyle</em> <strong>$tableStyle</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Wrap the table data</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\ListFormatter
+
+> Display the data in a simple list. This formatter prints a plain, unadorned list of data, with each data item appearing on a separate line.  If you wish your list to contain headers, then use the table formatter, and wrap your data in an PropertyList.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>overrideRestructure(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Select data to use directly from the structured output, before the restructure operation has been executed.</em> |
+| public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+| protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface](#interface-consolidationoutputformatterstransformationsoverriderestructureinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\VarExportFormatter
+
+> Var_export formatter Run provided date thruogh var_export.
 
 | Visibility | Function |
 |:-----------|:---------|
@@ -255,18 +354,6 @@
 
 <hr />
 
-### Class: \Consolidation\OutputFormatters\Formatters\VarExportFormatter
-
-> Var_export formatter Run provided date thruogh var_export.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-
-*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
-
-<hr />
-
 ### Class: \Consolidation\OutputFormatters\Formatters\YamlFormatter
 
 > Yaml formatter Convert an array or ArrayObject into Yaml.
@@ -276,88 +363,6 @@
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Formatters\TableFormatter
-
-> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or PropertyList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct()</strong> : <em>void</em> |
-| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>Return the list of data types acceptable to this formatter</em> |
-| public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
-| public | <strong>validDataTypes()</strong> : <em>void</em> |
-| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
-| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-| protected static | <strong>addCustomTableStyles(</strong><em>mixed</em> <strong>$table</strong>)</strong> : <em>void</em><br /><em>Add our custom table style(s) to the table.</em> |
-| protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
-| protected | <strong>wrap(</strong><em>mixed</em> <strong>$headers</strong>, <em>array</em> <strong>$data</strong>, <em>\Symfony\Component\Console\Helper\TableStyle</em> <strong>$tableStyle</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Wrap the table data</em> |
-
-*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Formatters\XmlFormatter
-
-> Display a table of data with the Symfony Table class. This formatter takes data of either the RowsOfFields or PropertyList data type.  Tables can be rendered with the rows running either vertically (the normal orientation) or horizontally.  By default, associative lists will be displayed as two columns, with the key in the first column and the value in the second column.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct()</strong> : <em>void</em> |
-| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>Return the list of data types acceptable to this formatter</em> |
-| public | <strong>validDataTypes()</strong> : <em>void</em> |
-| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
-| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-
-*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Formatters\PrintRFormatter
-
-> Print_r formatter Run provided date thruogh print_r.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-
-*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
-
-<hr />
-
-### Interface: \Consolidation\OutputFormatters\Formatters\RenderDataInterface
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Formatters\TsvFormatter
-
-> Tab-separated value formatters Display the provided structured data in a tab-separated list.  Output escaping is much lighter, since there is no allowance for altering the delimiter.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>renderData(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of the output data just before it is to be printed, prior to output but after restructuring and validation.</em> |
-| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>string</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-| protected | <strong>getDefaultFormatterOptions()</strong> : <em>mixed</em> |
-| protected | <strong>tsvEscape(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
-| protected | <strong>writeOneLine(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>void</em> |
-
-*This class extends [\Consolidation\OutputFormatters\Formatters\CsvFormatter](#class-consolidationoutputformattersformatterscsvformatter)*
-
-*This class implements [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
-
-<hr />
-
-### Interface: \Consolidation\OutputFormatters\Options\OverrideOptionsInterface
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>overrideOptions(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Allow the formatter to mess with the configuration options before any transformations et. al. get underway.</em> |
 
 <hr />
 
@@ -400,11 +405,30 @@
 
 <hr />
 
-### Interface: \Consolidation\OutputFormatters\StructuredData\ListDataInterface
+### Interface: \Consolidation\OutputFormatters\Options\OverrideOptionsInterface
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Convert data to a format suitable for use in a list. By default, the array values will be used.  Implement ListDataInterface to use some other criteria (e.g. array keys).</em> |
+| public | <strong>overrideOptions(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Allow the formatter to mess with the configuration options before any transformations et. al. get underway.</em> |
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\StructuredData\CallableRenderer
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>\callable</em> <strong>$renderFunction</strong>)</strong> : <em>void</em> |
+| public | <strong>renderCell(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>mixed</em> <strong>$rowData</strong>)</strong> : <em>void</em> |
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\StructuredData\OriginalDataInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>getOriginalData()</strong> : <em>mixed</em><br /><em>Return the original data for this table.  Used by any formatter that expects an array.</em> |
 
 <hr />
 
@@ -414,6 +438,39 @@
 |:-----------|:---------|
 | public | <strong>getOriginalData()</strong> : <em>mixed</em><br /><em>Return the original data for this table.  Used by any formatter that is -not- a table.</em> |
 | public | <strong>getTableData(</strong><em>bool/boolean</em> <strong>$includeRowKey=false</strong>)</strong> : <em>array</em><br /><em>Convert structured data into a form suitable for use by the table formatter. key from each row.</em> |
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\StructuredData\RenderCellInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>renderCell(</strong><em>string</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>array</em> <strong>$rowData</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of one table cell into a string, so that it may be placed in the table.  Renderer should return the $cellData passed to it if it does not wish to process it.</em> |
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\StructuredData\ListDataFromKeys
+
+> Represents aribtrary array data (structured or unstructured) where the data to display in --list format comes from the array keys.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
+| public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
+
+*This class extends \ArrayObject*
+
+*This class implements \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>addRenderer(</strong><em>[\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)</em> <strong>$renderer</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a renderer</em> |
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
 
 <hr />
 
@@ -427,11 +484,34 @@
 
 <hr />
 
-### Interface: \Consolidation\OutputFormatters\StructuredData\OriginalDataInterface
+### Class: \Consolidation\OutputFormatters\StructuredData\AbstractStructuredList (abstract)
+
+> Holds an array where each element of the array is one row, and each row contains an associative array where the keys are the field names, and the values are the field data. It is presumed that every row contains the same keys.
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>getOriginalData()</strong> : <em>mixed</em><br /><em>Return the original data for this table.  Used by any formatter that expects an array.</em> |
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
+| public | <strong>addRenderer(</strong><em>[\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)</em> <strong>$renderer</strong>, <em>string</em> <strong>$priority=`'normal'`</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a renderer</em> |
+| public | <strong>addRendererFunction(</strong><em>\callable</em> <strong>$rendererFn</strong>, <em>string</em> <strong>$priority=`'normal'`</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a callable as a renderer</em> |
+| public | <strong>renderCell(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>mixed</em> <strong>$rowData</strong>)</strong> : <em>void</em> |
+| public | <strong>abstract restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
+| protected | <strong>createTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
+| protected | <strong>defaultOptions()</strong> : <em>array</em><br /><em>A structured list may provide its own set of default options. These will be used in place of the command's default options (from the annotations) in instances where the user does not provide the options explicitly (on the commandline) or implicitly (via a configuration file).</em> |
+| protected | <strong>getFields(</strong><em>mixed</em> <strong>$options</strong>, <em>mixed</em> <strong>$defaults</strong>)</strong> : <em>mixed</em> |
+| protected | <strong>getReorderedFieldLabels(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>, <em>mixed</em> <strong>$defaults</strong>)</strong> : <em>mixed</em> |
+| protected | <strong>instantiateTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>, <em>mixed</em> <strong>$rowLabels</strong>)</strong> : <em>void</em> |
+
+*This class extends [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)*
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\StructuredData\ListDataInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Convert data to a format suitable for use in a list. By default, the array values will be used.  Implement ListDataInterface to use some other criteria (e.g. array keys).</em> |
 
 <hr />
 
@@ -459,41 +539,16 @@
 
 <hr />
 
-### Class: \Consolidation\OutputFormatters\StructuredData\AbstractStructuredList (abstract)
+### Class: \Consolidation\OutputFormatters\StructuredData\AssociativeList
 
-> Holds an array where each element of the array is one row, and each row contains an associative array where the keys are the field names, and the values are the field data. It is presumed that every row contains the same keys.
+> Old name for PropertyList class.
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
-| public | <strong>addRenderer(</strong><em>[\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)</em> <strong>$renderer</strong>, <em>string</em> <strong>$priority=`'normal'`</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a renderer</em> |
-| public | <strong>addRendererFunction(</strong><em>\callable</em> <strong>$rendererFn</strong>, <em>string</em> <strong>$priority=`'normal'`</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a callable as a renderer</em> |
-| public | <strong>renderCell(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>mixed</em> <strong>$rowData</strong>)</strong> : <em>void</em> |
-| public | <strong>abstract restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
-| protected | <strong>createTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
-| protected | <strong>defaultOptions()</strong> : <em>array</em><br /><em>A structured list may provide its own set of default options. These will be used in place of the command's default options (from the annotations) in instances where the user does not provide the options explicitly (on the commandline) or implicitly (via a configuration file).</em> |
-| protected | <strong>getFields(</strong><em>mixed</em> <strong>$options</strong>, <em>mixed</em> <strong>$defaults</strong>)</strong> : <em>mixed</em> |
-| protected | <strong>getReorderedFieldLabels(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>, <em>mixed</em> <strong>$defaults</strong>)</strong> : <em>mixed</em> |
-| protected | <strong>instantiateTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>, <em>mixed</em> <strong>$rowLabels</strong>)</strong> : <em>void</em> |
 
-*This class extends [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)*
+*This class extends [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)*
 
 *This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\StructuredData\ListDataFromKeys
-
-> Represents aribtrary array data (structured or unstructured) where the data to display in --list format comes from the array keys.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
-| public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
-
-*This class extends \ArrayObject*
-
-*This class implements \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
 
 <hr />
 
@@ -514,48 +569,6 @@
 
 <hr />
 
-### Interface: \Consolidation\OutputFormatters\StructuredData\RenderCellInterface
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>renderCell(</strong><em>string</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>array</em> <strong>$rowData</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of one table cell into a string, so that it may be placed in the table.  Renderer should return the $cellData passed to it if it does not wish to process it.</em> |
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\StructuredData\CallableRenderer
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct(</strong><em>\callable</em> <strong>$renderFunction</strong>)</strong> : <em>void</em> |
-| public | <strong>renderCell(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>mixed</em> <strong>$rowData</strong>)</strong> : <em>void</em> |
-
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
-
-<hr />
-
-### Interface: \Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>addRenderer(</strong><em>[\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)</em> <strong>$renderer</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a renderer</em> |
-
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\StructuredData\AssociativeList
-
-> Old name for PropertyList class.
-
-| Visibility | Function |
-|:-----------|:---------|
-
-*This class extends [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)*
-
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
-
-<hr />
-
 ### Interface: \Consolidation\OutputFormatters\StructuredData\Xml\XmlSchemaInterface
 
 > When using arrays, we could represent XML data in a number of different ways. For example, given the following XML data strucutre: <document id="1" name="doc"> <foobars> <foobar id="123"> <name>blah</name> <widgets> <widget> <foo>a</foo> <bar>b</bar> <baz>c</baz> </widget> </widgets> </foobar> </foobars> </document> This could be: [ 'id' => 1, 'name'  => 'doc', 'foobars' => [ [ 'id' => '123', 'name' => 'blah', 'widgets' => [ [ 'foo' => 'a', 'bar' => 'b', 'baz' => 'c', ] ], ], ] ] The challenge is more in going from an array back to the more structured xml format.  Note that any given key => string mapping could represent either an attribute, or a simple XML element containing only a string value. In general, we do *not* want to add extra layers of nesting in the data structure to disambiguate between these kinds of data, as we want the source data to render cleanly into other formats, e.g. yaml, json, et. al., and we do not want to force every data provider to have to consider the optimal xml schema for their data. Our strategy, therefore, is to expect clients that wish to provide a very specific xml representation to return a DOMDocument, and, for other data structures where xml is a secondary concern, then we will use some default heuristics to convert from arrays to xml.
@@ -563,14 +576,6 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>arrayToXml(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>[\DOMDocument](http://php.net/manual/en/class.domdocument.php)</em><br /><em>Convert data to a format suitable for use in a list. By default, the array values will be used.  Implement ListDataInterface to use some other criteria (e.g. array keys).</em> |
-
-<hr />
-
-### Interface: \Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>getDomData()</strong> : <em>[\DomDocument](http://php.net/manual/en/class.domdocument.php)</em><br /><em>Convert data into a \DomDocument.</em> |
 
 <hr />
 
@@ -595,50 +600,11 @@
 
 <hr />
 
-### Class: \Consolidation\OutputFormatters\Transformations\PropertyParser
-
-> Transform a string of properties into a PHP associative array. Input: one: red two: white three: blue Output: [ 'one' => 'red', 'two' => 'white', 'three' => 'blue', ]
+### Interface: \Consolidation\OutputFormatters\StructuredData\Xml\DomDataInterface
 
 | Visibility | Function |
 |:-----------|:---------|
-| public static | <strong>parse(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Transformations\PropertyListTableTransformation
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>getOriginalData()</strong> : <em>mixed</em> |
-
-*This class extends [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)*
-
-*This class implements [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface), [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable*
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Transformations\TableTransformation
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>, <em>array</em> <strong>$rowLabels=array()</strong>)</strong> : <em>void</em> |
-| public | <strong>getHeader(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>mixed</em> |
-| public | <strong>getHeaders()</strong> : <em>mixed</em> |
-| public | <strong>getLayout()</strong> : <em>mixed</em> |
-| public | <strong>getOriginalData()</strong> : <em>mixed</em> |
-| public | <strong>getRowLabel(</strong><em>mixed</em> <strong>$rowid</strong>)</strong> : <em>mixed</em> |
-| public | <strong>getRowLabels()</strong> : <em>mixed</em> |
-| public | <strong>getTableData(</strong><em>bool</em> <strong>$includeRowKey=false</strong>)</strong> : <em>mixed</em> |
-| public | <strong>isList()</strong> : <em>bool</em> |
-| public | <strong>setLayout(</strong><em>mixed</em> <strong>$layout</strong>)</strong> : <em>void</em> |
-| protected | <strong>convertTableToList()</strong> : <em>void</em> |
-| protected | <strong>getRowDataWithKey(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>mixed</em> |
-| protected static | <strong>transformRow(</strong><em>mixed</em> <strong>$row</strong>, <em>mixed</em> <strong>$fieldLabels</strong>)</strong> : <em>void</em> |
-| protected static | <strong>transformRows(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>)</strong> : <em>void</em> |
-
-*This class extends \ArrayObject*
-
-*This class implements \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface)*
+| public | <strong>getDomData()</strong> : <em>[\DomDocument](http://php.net/manual/en/class.domdocument.php)</em><br /><em>Convert data into a \DomDocument.</em> |
 
 <hr />
 
@@ -680,6 +646,60 @@
 
 <hr />
 
+### Class: \Consolidation\OutputFormatters\Transformations\PropertyListTableTransformation
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>getOriginalData()</strong> : <em>mixed</em> |
+
+*This class extends [\Consolidation\OutputFormatters\Transformations\TableTransformation](#class-consolidationoutputformatterstransformationstabletransformation)*
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface), [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>canSimplify(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$structuredOutput</strong>)</strong> : <em>bool</em><br /><em>Indicate whether or not the given data type can be simplified to an array</em> |
+| public | <strong>simplifyToArray(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Convert structured data into a generic array, usable by generic array-based formatters.  Objects that implement this interface may be attached to the FormatterManager, and will be used on any data structure that needs to be simplified into an array.  An array simplifier should take no action other than to return its input data if it cannot simplify the provided data into an array.</em> |
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>overrideRestructure(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Select data to use directly from the structured output, before the restructure operation has been executed.</em> |
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Transformations\TableTransformation
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>, <em>array</em> <strong>$rowLabels=array()</strong>)</strong> : <em>void</em> |
+| public | <strong>getHeader(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>mixed</em> |
+| public | <strong>getHeaders()</strong> : <em>mixed</em> |
+| public | <strong>getLayout()</strong> : <em>mixed</em> |
+| public | <strong>getOriginalData()</strong> : <em>mixed</em> |
+| public | <strong>getRowLabel(</strong><em>mixed</em> <strong>$rowid</strong>)</strong> : <em>mixed</em> |
+| public | <strong>getRowLabels()</strong> : <em>mixed</em> |
+| public | <strong>getTableData(</strong><em>bool</em> <strong>$includeRowKey=false</strong>)</strong> : <em>mixed</em> |
+| public | <strong>isList()</strong> : <em>bool</em> |
+| public | <strong>setLayout(</strong><em>mixed</em> <strong>$layout</strong>)</strong> : <em>void</em> |
+| protected | <strong>convertTableToList()</strong> : <em>void</em> |
+| protected | <strong>getRowDataWithKey(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>mixed</em> |
+| protected static | <strong>transformRow(</strong><em>mixed</em> <strong>$row</strong>, <em>mixed</em> <strong>$fieldLabels</strong>)</strong> : <em>void</em> |
+| protected static | <strong>transformRows(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$fieldLabels</strong>)</strong> : <em>void</em> |
+
+*This class extends \ArrayObject*
+
+*This class implements \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\TableDataInterface](#interface-consolidationoutputformattersstructureddatatabledatainterface), [\Consolidation\OutputFormatters\StructuredData\OriginalDataInterface](#interface-consolidationoutputformattersstructureddataoriginaldatainterface)*
+
+<hr />
+
 ### Class: \Consolidation\OutputFormatters\Transformations\WordWrapper
 
 | Visibility | Function |
@@ -694,37 +714,13 @@
 
 <hr />
 
-### Interface: \Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface
+### Class: \Consolidation\OutputFormatters\Transformations\PropertyParser
+
+> Transform a string of properties into a PHP associative array. Input: one: red two: white three: blue Output: [ 'one' => 'red', 'two' => 'white', 'three' => 'blue', ]
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>overrideRestructure(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em><br /><em>Select data to use directly from the structured output, before the restructure operation has been executed.</em> |
-
-<hr />
-
-### Interface: \Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>canSimplify(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$structuredOutput</strong>)</strong> : <em>bool</em><br /><em>Indicate whether or not the given data type can be simplified to an array</em> |
-| public | <strong>simplifyToArray(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Convert structured data into a generic array, usable by generic array-based formatters.  Objects that implement this interface may be attached to the FormatterManager, and will be used on any data structure that needs to be simplified into an array.  An array simplifier should take no action other than to return its input data if it cannot simplify the provided data into an array.</em> |
-
-<hr />
-
-### Class: \Consolidation\OutputFormatters\Transformations\Wrap\CalculateWidths
-
-> Calculate column widths for table cells. Influenced by Drush and webmozart/console.
-
-| Visibility | Function |
-|:-----------|:---------|
-| public | <strong>__construct()</strong> : <em>void</em> |
-| public | <strong>calculate(</strong><em>mixed</em> <strong>$availableWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$dataWidths</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>Given the total amount of available space, and the width of the columns to place, calculate the optimum column widths to use.</em> |
-| public | <strong>calculateLongestCell(</strong><em>mixed</em> <strong>$rows</strong>)</strong> : <em>void</em><br /><em>Calculate the longest cell data from any row of each of the cells.</em> |
-| public | <strong>calculateLongestWord(</strong><em>mixed</em> <strong>$rows</strong>)</strong> : <em>void</em><br /><em>Calculate the longest word and longest line in the provided data.</em> |
-| public | <strong>distributeLongColumns(</strong><em>mixed</em> <strong>$availableWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$dataWidths</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>Distribute the remainig space among the columns that were not included in the list of "short" columns.</em> |
-| public | <strong>getShortColumns(</strong><em>mixed</em> <strong>$availableWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$dataWidths</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$minimumWidths</strong>)</strong> : <em>mixed</em><br /><em>Return all of the columns whose longest line length is less than or equal to the average width.</em> |
-| protected | <strong>calculateColumnWidths(</strong><em>mixed</em> <strong>$rows</strong>, <em>\callable</em> <strong>$fn</strong>)</strong> : <em>void</em> |
-| protected static | <strong>longestWordLength(</strong><em>string</em> <strong>$str</strong>)</strong> : <em>int</em><br /><em>Return the length of the longest word in the string.</em> |
+| public static | <strong>parse(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
 
 <hr />
 
@@ -758,14 +754,20 @@
 
 <hr />
 
-### Interface: \Consolidation\OutputFormatters\Validate\ValidationInterface
+### Class: \Consolidation\OutputFormatters\Transformations\Wrap\CalculateWidths
 
-> Formatters may implement ValidationInterface in order to indicate whether a particular data structure is supported.  Any formatter that does not implement ValidationInterface is assumed to only operate on arrays, or data types that implement SimplifyToArrayInterface.
+> Calculate column widths for table cells. Influenced by Drush and webmozart/console.
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>Return true if the specified format is valid for use with this formatter.</em> |
-| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
+| public | <strong>__construct()</strong> : <em>void</em> |
+| public | <strong>calculate(</strong><em>mixed</em> <strong>$availableWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$dataWidths</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>Given the total amount of available space, and the width of the columns to place, calculate the optimum column widths to use.</em> |
+| public | <strong>calculateLongestCell(</strong><em>mixed</em> <strong>$rows</strong>)</strong> : <em>void</em><br /><em>Calculate the longest cell data from any row of each of the cells.</em> |
+| public | <strong>calculateLongestWord(</strong><em>mixed</em> <strong>$rows</strong>)</strong> : <em>void</em><br /><em>Calculate the longest word and longest line in the provided data.</em> |
+| public | <strong>distributeLongColumns(</strong><em>mixed</em> <strong>$availableWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$dataWidths</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$minimumWidths</strong>)</strong> : <em>void</em><br /><em>Distribute the remainig space among the columns that were not included in the list of "short" columns.</em> |
+| public | <strong>getShortColumns(</strong><em>mixed</em> <strong>$availableWidth</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$dataWidths</strong>, <em>[\Consolidation\OutputFormatters\Transformations\Wrap\ColumnWidths](#class-consolidationoutputformatterstransformationswrapcolumnwidths)</em> <strong>$minimumWidths</strong>)</strong> : <em>mixed</em><br /><em>Return all of the columns whose longest line length is less than or equal to the average width.</em> |
+| protected | <strong>calculateColumnWidths(</strong><em>mixed</em> <strong>$rows</strong>, <em>\callable</em> <strong>$fn</strong>)</strong> : <em>void</em> |
+| protected static | <strong>longestWordLength(</strong><em>string</em> <strong>$str</strong>)</strong> : <em>int</em><br /><em>Return the length of the longest word in the string.</em> |
 
 <hr />
 
@@ -778,4 +780,15 @@
 | public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass[]](http://php.net/manual/en/class.reflectionclass.php)</em><br /><em>Return the list of data types acceptable to this formatter</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\Validate\ValidationInterface
+
+> Formatters may implement ValidationInterface in order to indicate whether a particular data structure is supported.  Any formatter that does not implement ValidationInterface is assumed to only operate on arrays, or data types that implement SimplifyToArrayInterface.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>Return true if the specified format is valid for use with this formatter.</em> |
+| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
 
