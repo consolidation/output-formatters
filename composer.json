@@ -32,6 +32,9 @@
         "symfony/var-dumper": "^3.4",
         "victorjonsson/markdowndocs": "^1.3"
     },
+    "suggest": {
+        "symfony/var-dumper": "For using the var_dump formatter"
+    },
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true,
