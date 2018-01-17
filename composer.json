@@ -60,7 +60,7 @@
         "post-update-cmd": [
             "create-scenario symfony4 'symfony/console:^4.0'",
             "create-scenario symfony3 'symfony/console:^3.4' --platform-php '5.6'",
-            "create-scenario symfony2 'symfony/console:^2.8' --platform-php '5.4' --no-lockfile"
+            "create-scenario symfony2 'symfony/console:^2.8' --platform-php '5.4' --no-lockfile --remove symfony/var-dumper"
         ]
     },
     "extra": {
