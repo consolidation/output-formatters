@@ -331,6 +331,10 @@ EOT;
     }
 
 
+    /**
+     * @requires PHP 5.4
+     * @requires function \Symfony\Component\VarDumper\VarDumper::dump
+     */
     public function testSimpleVarDump()
     {
         $data = [
@@ -350,6 +354,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'var_dump', $data);
     }
 
+  /**
+   * @requires PHP 5.4
+   * @requires function \Symfony\Component\VarDumper\VarDumper::dump
+   */
     public function testNestedVarDump()
     {
         $data = [
