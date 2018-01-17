@@ -332,7 +332,6 @@ EOT;
 
 
     /**
-     * @requires PHP 5.4
      * @requires function \Symfony\Component\VarDumper\VarDumper::dump
      */
     public function testSimpleVarDump()
@@ -355,7 +354,6 @@ EOT;
     }
 
   /**
-   * @requires PHP 5.4
    * @requires function \Symfony\Component\VarDumper\VarDumper::dump
    */
     public function testNestedVarDump()
