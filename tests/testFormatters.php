@@ -330,33 +330,67 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'var_export', $data);
     }
 
-    function testVarDump()
+
+    public function testSimpleVarDump()
     {
         $data = [
-            'one' => 'foo',
-            'two' => 123,
-            'three' => [true],
+            'one' => 'a',
+           'two' => 'b',
+           'three' => 'c',
         ];
 
-      $expected = <<<EOT
+        $expected = <<<EOT
 array:3 [
-  "one" => "foo"
-  "two" => 123
+  "one" => "a"
+  "two" => "b"
+  "three" => "c"
+]
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'var_dump', $data);
+    }
+
+    public function testNestedVarDump()
+    {
+        $data = [
+            'one' => [
+                'i'   => ['a', 'b', 'c'],
+            ],
+            'two' => [
+                'ii'   => ['q', 'r', 's'],
+            ],
+            'three' => [
+               'iii' => ['t', 'u', 'v'],
+            ],
+        ];
+
+        $expected = <<<EOT
+array:3 [
+  "one" => array:1 [
+    "i" => array:3 [
+      0 => "a"
+      1 => "b"
+      2 => "c"
+    ]
+  ]
+  "two" => array:1 [
+    "ii" => array:3 [
+      0 => "q"
+      1 => "r"
+      2 => "s"
+    ]
+  ]
   "three" => array:1 [
-    0 => true
+    "iii" => array:3 [
+      0 => "t"
+      1 => "u"
+      2 => "v"
+    ]
   ]
 ]
 EOT;
 
-      // Not way to use self::assertFormattedOutputMatches() here because it
-      // relies on buffered output while VarDumpFormatter uses stream output.
-      $output = new StreamOutput(fopen('php://memory', 'w', false));
-      $this->formatterManager->write($output, 'var_dump', $data, new FormatterOptions());
-
-      rewind($output->getStream());
-      $display = stream_get_contents($output->getStream());
-
-      $this->assertEquals($expected, rtrim($display));
+        $this->assertFormattedOutputMatches($expected, 'var_dump', $data);
     }
 
     function testList()
