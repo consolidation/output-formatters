@@ -29,7 +29,12 @@ class VarDumpFormatter implements FormatterInterface
             // @see Symfony\Component\VarDumper\Dumper\CliDumper::supportsColors
             $dumper->dump($cloned_data, $output->getStream());
         } else {
-            $output->writeln($dumper->dump($cloned_data, true));
+            // @todo Use dumper return value to get output once we stop support
+            // VarDumper v2.
+            $stream = fopen('php://memory', 'r+b');
+            $dumper->dump($cloned_data, $stream);
+            $output->writeln(stream_get_contents($stream, -1, 0));
+            fclose($stream);
         }
     }
 }
