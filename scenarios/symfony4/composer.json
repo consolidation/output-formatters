@@ -28,7 +28,11 @@
         "satooshi/php-coveralls": "^1.0.2 | dev-master",
         "squizlabs/php_codesniffer": "^2.7",
         "symfony/console": "^4.0",
+        "symfony/var-dumper": "^2.8|^3|^4",
         "victorjonsson/markdowndocs": "^1.3"
+    },
+    "suggest": {
+        "symfony/var-dumper": "For using the var_dump formatter"
     },
     "config": {
         "optimize-autoloader": true,

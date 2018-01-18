@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Output\StreamOutput;
 
 class FormattersTests extends \PHPUnit_Framework_TestCase
 {
@@ -327,6 +328,75 @@ array (
 EOT;
 
         $this->assertFormattedOutputMatches($expected, 'var_export', $data);
+    }
+
+
+    /**
+     * @requires function \Symfony\Component\VarDumper\VarDumper::dump
+     */
+    public function testSimpleVarDump()
+    {
+        $data = [
+            'one' => 'a',
+           'two' => 'b',
+           'three' => 'c',
+        ];
+
+        $expected = <<<EOT
+array:3 [
+  "one" => "a"
+  "two" => "b"
+  "three" => "c"
+]
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'var_dump', $data);
+    }
+
+  /**
+   * @requires function \Symfony\Component\VarDumper\VarDumper::dump
+   */
+    public function testNestedVarDump()
+    {
+        $data = [
+            'one' => [
+                'i'   => ['a', 'b', 'c'],
+            ],
+            'two' => [
+                'ii'   => ['q', 'r', 's'],
+            ],
+            'three' => [
+               'iii' => ['t', 'u', 'v'],
+            ],
+        ];
+
+        $expected = <<<EOT
+array:3 [
+  "one" => array:1 [
+    "i" => array:3 [
+      0 => "a"
+      1 => "b"
+      2 => "c"
+    ]
+  ]
+  "two" => array:1 [
+    "ii" => array:3 [
+      0 => "q"
+      1 => "r"
+      2 => "s"
+    ]
+  ]
+  "three" => array:1 [
+    "iii" => array:3 [
+      0 => "t"
+      1 => "u"
+      2 => "v"
+    ]
+  ]
+]
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'var_dump', $data);
     }
 
     function testList()
@@ -771,7 +841,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_export,xml,yaml
+     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleDataForTableFormatter()
     {
@@ -782,7 +852,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_export,xml,yaml
+     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleDataForSectionsFormatter()
     {
@@ -1091,7 +1161,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_export,xml,yaml
+     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleListDataForTableFormatter()
     {
