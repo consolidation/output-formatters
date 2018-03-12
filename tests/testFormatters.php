@@ -881,6 +881,7 @@ EOT;
   x     y     z
  ----- ----- -------
 EOT;
+        $expected = preg_replace('#[ \t]*$#sm', '', $expected);
         $this->assertFormattedOutputMatches($expected, 'table', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
 
         $expected = <<<EOT
