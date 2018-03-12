@@ -53,6 +53,7 @@ Formatters may also implement different interfaces to alter the behavior of the 
 Most formatters will operate on any array or ArrayObject data. Some formatters require that specific data types be used. The following data types, all of which are subclasses of ArrayObject, are available for use:
 
 - `RowsOfFields`: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
+- `RowsOfFieldsWithMetadata`: Equivalent to `RowsOfFields`, but allows the data to be nested inside of an element, with other elements being used as metadata, or, alternately, allows the metadata to be nested inside of an element, with all other elements being used as data.
 - `PropertyList`: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
 - `ListDataFromKeys`: The result may be structured or unstructured data. When formatted with the --format=list formatter, the result will come from the array keys instead of the array values.
 - `DOMDocument`: The standard PHP DOM document class may be used by functions that need to be able to presicely specify the exact attributes and children when the XML output format is used.
