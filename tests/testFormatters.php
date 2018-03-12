@@ -800,7 +800,15 @@ EOT;
         $this->assertEquals(false, $rowsOfFieldsWithMetadata->getDataKey());
         $this->assertEquals(false, $rowsOfFieldsWithMetadata->getMetadataKey());
         $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, []);
-        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata);
+        $expected = <<<EOT
+ ----- ----- -------
+  One   Two   Three
+ ----- ----- -------
+  a     b     c
+  x     y     z
+ ----- ----- -------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $rowsOfFieldsWithMetadata, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
 
         $expected = <<<EOT
 id-123:
@@ -822,7 +830,7 @@ EOT;
         $this->assertEquals('data', $rowsOfFieldsWithMetadata->getDataKey());
         $this->assertEquals(false, $rowsOfFieldsWithMetadata->getMetadataKey());
         $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata);
-        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata, "Summary: This is some metadata\n\n");
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata);
 
         $expected = <<<EOT
 data:
@@ -846,7 +854,7 @@ EOT;
         $this->assertEquals(false, $rowsOfFieldsWithMetadata->getDataKey());
         $this->assertEquals('metadata', $rowsOfFieldsWithMetadata->getMetadataKey());
         $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata);
-        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata, "Summary: This is some metadata\n\n");
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata);
 
         $expected = <<<EOT
 metadata:
@@ -873,7 +881,9 @@ EOT;
 
     function assertTableWithMetadata($data, $expectedHeader = '')
     {
-        $expected = $expectedHeader . <<<EOT
+        $expected = <<<EOT
+Summary: This is some metadata
+
  ----- ----- -------
   One   Two   Three
  ----- ----- -------
@@ -881,7 +891,6 @@ EOT;
   x     y     z
  ----- ----- -------
 EOT;
-        $expected = preg_replace('#[ \t]*$#sm', '', $expected);
         $this->assertFormattedOutputMatches($expected, 'table', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
 
         $expected = <<<EOT
