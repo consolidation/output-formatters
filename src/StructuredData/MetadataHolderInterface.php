@@ -11,4 +11,5 @@ interface MetadataHolderInterface
     public function setMetadataKey($key);
     public function extractData($data);
     public function extractMetadata($data);
+    public function reconstruct($data, $metadata);
 }

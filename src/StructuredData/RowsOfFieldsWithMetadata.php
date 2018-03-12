@@ -28,7 +28,7 @@ class RowsOfFieldsWithMetadata extends RowsOfFields implements MetadataInterface
         $originalData = $this->getArrayCopy();
         $data = $this->extractData($originalData);
         $tableTranformer = $this->createTableTransformation($data, $options);
-        $tableTranformer->setOriginalData($originalData);
+        $tableTranformer->setOriginalData($this);
         return $tableTranformer;
     }
 

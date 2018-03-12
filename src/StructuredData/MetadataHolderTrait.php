@@ -90,4 +90,12 @@ trait MetadataHolderTrait
         }
         return $data;
     }
+
+    public function reconstruct($data, $metadata)
+    {
+        $reconstructedData = ($this->dataKey) ? [$this->dataKey => $data] : $data;
+        $reconstructedMetadata = ($this->metadataKey) ? [$this->metadataKey => $metadata] : $metadata;
+
+        return $reconstructedData + $reconstructedMetadata;
+    }
 }

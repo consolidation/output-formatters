@@ -534,6 +534,7 @@
 | public | <strong>extractMetadata(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
 | public | <strong>getDataKey()</strong> : <em>mixed</em> |
 | public | <strong>getMetadataKey()</strong> : <em>mixed</em> |
+| public | <strong>reconstruct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$metadata</strong>)</strong> : <em>void</em> |
 | public | <strong>setDataKey(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em> |
 | public | <strong>setMetadataKey(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em> |
 
@@ -580,6 +581,7 @@
 | public | <strong>getDataKey()</strong> : <em>mixed</em> |
 | public | <strong>getMetadata()</strong> : <em>mixed</em> |
 | public | <strong>getMetadataKey()</strong> : <em>mixed</em> |
+| public | <strong>reconstruct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$metadata</strong>)</strong> : <em>void</em> |
 | public | <strong>restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\Consolidation\OutputFormatters\Transformations\TableTransformation</em><br /><em>Restructure this data for output by converting it into a table transformation object. First, though, remove any metadata items.</em> |
 | public | <strong>setDataKey(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em> |
 | public | <strong>setMetadataKey(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em> |
@@ -686,7 +688,7 @@
 | public | <strong>getTableData(</strong><em>bool</em> <strong>$includeRowKey=false</strong>)</strong> : <em>mixed</em> |
 | public | <strong>isList()</strong> : <em>bool</em> |
 | public | <strong>setLayout(</strong><em>mixed</em> <strong>$layout</strong>)</strong> : <em>void</em> |
-| public | <strong>setOriginalData(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
+| public | <strong>setOriginalData(</strong><em>[\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface](#interface-consolidationoutputformattersstructureddatametadataholderinterface)</em> <strong>$data</strong>)</strong> : <em>void</em> |
 | protected | <strong>convertTableToList()</strong> : <em>void</em> |
 | protected | <strong>getRowDataWithKey(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>mixed</em> |
 | protected static | <strong>transformRow(</strong><em>mixed</em> <strong>$row</strong>, <em>mixed</em> <strong>$fieldLabels</strong>)</strong> : <em>void</em> |
