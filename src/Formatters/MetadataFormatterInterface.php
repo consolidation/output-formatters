@@ -4,15 +4,14 @@ namespace Consolidation\OutputFormatters\Formatters;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Symfony\Component\Console\Output\OutputInterface;
 
-interface FormatterInterface
+interface MetadataFormatterInterface
 {
     /**
-     * Given structured data, apply appropriate
-     * formatting, and return a printable string.
+     * Given some metadata, decide how to display it.
      *
      * @param OutputInterface output stream to write to
-     * @param mixed $data Structured data to format
+     * @param array $metadata associative array containing metadata
      * @param FormatterOptions formating options
      */
-    public function write(OutputInterface $output, $data, FormatterOptions $options);
+    public function writeMetadata(OutputInterface $output, $metadata, FormatterOptions $options);
 }

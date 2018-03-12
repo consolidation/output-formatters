@@ -9,6 +9,7 @@ class TableTransformation extends \ArrayObject implements TableDataInterface, Or
     protected $headers;
     protected $rowLabels;
     protected $layout;
+    protected $originalData;
 
     const TABLE_LAYOUT = 'table';
     const LIST_LAYOUT = 'list';
@@ -83,7 +84,15 @@ class TableTransformation extends \ArrayObject implements TableDataInterface, Or
 
     public function getOriginalData()
     {
+        if (isset($this->originalData)) {
+            return $this->originalData;
+        }
         return $this->getArrayCopy();
+    }
+
+    public function setOriginalData($data)
+    {
+        $this->originalData = $data;
     }
 
     public function getTableData($includeRowKey = false)

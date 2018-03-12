@@ -5,9 +5,11 @@ use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Consolidation\OutputFormatters\Exception\InvalidFormatException;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
 use Consolidation\OutputFormatters\Formatters\FormatterInterface;
+use Consolidation\OutputFormatters\Formatters\MetadataFormatterInterface;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
+use Consolidation\OutputFormatters\StructuredData\MetadataInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
 use Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface;
@@ -204,8 +206,11 @@ class FormatterManager
         }
         // Give the formatter a chance to override the options
         $options = $this->overrideOptions($formatter, $structuredOutput, $options);
-        $structuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
-        $formatter->write($output, $structuredOutput, $options);
+        $restructuredOutput = $this->validateAndRestructure($formatter, $structuredOutput, $options);
+        if ($formatter instanceof MetadataFormatterInterface) {
+            $formatter->writeMetadata($output, $structuredOutput, $options);
+        }
+        $formatter->write($output, $restructuredOutput, $options);
     }
 
     protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)

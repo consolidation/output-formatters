@@ -6,6 +6,7 @@ use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
+use Consolidation\OutputFormatters\StructuredData\RowsOfFieldsWithMetadata;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -788,6 +789,106 @@ EOT;
     {
         $data = $this->simpleTableExampleData()->getArrayCopy();
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'sections', $data);
+    }
+
+    function testSimpleTableWithMetadata()
+    {
+        $data = $this->simpleTableExampleData()->getArrayCopy();
+        $metadata = ['summary' => 'This is some metadata'];
+
+        $rowsOfFieldsWithMetadata = new RowsOfFieldsWithMetadata($data);
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getDataKey());
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getMetadataKey());
+        $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, []);
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata);
+
+        $expected = <<<EOT
+id-123:
+  one: a
+  two: b
+  three: c
+id-456:
+  one: x
+  two: 'y'
+  three: z
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
+
+        $dataWithMetadata = [
+            'data' => $data,
+        ] + $metadata;
+        $rowsOfFieldsWithMetadata = new RowsOfFieldsWithMetadata($dataWithMetadata);
+        $rowsOfFieldsWithMetadata->setDataKey('data');
+        $this->assertEquals('data', $rowsOfFieldsWithMetadata->getDataKey());
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getMetadataKey());
+        $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata);
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata, "Summary: This is some metadata\n\n");
+
+        $expected = <<<EOT
+data:
+  id-123:
+    one: a
+    two: b
+    three: c
+  id-456:
+    one: x
+    two: 'y'
+    three: z
+summary: 'This is some metadata'
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
+
+        $dataWithMetadata = [
+            'metadata' => $metadata,
+        ] + $data;
+        $rowsOfFieldsWithMetadata = new RowsOfFieldsWithMetadata($dataWithMetadata);
+        $rowsOfFieldsWithMetadata->setMetadataKey('metadata');
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getDataKey());
+        $this->assertEquals('metadata', $rowsOfFieldsWithMetadata->getMetadataKey());
+        $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata);
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata, "Summary: This is some metadata\n\n");
+
+        $expected = <<<EOT
+metadata:
+  summary: 'This is some metadata'
+id-123:
+  one: a
+  two: b
+  three: c
+id-456:
+  one: x
+  two: 'y'
+  three: z
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
+
+    }
+
+    function assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata)
+    {
+        $actualData = $rowsOfFieldsWithMetadata->extractData($rowsOfFieldsWithMetadata->getArrayCopy());
+        $this->assertEquals($data, $actualData);
+        $this->assertEquals($metadata, $rowsOfFieldsWithMetadata->getMetadata());
+    }
+
+    function assertTableWithMetadata($data, $expectedHeader = '')
+    {
+        $expected = $expectedHeader . <<<EOT
+ ----- ----- -------
+  One   Two   Three
+ ----- ----- -------
+  a     b     c
+  x     y     z
+ ----- ----- -------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
+
+        $expected = <<<EOT
+One,Two,Three
+a,b,c
+x,y,z
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'csv', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
     }
 
     function testSimpleTable()

@@ -23,10 +23,11 @@ use Consolidation\OutputFormatters\Transformations\WordWrapper;
  * as two columns, with the key in the first column and the
  * value in the second column.
  */
-class TableFormatter implements FormatterInterface, ValidDataTypesInterface, RenderDataInterface
+class TableFormatter implements FormatterInterface, ValidDataTypesInterface, RenderDataInterface, MetadataFormatterInterface
 {
     use ValidDataTypesTrait;
     use RenderTableDataTrait;
+    use MetadataFormatterTrait;
 
     protected $fieldLabels;
     protected $defaultFields;
