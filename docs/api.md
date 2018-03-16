@@ -37,6 +37,7 @@
 - [\Consolidation\OutputFormatters\StructuredData\CallableRenderer](#class-consolidationoutputformattersstructureddatacallablerenderer)
 - [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface)
 - [\Consolidation\OutputFormatters\StructuredData\RowsOfFieldsWithMetadata](#class-consolidationoutputformattersstructureddatarowsoffieldswithmetadata)
+- [\Consolidation\OutputFormatters\StructuredData\NumericCellRenderer](#class-consolidationoutputformattersstructureddatanumericcellrenderer)
 - [\Consolidation\OutputFormatters\StructuredData\AssociativeList](#class-consolidationoutputformattersstructureddataassociativelist)
 - [\Consolidation\OutputFormatters\StructuredData\MetadataInterface (interface)](#interface-consolidationoutputformattersstructureddatametadatainterface)
 - [\Consolidation\OutputFormatters\StructuredData\Xml\XmlSchemaInterface (interface)](#interface-consolidationoutputformattersstructureddataxmlxmlschemainterface)
@@ -97,8 +98,6 @@
 
 *This class extends \Exception*
 
-*This class implements \Throwable*
-
 <hr />
 
 ### Class: \Consolidation\OutputFormatters\Exception\AbstractDataFormatException (abstract)
@@ -113,8 +112,6 @@
 
 *This class extends \Exception*
 
-*This class implements \Throwable*
-
 <hr />
 
 ### Class: \Consolidation\OutputFormatters\Exception\IncompatibleDataException
@@ -126,8 +123,6 @@
 | public | <strong>__construct(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
-
-*This class implements \Throwable*
 
 <hr />
 
@@ -141,8 +136,6 @@
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
 
-*This class implements \Throwable*
-
 <hr />
 
 ### Class: \Consolidation\OutputFormatters\Exception\UnknownFieldException
@@ -154,8 +147,6 @@
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$field</strong>)</strong> : <em>void</em> |
 
 *This class extends \Exception*
-
-*This class implements \Throwable*
 
 <hr />
 
@@ -592,6 +583,27 @@
 
 <hr />
 
+### Class: \Consolidation\OutputFormatters\StructuredData\NumericCellRenderer
+
+> Create a formatter to add commas to numeric data. Example: ------- Value ------- 2,384 143,894 23 98,538 This formatter may also be re-used for other purposes where right-justified data is desired by simply making a subclass. See method comments below. Usage: return (new RowsOfFields($data))->addRenderer( new NumericCellRenderer($data, ['value']) );
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$renderedColumns</strong>, <em>mixed</em> <strong>$renderedFormats=null</strong>)</strong> : <em>void</em><br /><em>NumericCellRenderer constructor</em> |
+| public | <strong>renderCell(</strong><em>string</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>array</em> <strong>$rowData</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of one table cell into a string, so that it may be placed in the table.  Renderer should return the $cellData passed to it if it does not wish to process it.</em> |
+| protected | <strong>calculateColumnWidth(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em><br /><em>Using the cached table data, calculate the largest width for the data in the table for use when right-justifying.</em> |
+| protected | <strong>columnWidth(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em><br /><em>Get the cached column width for the provided key.</em> |
+| protected | <strong>convertCellDataToString(</strong><em>mixed</em> <strong>$cellData</strong>)</strong> : <em>void</em><br /><em>This formatter only works with columns whose columns are strings. To use this formatter for another purpose, override this method to ensure that the cell data is a string before it is formatted.</em> |
+| protected | <strong>formatCellData(</strong><em>mixed</em> <strong>$cellData</strong>)</strong> : <em>void</em><br /><em>Format the cell data.</em> |
+| protected | <strong>isRenderedColumn(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>bool</em><br /><em>Determine if this is a column that should be formatted.</em> |
+| protected | <strong>isRenderedData(</strong><em>mixed</em> <strong>$cellData</strong>)</strong> : <em>bool</em><br /><em>Ignore cell data that should not be formatted.</em> |
+| protected | <strong>isRenderedFormat(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>bool</em><br /><em>Determine if this format is to be formatted.</em> |
+| protected | <strong>justifyCellData(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>)</strong> : <em>void</em><br /><em>Right-justify the cell data.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+
+<hr />
+
 ### Class: \Consolidation\OutputFormatters\StructuredData\AssociativeList
 
 > Old name for PropertyList class.
@@ -833,7 +845,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass[]](http://php.net/manual/en/class.reflectionclass.php)</em><br /><em>Return the list of data types acceptable to this formatter</em> |
+| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)[]</em><br /><em>Return the list of data types acceptable to this formatter</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
 

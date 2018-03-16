@@ -9,6 +9,7 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFieldsWithMetadata;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
+use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -375,6 +376,30 @@ EOT;
     function testBadDataTypeForJson()
     {
         $this->assertFormattedOutputMatches('Will fail, not return', 'json', 'String cannot be converted to json');
+    }
+
+    function testNumericCellRenderer()
+    {
+        $data = [
+            ['place' => 'San Francisco', 'population' => 864816, 'cats-per-capita' => 15 ],
+            ['place' => 'San Diego', 'population' => 1407000, 'cats-per-capita' => 2 ],
+            ['place' => 'San Jose', 'population' => 1025000, 'cats-per-capita' => 389 ],
+            ['place' => 'Brisbane', 'population' => 4693, 'cats-per-capita' => 3 ],
+        ];
+        $structuredData = (new RowsOfFields($data))->addRenderer(
+             new NumericCellRenderer($data, ['population' => 10,'cats-per-capita' => 15])
+        );
+        $expected = <<<EOT
+ --------------- ------------ -----------------
+  Place           Population   Cats-per-capita
+ --------------- ------------ -----------------
+  San Francisco      864,816                15
+  San Diego        1,407,000                 2
+  San Jose         1,025,000               389
+  Brisbane             4,693                 3
+ --------------- ------------ -----------------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $structuredData);
     }
 
     function testNoFormatterSelected()

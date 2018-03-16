@@ -92,6 +92,26 @@ public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
 ```
 Note that if your data structure is printed with a formatter other than one such as the table formatter, it will still be reordered per the selected fields, but cell rendering will **not** be done.
 
+The RowsOfFields and PropertyList data types also allow objects that implement RenderCellInterface, as well as anonymous functions to be added directly to the data structure object itself. If this is done, then the renderer will be called for each cell in the table. An example of an attached renderer implemented as an anonymous function is shown below.
+```php
+    return (new RowsOfFields($data))->addRendererFunction(
+        function ($key, $cellData, FormatterOptions $options, $rowData) {
+            if ($key == 'my-field') {
+                return implode(',', $cellData);
+            }
+            return $cellData;
+        }
+    );
+```
+This project also provides a built-in cell renderer, NumericCellRenderer, that adds commas at the thousands place and right-justifies columns identified as numeric. An example of a numeric renderer attached to two columns of a data set is shown below.
+```php
+use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
+...
+    return (new RowsOfFields($data))->addRenderer(
+         new NumericCellRenderer($data, ['population','cats-per-capita'])
+    );
+```
+
 ## API Usage
 
 It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation/annotation-command#api-usage) for details.
