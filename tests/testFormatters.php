@@ -383,7 +383,7 @@ EOT;
         $data = [
             ['place' => 'San Francisco', 'population' => 864816, 'cats-per-capita' => 15 ],
             ['place' => 'San Diego', 'population' => 1407000, 'cats-per-capita' => 2 ],
-            ['place' => 'San Jose', 'population' => 1025000, 'cats-per-capita' => 389 ],
+            ['place' => 'Los Gatos', 'population' => 30545, 'cats-per-capita' => 1389 ],
             ['place' => 'Brisbane', 'population' => 4693, 'cats-per-capita' => 3 ],
         ];
         $structuredData = (new RowsOfFields($data))->addRenderer(
@@ -395,11 +395,19 @@ EOT;
  --------------- ------------ -----------------
   San Francisco      864,816                15
   San Diego        1,407,000                 2
-  San Jose         1,025,000               389
+  Los Gatos           30,545             1,389
   Brisbane             4,693                 3
  --------------- ------------ -----------------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $structuredData);
+        $expected = <<<EOT
+Place,Population,Cats-per-capita
+"San Francisco",864816,15
+"San Diego",1407000,2
+"Los Gatos",30545,1389
+Brisbane,4693,3
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'csv', $structuredData);
     }
 
     function testNoFormatterSelected()

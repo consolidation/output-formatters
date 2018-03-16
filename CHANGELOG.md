@@ -1,5 +1,10 @@
 # Change Log
 
+### Unreleased
+
+- Add RowsOfFieldsWithMetadata
+- Add NumericCellRenderer
+
 ### 3.1.13 - 29 November 2017
 
 - Allow XML output for RowsOfFields (#60).

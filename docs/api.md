@@ -12,6 +12,7 @@
 - [\Consolidation\OutputFormatters\Formatters\JsonFormatter](#class-consolidationoutputformattersformattersjsonformatter)
 - [\Consolidation\OutputFormatters\Formatters\FormatterInterface (interface)](#interface-consolidationoutputformattersformattersformatterinterface)
 - [\Consolidation\OutputFormatters\Formatters\CsvFormatter](#class-consolidationoutputformattersformatterscsvformatter)
+- [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface (interface)](#interface-consolidationoutputformattersformattersformatterawareinterface)
 - [\Consolidation\OutputFormatters\Formatters\SerializeFormatter](#class-consolidationoutputformattersformattersserializeformatter)
 - [\Consolidation\OutputFormatters\Formatters\StringFormatter](#class-consolidationoutputformattersformattersstringformatter)
 - [\Consolidation\OutputFormatters\Formatters\VarExportFormatter](#class-consolidationoutputformattersformattersvarexportformatter)
@@ -21,6 +22,7 @@
 - [\Consolidation\OutputFormatters\Formatters\PrintRFormatter](#class-consolidationoutputformattersformattersprintrformatter)
 - [\Consolidation\OutputFormatters\Formatters\RenderDataInterface (interface)](#interface-consolidationoutputformattersformattersrenderdatainterface)
 - [\Consolidation\OutputFormatters\Formatters\TsvFormatter](#class-consolidationoutputformattersformatterstsvformatter)
+- [\Consolidation\OutputFormatters\Formatters\HumanReadableFormat (interface)](#interface-consolidationoutputformattersformattershumanreadableformat)
 - [\Consolidation\OutputFormatters\Options\OverrideOptionsInterface (interface)](#interface-consolidationoutputformattersoptionsoverrideoptionsinterface)
 - [\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)
 - [\Consolidation\OutputFormatters\StructuredData\ListDataInterface (interface)](#interface-consolidationoutputformattersstructureddatalistdatainterface)
@@ -230,6 +232,16 @@
 
 <hr />
 
+### Interface: \Consolidation\OutputFormatters\Formatters\FormatterAwareInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>getFormatter()</strong> : <em>mixed</em> |
+| public | <strong>isHumanReadable()</strong> : <em>bool</em> |
+| public | <strong>setFormatter(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>)</strong> : <em>void</em> |
+
+<hr />
+
 ### Class: \Consolidation\OutputFormatters\Formatters\SerializeFormatter
 
 > Serialize formatter Run provided date thruogh serialize.
@@ -299,7 +311,7 @@
 | protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
 | protected | <strong>wrap(</strong><em>mixed</em> <strong>$headers</strong>, <em>array</em> <strong>$data</strong>, <em>\Symfony\Component\Console\Helper\TableStyle</em> <strong>$tableStyle</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>array</em><br /><em>Wrap the table data</em> |
 
-*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface), [\Consolidation\OutputFormatters\Formatters\MetadataFormatterInterface](#interface-consolidationoutputformattersformattersmetadataformatterinterface)*
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface), [\Consolidation\OutputFormatters\Formatters\MetadataFormatterInterface](#interface-consolidationoutputformattersformattersmetadataformatterinterface), [\Consolidation\OutputFormatters\Formatters\HumanReadableFormat](#interface-consolidationoutputformattersformattershumanreadableformat)*
 
 <hr />
 
@@ -354,6 +366,15 @@
 *This class extends [\Consolidation\OutputFormatters\Formatters\CsvFormatter](#class-consolidationoutputformattersformatterscsvformatter)*
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\Formatters\HumanReadableFormat
+
+> Marker interface that indicates that a cell data renderer
+
+| Visibility | Function |
+|:-----------|:---------|
 
 <hr />
 
@@ -450,7 +471,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
 
 <hr />
 
@@ -471,8 +492,11 @@
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
 | public | <strong>addRenderer(</strong><em>[\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)</em> <strong>$renderer</strong>, <em>string</em> <strong>$priority=`'normal'`</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a renderer</em> |
 | public | <strong>addRendererFunction(</strong><em>\callable</em> <strong>$rendererFn</strong>, <em>string</em> <strong>$priority=`'normal'`</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a callable as a renderer</em> |
+| public | <strong>getFormatter()</strong> : <em>mixed</em> |
+| public | <strong>isHumanReadable()</strong> : <em>bool</em> |
 | public | <strong>renderCell(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>mixed</em> <strong>$rowData</strong>)</strong> : <em>void</em> |
 | public | <strong>abstract restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
+| public | <strong>setFormatter(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>)</strong> : <em>void</em> |
 | protected | <strong>createTableTransformation(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
 | protected | <strong>defaultOptions()</strong> : <em>array</em><br /><em>A structured list may provide its own set of default options. These will be used in place of the command's default options (from the annotations) in instances where the user does not provide the options explicitly (on the commandline) or implicitly (via a configuration file).</em> |
 | protected | <strong>getFields(</strong><em>mixed</em> <strong>$options</strong>, <em>mixed</em> <strong>$defaults</strong>)</strong> : <em>mixed</em> |
@@ -481,7 +505,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
 
 <hr />
 
@@ -513,7 +537,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
 
 <hr />
 
@@ -556,7 +580,7 @@
 |:-----------|:---------|
 | public | <strong>addRenderer(</strong><em>[\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)</em> <strong>$renderer</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\$this</em><br /><em>Add a renderer</em> |
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface)*
 
 <hr />
 
@@ -579,7 +603,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\RowsOfFields](#class-consolidationoutputformattersstructureddatarowsoffields)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\MetadataInterface](#interface-consolidationoutputformattersstructureddatametadatainterface), [\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface](#interface-consolidationoutputformattersstructureddatametadataholderinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\MetadataInterface](#interface-consolidationoutputformattersstructureddatametadatainterface), [\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface](#interface-consolidationoutputformattersstructureddatametadataholderinterface)*
 
 <hr />
 
@@ -589,8 +613,11 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$renderedColumns</strong>, <em>mixed</em> <strong>$renderedFormats=null</strong>)</strong> : <em>void</em><br /><em>NumericCellRenderer constructor</em> |
+| public | <strong>__construct(</strong><em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$renderedColumns</strong>)</strong> : <em>void</em><br /><em>NumericCellRenderer constructor</em> |
+| public | <strong>getFormatter()</strong> : <em>mixed</em> |
+| public | <strong>isHumanReadable()</strong> : <em>bool</em> |
 | public | <strong>renderCell(</strong><em>string</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>array</em> <strong>$rowData</strong>)</strong> : <em>mixed</em><br /><em>Convert the contents of one table cell into a string, so that it may be placed in the table.  Renderer should return the $cellData passed to it if it does not wish to process it.</em> |
+| public | <strong>setFormatter(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>)</strong> : <em>void</em> |
 | protected | <strong>calculateColumnWidth(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em><br /><em>Using the cached table data, calculate the largest width for the data in the table for use when right-justifying.</em> |
 | protected | <strong>columnWidth(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em><br /><em>Get the cached column width for the provided key.</em> |
 | protected | <strong>convertCellDataToString(</strong><em>mixed</em> <strong>$cellData</strong>)</strong> : <em>void</em><br /><em>This formatter only works with columns whose columns are strings. To use this formatter for another purpose, override this method to ensure that the cell data is a string before it is formatted.</em> |
@@ -600,7 +627,7 @@
 | protected | <strong>isRenderedFormat(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>bool</em><br /><em>Determine if this format is to be formatted.</em> |
 | protected | <strong>justifyCellData(</strong><em>mixed</em> <strong>$key</strong>, <em>mixed</em> <strong>$cellData</strong>)</strong> : <em>void</em><br /><em>Right-justify the cell data.</em> |
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface)*
 
 <hr />
 
@@ -613,7 +640,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
 
 <hr />
 

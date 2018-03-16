@@ -4,6 +4,7 @@ namespace Consolidation\OutputFormatters;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
 use Consolidation\OutputFormatters\Exception\InvalidFormatException;
 use Consolidation\OutputFormatters\Exception\UnknownFormatException;
+use Consolidation\OutputFormatters\Formatters\FormatterAwareInterface;
 use Consolidation\OutputFormatters\Formatters\FormatterInterface;
 use Consolidation\OutputFormatters\Formatters\MetadataFormatterInterface;
 use Consolidation\OutputFormatters\Formatters\RenderDataInterface;
@@ -203,6 +204,9 @@ class FormatterManager
         if (!is_string($structuredOutput) && !$this->isValidFormat($formatter, $structuredOutput)) {
             $validFormats = $this->validFormats($structuredOutput);
             throw new InvalidFormatException((string)$format, $structuredOutput, $validFormats);
+        }
+        if ($structuredOutput instanceof FormatterAwareInterface) {
+            $structuredOutput->setFormatter($formatter);
         }
         // Give the formatter a chance to override the options
         $options = $this->overrideOptions($formatter, $structuredOutput, $options);

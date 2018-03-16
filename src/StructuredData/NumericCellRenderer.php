@@ -3,6 +3,9 @@ namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 
+use Consolidation\OutputFormatters\Formatters\FormatterAwareInterface;
+use Consolidation\OutputFormatters\Formatters\FormatterAwareTrait;
+
 /**
  * Create a formatter to add commas to numeric data.
  *
@@ -26,21 +29,21 @@ use Consolidation\OutputFormatters\Options\FormatterOptions;
  *     );
  *
  */
-class NumericCellRenderer implements RenderCellInterface
+class NumericCellRenderer implements RenderCellInterface, FormatterAwareInterface
 {
+    use FormatterAwareTrait;
+
     protected $data;
     protected $renderedColumns;
-    protected $renderedFormats;
     protected $widths = [];
 
     /**
      * NumericCellRenderer constructor
      */
-    public function __construct($data, $renderedColumns, $renderedFormats = null)
+    public function __construct($data, $renderedColumns)
     {
         $this->data = $data;
         $this->renderedColumns = $renderedColumns;
-        $this->renderedFormats = $renderedFormats ?: ['table'];
     }
 
     /**
@@ -70,8 +73,7 @@ class NumericCellRenderer implements RenderCellInterface
      */
     protected function isRenderedFormat(FormatterOptions $options)
     {
-        return true;
-        return in_array($options->get(FormatterOptions::FORMAT), $this->renderedFormats);
+        return $this->isHumanReadable();
     }
 
     /**
