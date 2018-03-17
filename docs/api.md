@@ -12,6 +12,7 @@
 - [\Consolidation\OutputFormatters\Formatters\JsonFormatter](#class-consolidationoutputformattersformattersjsonformatter)
 - [\Consolidation\OutputFormatters\Formatters\FormatterInterface (interface)](#interface-consolidationoutputformattersformattersformatterinterface)
 - [\Consolidation\OutputFormatters\Formatters\CsvFormatter](#class-consolidationoutputformattersformatterscsvformatter)
+- [\Consolidation\OutputFormatters\Formatters\VarDumpFormatter](#class-consolidationoutputformattersformattersvardumpformatter)
 - [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface (interface)](#interface-consolidationoutputformattersformattersformatterawareinterface)
 - [\Consolidation\OutputFormatters\Formatters\SerializeFormatter](#class-consolidationoutputformattersformattersserializeformatter)
 - [\Consolidation\OutputFormatters\Formatters\StringFormatter](#class-consolidationoutputformattersformattersstringformatter)
@@ -100,6 +101,8 @@
 
 *This class extends \Exception*
 
+*This class implements \Throwable*
+
 <hr />
 
 ### Class: \Consolidation\OutputFormatters\Exception\AbstractDataFormatException (abstract)
@@ -114,6 +117,8 @@
 
 *This class extends \Exception*
 
+*This class implements \Throwable*
+
 <hr />
 
 ### Class: \Consolidation\OutputFormatters\Exception\IncompatibleDataException
@@ -125,6 +130,8 @@
 | public | <strong>__construct(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$allowedTypes</strong>)</strong> : <em>void</em> |
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
+
+*This class implements \Throwable*
 
 <hr />
 
@@ -138,6 +145,8 @@
 
 *This class extends [\Consolidation\OutputFormatters\Exception\AbstractDataFormatException](#class-consolidationoutputformattersexceptionabstractdataformatexception-abstract)*
 
+*This class implements \Throwable*
+
 <hr />
 
 ### Class: \Consolidation\OutputFormatters\Exception\UnknownFieldException
@@ -149,6 +158,8 @@
 | public | <strong>__construct(</strong><em>mixed</em> <strong>$field</strong>)</strong> : <em>void</em> |
 
 *This class extends \Exception*
+
+*This class implements \Throwable*
 
 <hr />
 
@@ -229,6 +240,18 @@
 | protected | <strong>writeOneLine(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>void</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\VarDumpFormatter
+
+> Var_dump formatter Run provided data through Symfony VarDumper component.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
 
 <hr />
 
@@ -872,7 +895,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)[]</em><br /><em>Return the list of data types acceptable to this formatter</em> |
+| public | <strong>validDataTypes()</strong> : <em>[\ReflectionClass[]](http://php.net/manual/en/class.reflectionclass.php)</em><br /><em>Return the list of data types acceptable to this formatter</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
 
