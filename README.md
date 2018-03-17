@@ -53,6 +53,7 @@ Formatters may also implement different interfaces to alter the behavior of the 
 Most formatters will operate on any array or ArrayObject data. Some formatters require that specific data types be used. The following data types, all of which are subclasses of ArrayObject, are available for use:
 
 - `RowsOfFields`: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
+- `RowsOfFieldsWithMetadata`: Equivalent to `RowsOfFields`, but allows the data to be nested inside of an element, with other elements being used as metadata, or, alternately, allows the metadata to be nested inside of an element, with all other elements being used as data.
 - `PropertyList`: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
 - `ListDataFromKeys`: The result may be structured or unstructured data. When formatted with the --format=list formatter, the result will come from the array keys instead of the array values.
 - `DOMDocument`: The standard PHP DOM document class may be used by functions that need to be able to presicely specify the exact attributes and children when the XML output format is used.
@@ -90,6 +91,26 @@ public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
 }
 ```
 Note that if your data structure is printed with a formatter other than one such as the table formatter, it will still be reordered per the selected fields, but cell rendering will **not** be done.
+
+The RowsOfFields and PropertyList data types also allow objects that implement RenderCellInterface, as well as anonymous functions to be added directly to the data structure object itself. If this is done, then the renderer will be called for each cell in the table. An example of an attached renderer implemented as an anonymous function is shown below.
+```php
+    return (new RowsOfFields($data))->addRendererFunction(
+        function ($key, $cellData, FormatterOptions $options, $rowData) {
+            if ($key == 'my-field') {
+                return implode(',', $cellData);
+            }
+            return $cellData;
+        }
+    );
+```
+This project also provides a built-in cell renderer, NumericCellRenderer, that adds commas at the thousands place and right-justifies columns identified as numeric. An example of a numeric renderer attached to two columns of a data set is shown below.
+```php
+use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
+...
+    return (new RowsOfFields($data))->addRenderer(
+         new NumericCellRenderer($data, ['population','cats-per-capita'])
+    );
+```
 
 ## API Usage
 

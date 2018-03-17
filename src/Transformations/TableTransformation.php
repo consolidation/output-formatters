@@ -3,12 +3,15 @@ namespace Consolidation\OutputFormatters\Transformations;
 
 use Consolidation\OutputFormatters\StructuredData\TableDataInterface;
 use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
+use Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface;
 
 class TableTransformation extends \ArrayObject implements TableDataInterface, OriginalDataInterface
 {
     protected $headers;
     protected $rowLabels;
     protected $layout;
+    /** @var MetadataHolderInterface */
+    protected $originalData;
 
     const TABLE_LAYOUT = 'table';
     const LIST_LAYOUT = 'list';
@@ -83,7 +86,15 @@ class TableTransformation extends \ArrayObject implements TableDataInterface, Or
 
     public function getOriginalData()
     {
+        if (isset($this->originalData)) {
+            return $this->originalData->reconstruct($this->getArrayCopy(), $this->originalData->getMetadata());
+        }
         return $this->getArrayCopy();
+    }
+
+    public function setOriginalData(MetadataHolderInterface $data)
+    {
+        $this->originalData = $data;
     }
 
     public function getTableData($includeRowKey = false)

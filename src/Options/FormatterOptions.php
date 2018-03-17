@@ -48,6 +48,7 @@ class FormatterOptions
     const DELIMITER = 'delimiter';
     const LIST_DELIMITER = 'list-delimiter';
     const TERMINAL_WIDTH = 'width';
+    const METADATA_TEMPLATE = 'metadata-template';
 
     /**
      * Create a new FormatterOptions with the configuration data and the

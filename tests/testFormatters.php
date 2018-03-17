@@ -6,8 +6,10 @@ use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
+use Consolidation\OutputFormatters\StructuredData\RowsOfFieldsWithMetadata;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
+use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -374,6 +376,38 @@ EOT;
     function testBadDataTypeForJson()
     {
         $this->assertFormattedOutputMatches('Will fail, not return', 'json', 'String cannot be converted to json');
+    }
+
+    function testNumericCellRenderer()
+    {
+        $data = [
+            ['place' => 'San Francisco', 'population' => 864816, 'cats-per-capita' => 15 ],
+            ['place' => 'San Diego', 'population' => 1407000, 'cats-per-capita' => 2 ],
+            ['place' => 'Los Gatos', 'population' => 30545, 'cats-per-capita' => 1389 ],
+            ['place' => 'Brisbane', 'population' => 4693, 'cats-per-capita' => 3 ],
+        ];
+        $structuredData = (new RowsOfFields($data))->addRenderer(
+             new NumericCellRenderer($data, ['population' => 10,'cats-per-capita' => 15])
+        );
+        $expected = <<<EOT
+ --------------- ------------ -----------------
+  Place           Population   Cats-per-capita
+ --------------- ------------ -----------------
+  San Francisco      864,816                15
+  San Diego        1,407,000                 2
+  Los Gatos           30,545             1,389
+  Brisbane             4,693                 3
+ --------------- ------------ -----------------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $structuredData);
+        $expected = <<<EOT
+Place,Population,Cats-per-capita
+"San Francisco",864816,15
+"San Diego",1407000,2
+"Los Gatos",30545,1389
+Brisbane,4693,3
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'csv', $structuredData);
     }
 
     function testNoFormatterSelected()
@@ -788,6 +822,137 @@ EOT;
     {
         $data = $this->simpleTableExampleData()->getArrayCopy();
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'sections', $data);
+    }
+
+    function testSimpleTableWithMetadata()
+    {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->markTestIncomplete("This code works on Windows, but the tests give false negatives. Skip that until we can fix it. The difference seems to have to do with DOS end-of-line characters (although that is accounted for in other tests.");
+        }
+
+        $data = $this->simpleTableExampleData()->getArrayCopy();
+        $metadata = ['summary' => 'This is some metadata'];
+
+        $rowsOfFieldsWithMetadata = new RowsOfFieldsWithMetadata($data);
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getDataKey());
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getMetadataKey());
+        $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, []);
+        $expected = <<<EOT
+ ----- ----- -------
+  One   Two   Three
+ ----- ----- -------
+  a     b     c
+  x     y     z
+ ----- ----- -------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $rowsOfFieldsWithMetadata, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
+
+        $expected = <<<EOT
+id-123:
+  one: a
+  two: b
+  three: c
+id-456:
+  one: x
+  two: 'y'
+  three: z
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
+
+        $dataWithMetadata = [
+            'data' => $data,
+        ] + $metadata;
+        $rowsOfFieldsWithMetadata = new RowsOfFieldsWithMetadata($dataWithMetadata);
+        $rowsOfFieldsWithMetadata->setDataKey('data');
+        $this->assertEquals('data', $rowsOfFieldsWithMetadata->getDataKey());
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getMetadataKey());
+        $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata);
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata);
+
+        $expected = <<<EOT
+data:
+  id-123:
+    one: a
+    two: b
+    three: c
+  id-456:
+    one: x
+    two: 'y'
+    three: z
+summary: 'This is some metadata'
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
+
+        $dataWithMetadata = [
+            'metadata' => $metadata,
+        ] + $data;
+        $rowsOfFieldsWithMetadata = new RowsOfFieldsWithMetadata($dataWithMetadata);
+        $rowsOfFieldsWithMetadata->setMetadataKey('metadata');
+        $this->assertEquals(false, $rowsOfFieldsWithMetadata->getDataKey());
+        $this->assertEquals('metadata', $rowsOfFieldsWithMetadata->getMetadataKey());
+        $this->assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata);
+        $this->assertTableWithMetadata($rowsOfFieldsWithMetadata);
+
+        $expected = <<<EOT
+id-123:
+  one: a
+  two: b
+  three: c
+id-456:
+  one: x
+  two: 'y'
+  three: z
+metadata:
+  summary: 'This is some metadata'
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
+        $expected = <<<EOT
+id-123:
+  three: c
+  one: a
+id-456:
+  three: z
+  one: x
+metadata:
+  summary: 'This is some metadata'
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata, new FormatterOptions(['fields' => ['three', 'one']]));
+
+    }
+
+    function assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata)
+    {
+        $actualData = $rowsOfFieldsWithMetadata->extractData($rowsOfFieldsWithMetadata->getArrayCopy());
+        $this->assertEquals($data, $actualData);
+        $this->assertEquals($metadata, $rowsOfFieldsWithMetadata->getMetadata());
+    }
+
+    function assertTableWithMetadata($data, $expectedHeader = '')
+    {
+        $expected = <<<EOT
+Summary: This is some metadata
+
+ ----- ----- -------
+  One   Two   Three
+ ----- ----- -------
+  a     b     c
+  x     y     z
+ ----- ----- -------
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'table', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
+
+        $expected = <<<EOT
+One,Two,Three
+a,b,c
+x,y,z
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'csv', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
+        $expected = <<<EOT
+Three,One
+c,a
+z,x
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'csv', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL, 'fields' => ['three', 'one']]));
     }
 
     function testSimpleTable()
