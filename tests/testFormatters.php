@@ -18,8 +18,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Output\StreamOutput;
+use PHPUnit\Framework\TestCase;
 
-class FormattersTests extends \PHPUnit_Framework_TestCase
+class FormattersTests extends TestCase
 {
     protected $formatterManager;
 

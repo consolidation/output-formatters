@@ -4,8 +4,9 @@ namespace Consolidation\OutputFormatters;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
+use PHPUnit\Framework\TestCase;
 
-class ValidFormatsTests extends \PHPUnit_Framework_TestCase
+class ValidFormatsTests extends TestCase
 {
     protected $formatterManager;
 

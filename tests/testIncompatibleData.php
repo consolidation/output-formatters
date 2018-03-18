@@ -4,8 +4,9 @@ namespace Consolidation\OutputFormatters;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\OutputFormatters\Exception\IncompatibleDataException;
+use PHPUnit\Framework\TestCase;
 
-class IncompatibleDataTests extends \PHPUnit_Framework_TestCase
+class IncompatibleDataTests extends TestCase
 {
     protected $formatterManager;
 
