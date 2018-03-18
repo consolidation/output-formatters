@@ -12,7 +12,7 @@ case $DEPENDENCIES in
   lowest)
     DEPENDENCIES='update --prefer-lowest'
     ;;
-  lock|default|)
+  lock|default|"")
     DEPENDENCIES=install
     ;;
 esac
