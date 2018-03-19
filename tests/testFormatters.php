@@ -526,8 +526,8 @@ EOT;
 
     function testLinesOfCsv()
     {
-        $data = [['a', 'b', 'c'], ['x', 'y', 'z']];
-        $expected = "a,b,c\nx,y,z";
+        $data = [['a', 'b', 'c'], ['x', 'w', 'z']];
+        $expected = "a,b,c\nx,w,z";
 
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
@@ -866,7 +866,7 @@ EOT;
             'id-456' =>
             [
                 'one' => 'x',
-                'two' => 'y',
+                'two' => 'w',
                 'three' => 'z',
             ],
         ];
@@ -913,7 +913,7 @@ EOT;
   One   Two   Three
  ----- ----- -------
   a     b     c
-  x     y     z
+  x     w     z
  ----- ----- -------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $rowsOfFieldsWithMetadata, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
@@ -925,7 +925,7 @@ id-123:
   three: c
 id-456:
   one: x
-  two: 'y'
+  two: w
   three: z
 EOT;
         $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata);
@@ -948,7 +948,7 @@ data:
     three: c
   id-456:
     one: x
-    two: 'y'
+    two: w
     three: z
 summary: 'This is some metadata'
 EOT;
@@ -971,7 +971,7 @@ id-123:
   three: c
 id-456:
   one: x
-  two: 'y'
+  two: w
   three: z
 metadata:
   summary: 'This is some metadata'
@@ -1007,7 +1007,7 @@ Summary: This is some metadata
   One   Two   Three
  ----- ----- -------
   a     b     c
-  x     y     z
+  x     w     z
  ----- ----- -------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
@@ -1015,7 +1015,7 @@ EOT;
         $expected = <<<EOT
 One,Two,Three
 a,b,c
-x,y,z
+x,w,z
 EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL]));
         $expected = <<<EOT
@@ -1035,7 +1035,7 @@ EOT;
   One   Two   Three
  ----- ----- -------
   a     b     c
-  x     y     z
+  x     w     z
  ----- ----- -------
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data);
@@ -1045,7 +1045,7 @@ EOT;
   One   Two   Three
  ===== ===== =======
   a     b     c
-  x     y     z
+  x     w     z
  ===== ===== =======
 EOT;
         $this->assertFormattedOutputMatches($expectedBorderless, 'table', $data, new FormatterOptions(['table-style' => 'borderless']));
@@ -1059,7 +1059,7 @@ EOT;
     },
     "id-456": {
         "one": "x",
-        "two": "y",
+        "two": "w",
         "three": "z"
     }
 }
@@ -1069,7 +1069,7 @@ EOT;
         $expectedCsv = <<<EOT
 One,Two,Three
 a,b,c
-x,y,z
+x,w,z
 EOT;
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data);
 
@@ -1180,7 +1180,7 @@ EOT;
   Ichi   Ni   San
  ------ ---- -----
   a      b    c
-  x      y    z
+  x      w    z
  ------ ---- -----
 EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $configurationData);
@@ -1188,7 +1188,7 @@ EOT;
         $expectedSidewaysTable = <<<EOT
  ------ --- ---
   Ichi   a   x
-  Ni     b   y
+  Ni     b   w
   San    c   z
  ------ --- ---
 EOT;
@@ -1199,7 +1199,7 @@ EOT;
   Uno   Dos   Tres
  ----- ----- ------
   a     b     c
-  x     y     z
+  x     w     z
  ----- ----- ------
 EOT;
         $this->assertFormattedOutputMatches($expectedAnnotationFormatConfigData, 'table', $data, $configurationDataAnnotationFormat);
@@ -1207,7 +1207,7 @@ EOT;
         $expectedWithNoFields = <<<EOT
  --- --- ---
   a   b   c
-  x   y   z
+  x   w   z
  --- --- ---
 EOT;
         $this->assertFormattedOutputMatches($expectedWithNoFields, 'table', $data, $configurationData, ['include-field-labels' => false]);
@@ -1245,7 +1245,7 @@ Walrus
 
 Carpenter
  One   x
- Two   y
+ Two   w
  Three z
 EOT;
         $this->assertFormattedOutputMatches($expectedSections, 'sections', $data, $configurationData);
