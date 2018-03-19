@@ -342,12 +342,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/g-1-a/composer-test-scenarios.git",
-                "reference": "991f252f26fd9e69a0046cbcd6d6fb088a8dd1e3"
+                "reference": "d206cd08a9dcecf38419093fedd286f452ba4685"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/g-1-a/composer-test-scenarios/zipball/991f252f26fd9e69a0046cbcd6d6fb088a8dd1e3",
-                "reference": "991f252f26fd9e69a0046cbcd6d6fb088a8dd1e3",
+                "url": "https://api.github.com/repos/g-1-a/composer-test-scenarios/zipball/d206cd08a9dcecf38419093fedd286f452ba4685",
+                "reference": "d206cd08a9dcecf38419093fedd286f452ba4685",
                 "shasum": ""
             },
             "bin": [
@@ -367,7 +367,7 @@
                 }
             ],
             "description": "Useful scripts for testing multiple sets of Composer dependencies.",
-            "time": "2018-03-18T15:39:41+00:00"
+            "time": "2018-03-19T05:06:40+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
