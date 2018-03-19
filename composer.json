@@ -26,7 +26,7 @@
     "require-dev": {
         "g-1-a/composer-test-scenarios": "dev-better-highest-lowest",
         "satooshi/php-coveralls": "^2",
-        "phpunit/phpunit": "^5",
+        "phpunit/phpunit": "^5.7.27",
         "squizlabs/php_codesniffer": "^2.7",
         "symfony/console": "3.2.3",
         "symfony/var-dumper": "^2.8|^3|^4",
