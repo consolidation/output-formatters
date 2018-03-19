@@ -12,28 +12,28 @@ branches:
 matrix:
   include:
     - php: 7.2
-      env: 'SCENARIO=symfony4 HIGHEST_LOWEST="update"'
+      env: 'SCENARIO=symfony4 DEPENDENCIES=highest'
     - php: 7.1
       env: 'SCENARIO=symfony4'
     - php: 7.0.11
-      env: 'SCENARIO=symfony3 HIGHEST_LOWEST="update"'
+      env: 'SCENARIO=symfony3 DEPENDENCIES=highest'
     - php: 7.0.11
       env: 'SCENARIO=symfony3'
     - php: 5.6
       env: 'SCENARIO=symfony3'
     - php: 5.5
+      env: 'SCENARIO=symfony2'
     - php: 5.4
-      env: 'SCENARIO=symfony2 HIGHEST_LOWEST="update --prefer-lowest'
+      env: 'SCENARIO=symfony2 DEPENDENCIES=lowest'
 
 sudo: false
 
 cache:
   directories:
-    - vendor
     - $HOME/.composer/cache
 
 install:
-  - 'composer scenario "${SCENARIO}" "${HIGHEST_LOWEST-install}"'
+  - 'composer scenario "${SCENARIO}" "${DEPENDENCIES}"'
 
 script:
   - composer test

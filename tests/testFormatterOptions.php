@@ -6,8 +6,9 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
+use PHPUnit\Framework\TestCase;
 
-class FormatterOptionsTests extends \PHPUnit_Framework_TestCase
+class FormatterOptionsTests extends TestCase
 {
     public function createStringInput($testCommandline)
     {
