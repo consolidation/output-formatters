@@ -1,9 +1,10 @@
 # Change Log
 
-### Unreleased
+### 3.2.0 - 20 March 2018
 
 - Add RowsOfFieldsWithMetadata: allows commands to return an object with metadata that shows up in yaml/json (& etc.) formats, but is not shown in table/csv (& etc.).
 - Add NumericCellRenderer: allows commands to attach a renderer that will right-justify and add commas to numbers in a column.
+- Add optional var_dump output format.
 
 ### 3.1.13 - 29 November 2017
 
