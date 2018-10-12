@@ -49,5 +49,4 @@ abstract class AbstractStructuredList extends AbstractListData implements Restru
             FormatterOptions::DEFAULT_FIELDS => [],
         ] + parent::defaultOptions();
     }
-
 }

@@ -128,8 +128,7 @@ class FormatterManager
             $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], '');
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, $description, $defaultFields);
-        }
-        elseif ($dataTypeClass->implementsInterface(RestructureInterface::class)) {
+        } elseif ($dataTypeClass->implementsInterface('Consolidation\OutputFormatters\StructuredData\RestructureInterface')) {
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, 'Dot notation of fields to include in output.', []);
         }
 

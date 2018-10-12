@@ -41,8 +41,7 @@ class UnstructuredDataTransformation extends \ArrayObject implements SimplifyToS
                     foreach ($item as $key => $value) {
                         $result->set($key, $value);
                     }
-                }
-                else {
+                } else {
                     $result->set($label, $data->get($key));
                 }
             }
@@ -54,7 +53,7 @@ class UnstructuredDataTransformation extends \ArrayObject implements SimplifyToS
     {
         $result = '';
         $iterator = $this->getIterator();
-        while($iterator->valid()) {
+        while ($iterator->valid()) {
             $simplifiedRow = $this->simplifyRow($iterator->current());
             if (isset($simplifiedRow)) {
                 $result .= "$simplifiedRow\n";
