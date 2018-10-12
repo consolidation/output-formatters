@@ -32,6 +32,9 @@ class TsvFormatter extends CsvFormatter
     {
         return implode("\t", array_map(
             function ($item) {
+                if (is_array($item)) {
+                    return $this->tsvEscape($item);
+                }
                 return str_replace(["\t", "\n"], ['\t', '\n'], $item);
             },
             $data
