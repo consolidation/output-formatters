@@ -30,7 +30,6 @@ class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, Rende
             [
                 new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields'),
                 new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\PropertyList'),
-                new \ReflectionClass('\ArrayObject'),
             ];
     }
 

@@ -19,6 +19,7 @@ use Consolidation\OutputFormatters\Validate\ValidationInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
+use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -121,10 +122,18 @@ class FormatterManager
             $automaticOptions[FormatterOptions::FORMAT] = new InputOption(FormatterOptions::FORMAT, '', InputOption::VALUE_REQUIRED, $description, $defaultFormat);
         }
 
+        $dataTypeClass = ($dataType instanceof \ReflectionClass) ? $dataType : new \ReflectionClass($dataType);
+
         if ($availableFields) {
             $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], '');
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, $description, $defaultFields);
+        }
+        elseif ($dataTypeClass->implementsInterface(RestructureInterface::class)) {
+            $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, 'Dot notation of fields to include in output.', []);
+        }
+
+        if (isset($automaticOptions[FormatterOptions::FIELDS])) {
             $automaticOptions[FormatterOptions::FIELD] = new InputOption(FormatterOptions::FIELD, '', InputOption::VALUE_REQUIRED, "Select just one field, and force format to 'string'.", '');
         }
 
