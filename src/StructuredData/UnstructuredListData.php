@@ -22,10 +22,9 @@ class UnstructuredListData extends AbstractListData implements RestructureInterf
 
     public function restructure(FormatterOptions $options)
     {
-        $data = $this->getArrayCopy();
         $defaults = $this->defaultOptions();
         $fields = $this->getFields($options, $defaults);
 
-        return new UnstructuredDataListTransformation($data, FieldProcessor::processFieldAliases($fields));
+        return new UnstructuredDataListTransformation($this->getArrayCopy(), FieldProcessor::processFieldAliases($fields));
     }
 }

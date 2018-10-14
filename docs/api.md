@@ -37,6 +37,7 @@
 - [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)
 - [\Consolidation\OutputFormatters\StructuredData\UnstructuredListData](#class-consolidationoutputformattersstructureddataunstructuredlistdata)
 - [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)
+- [\Consolidation\OutputFormatters\StructuredData\ConversionInterface (interface)](#interface-consolidationoutputformattersstructureddataconversioninterface)
 - [\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface (interface)](#interface-consolidationoutputformattersstructureddatametadataholderinterface)
 - [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface (interface)](#interface-consolidationoutputformattersstructureddatarendercellinterface)
 - [\Consolidation\OutputFormatters\StructuredData\CallableRenderer](#class-consolidationoutputformattersstructureddatacallablerenderer)
@@ -81,6 +82,7 @@
 | public | <strong>addFormatter(</strong><em>string</em> <strong>$key</strong>, <em>string/[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>)</strong> : <em>[\Consolidation\OutputFormatters\FormatterManager](#class-consolidationoutputformattersformattermanager)</em><br /><em>Add a formatter</em> |
 | public | <strong>addSimplifier(</strong><em>[\Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface](#interface-consolidationoutputformatterstransformationssimplifytoarrayinterface)</em> <strong>$simplifier</strong>)</strong> : <em>[\Consolidation\OutputFormatters\FormatterManager](#class-consolidationoutputformattersformattermanager)</em><br /><em>Add a simplifier</em> |
 | public | <strong>automaticOptions(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>, <em>mixed</em> <strong>$dataType</strong>)</strong> : <em>\Symfony\Component\Console\Input\InputOption[]</em><br /><em>Return a set of InputOption based on the annotations of a command.</em> |
+| public | <strong>convertData(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Convert from one format to another if necessary prior to restructuring.</em> |
 | public | <strong>getFormatter(</strong><em>string</em> <strong>$format</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em><br /><em>Fetch the requested formatter.</em> |
 | public | <strong>hasFormatter(</strong><em>mixed</em> <strong>$format</strong>)</strong> : <em>bool</em><br /><em>Test to see if the stipulated format exists</em> |
 | public | <strong>isValidDataType(</strong><em>[\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)</em> <strong>$formatter</strong>, <em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em> |
@@ -511,13 +513,14 @@
 
 | Visibility | Function |
 |:-----------|:---------|
+| public | <strong>convert(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Allow structured data to be converted -- i.e. from RowsOfFields to UnstructuredListData.</em> |
 | public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
 | public | <strong>restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\Consolidation\OutputFormatters\Transformations\TableTransformation</em><br /><em>Restructure this data for output by converting it into a table transformation object.</em> |
 | protected | <strong>defaultOptions()</strong> : <em>void</em> |
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), [\Consolidation\OutputFormatters\StructuredData\ConversionInterface](#interface-consolidationoutputformattersstructureddataconversioninterface)*
 
 <hr />
 
@@ -587,6 +590,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
+| public | <strong>convert(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Allow structured data to be converted -- i.e. from RowsOfFields to UnstructuredListData.</em> |
 | public | <strong>getListData(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>mixed</em> |
 | public | <strong>restructure(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\Consolidation\OutputFormatters\Transformations\TableTransformation</em><br /><em>Restructure this data for output by converting it into a table transformation object.</em> |
 | protected | <strong>defaultOptions()</strong> : <em>void</em> |
@@ -594,7 +598,15 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), \Countable, \Serializable, \ArrayAccess, \Traversable, \IteratorAggregate, [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), [\Consolidation\OutputFormatters\StructuredData\ConversionInterface](#interface-consolidationoutputformattersstructureddataconversioninterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\StructuredData\ConversionInterface
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>convert(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Allow structured data to be converted -- i.e. from RowsOfFields to UnstructuredListData.</em> |
 
 <hr />
 
@@ -666,6 +678,7 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>__constructor(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
+| public | <strong>convert(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Allow structured data to be converted -- i.e. from RowsOfFields to UnstructuredListData.</em> |
 | public | <strong>extractData(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
 | public | <strong>extractMetadata(</strong><em>mixed</em> <strong>$data</strong>)</strong> : <em>void</em> |
 | public | <strong>getDataKey()</strong> : <em>mixed</em> |
@@ -678,7 +691,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\RowsOfFields](#class-consolidationoutputformattersstructureddatarowsoffields)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\MetadataInterface](#interface-consolidationoutputformattersstructureddatametadatainterface), [\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface](#interface-consolidationoutputformattersstructureddatametadataholderinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ConversionInterface](#interface-consolidationoutputformattersstructureddataconversioninterface), [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface), [\Consolidation\OutputFormatters\StructuredData\MetadataInterface](#interface-consolidationoutputformattersstructureddatametadatainterface), [\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface](#interface-consolidationoutputformattersstructureddatametadataholderinterface)*
 
 <hr />
 
@@ -712,10 +725,11 @@
 
 | Visibility | Function |
 |:-----------|:---------|
+| public | <strong>convert(</strong><em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Allow structured data to be converted -- i.e. from RowsOfFields to UnstructuredListData.</em> |
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ConversionInterface](#interface-consolidationoutputformattersstructureddataconversioninterface), [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellCollectionInterface](#interface-consolidationoutputformattersstructureddatarendercellcollectioninterface), [\Consolidation\OutputFormatters\Formatters\FormatterAwareInterface](#interface-consolidationoutputformattersformattersformatterawareinterface), [\Consolidation\OutputFormatters\StructuredData\RenderCellInterface](#interface-consolidationoutputformattersstructureddatarendercellinterface)*
 
 <hr />
 
@@ -733,6 +747,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
+| public static | <strong>hasUnstructuredFieldAccess(</strong><em>mixed</em> <strong>$options</strong>)</strong> : <em>bool</em> |
 | public static | <strong>processFieldAliases(</strong><em>mixed</em> <strong>$fields</strong>)</strong> : <em>void</em> |
 
 <hr />

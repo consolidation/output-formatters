@@ -22,4 +22,8 @@ class FieldProcessor
         }
         return $transformed_fields;
     }
+
+    public static function hasUnstructuredFieldAccess($options)
+    {
+    }
 }

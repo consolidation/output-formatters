@@ -107,7 +107,9 @@ Zwei
 Ni
 Dos
 ```
-Commands that produce deeply-nested data structures using the `UnstructuredListData` data type may also be manipulated using the `--fields` and `--field` options. It is possible to address items deep in the heirarchy using dot notation.
+Commands that produce deeply-nested data structures using the `UnstructuredData` and `UnstructuredListData` data type may also be manipulated using the `--fields` and `--field` options. It is possible to address items deep in the heirarchy using dot notation.
+
+The `UnstructuredData` type represents a single nested array with no requirements for uniform structure. The `UnstructuredListData` type is similar; it represents a list of `UnstructuredData` types. It is not required for the different elements in the list to have all of the same fields or structure, although it is expected that there will be a certain degree of similarity.
 
 Note that field remapping does not work for commands that use `RowsOfFields` or `PropertyList` return types; this capability is only supported by the `UnstructuredListData` type.
 
