@@ -1063,6 +1063,21 @@ metadata:
 EOT;
         $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata, new FormatterOptions(['fields' => ['three', 'one']]));
 
+        // TODO: Is metadata handling correct with field remapping? Should metadata be preserved, or removed entirely?
+        $expected = <<<EOT
+metadata: {  }
+id-123:
+  iii: c
+  i: a
+id-456:
+  iii: z
+  i: x
+EOT;
+
+
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata, new FormatterOptions(['fields' => ['three as iii', 'one as i']]));
+
+
     }
 
     function assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata)
