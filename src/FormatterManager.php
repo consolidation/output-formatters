@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
 use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
+use Consolidation\OutputFormatters\StructuredData\ConversionInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
