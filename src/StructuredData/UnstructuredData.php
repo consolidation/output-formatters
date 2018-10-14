@@ -3,7 +3,7 @@ namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
-use Consolidation\OutputFormatters\Transformations\UnstructuredDataListTransformation;
+use Consolidation\OutputFormatters\Transformations\UnstructuredDataTransformation;
 
 /**
  * Represents aribtrary unstructured array data where the
@@ -13,7 +13,7 @@ use Consolidation\OutputFormatters\Transformations\UnstructuredDataListTransform
  * RowsOfFields, which expects uniform rows), and the data elements may
  * themselves be deep arrays.
  */
-class UnstructuredListData extends AbstractListData implements RestructureInterface
+class UnstructuredData extends AbstractListData implements RestructureInterface
 {
     public function __construct($data)
     {
@@ -26,6 +26,6 @@ class UnstructuredListData extends AbstractListData implements RestructureInterf
         $defaults = $this->defaultOptions();
         $fields = $this->getFields($options, $defaults);
 
-        return new UnstructuredDataListTransformation($data, FieldProcessor::processFieldAliases($fields));
+        return new UnstructuredDataTransformation($data, FieldProcessor::processFieldAliases($fields));
     }
 }

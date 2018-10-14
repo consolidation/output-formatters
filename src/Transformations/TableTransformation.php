@@ -8,7 +8,7 @@ use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\Formatters\TsvFormatter;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class TableTransformation extends \ArrayObject implements TableDataInterface, SimplifyToStringInterface, OriginalDataInterface
+class TableTransformation extends \ArrayObject implements TableDataInterface, StringTransformationInterface, OriginalDataInterface
 {
     protected $headers;
     protected $rowLabels;

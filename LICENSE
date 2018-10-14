@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 DEPENDENCY LICENSES:
 
 Name                       Version  License  
+dflydev/dot-access-data    v1.1.0   MIT      
 psr/log                    1.0.2    MIT      
 symfony/console            v3.2.3   MIT      
 symfony/debug              v3.4.17  MIT      

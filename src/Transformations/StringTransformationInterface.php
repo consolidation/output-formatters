@@ -3,7 +3,7 @@ namespace Consolidation\OutputFormatters\Transformations;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 
-interface SimplifyToStringInterface
+interface StringTransformationInterface
 {
     /**
      * simplifyToString is called by the string formatter to convert

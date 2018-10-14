@@ -8,7 +8,7 @@ use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 use Consolidation\OutputFormatters\Transformations\SimplifiedFormatterInterface;
-use Consolidation\OutputFormatters\Transformations\SimplifyToStringInterface;
+use Consolidation\OutputFormatters\Transformations\StringTransformationInterface;
 
 /**
  * String formatter
@@ -63,7 +63,7 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
      */
     protected function reduceToSigleFieldAndWrite(OutputInterface $output, $data, FormatterOptions $options)
     {
-        if ($data instanceof SimplifyToStringInterface) {
+        if ($data instanceof StringTransformationInterface) {
             $simplified = $data->simplifyToString($options);
             return $output->write($simplified);
         }
