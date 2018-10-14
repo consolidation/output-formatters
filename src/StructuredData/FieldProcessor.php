@@ -23,7 +23,17 @@ class FieldProcessor
         return $transformed_fields;
     }
 
-    public static function hasUnstructuredFieldAccess($options)
+    /**
+     * Determine whether the data structure has unstructured field access,
+     * e.g. `a.b.c` or `foo as bar`.
+     * @param type $fields
+     * @return type
+     */
+    public static function hasUnstructuredFieldAccess($fields)
     {
+        if (is_array($fields)) {
+            $fields = implode(',', $fields);
+        }
+        return (strpos($fields, ' as ') !== false) || (strpos($fields, '.') !== false);
     }
 }

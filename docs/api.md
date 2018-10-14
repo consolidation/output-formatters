@@ -747,7 +747,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public static | <strong>hasUnstructuredFieldAccess(</strong><em>mixed</em> <strong>$options</strong>)</strong> : <em>bool</em> |
+| public static | <strong>hasUnstructuredFieldAccess(</strong><em>\Consolidation\OutputFormatters\StructuredData\type</em> <strong>$fields</strong>)</strong> : <em>\Consolidation\OutputFormatters\StructuredData\type</em><br /><em>Determine whether the data structure has unstructured field access, e.g. `a.b.c` or `foo as bar`.</em> |
 | public static | <strong>processFieldAliases(</strong><em>mixed</em> <strong>$fields</strong>)</strong> : <em>void</em> |
 
 <hr />
