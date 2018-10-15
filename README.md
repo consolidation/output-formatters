@@ -111,7 +111,70 @@ Commands that produce deeply-nested data structures using the `UnstructuredData`
 
 The `UnstructuredData` type represents a single nested array with no requirements for uniform structure. The `UnstructuredListData` type is similar; it represents a list of `UnstructuredData` types. It is not required for the different elements in the list to have all of the same fields or structure, although it is expected that there will be a certain degree of similarity.
 
-Note that field remapping does not work for commands that use `RowsOfFields` or `PropertyList` return types; this capability is only supported by the `UnstructuredListData` type.
+In the example below, a command returns a list of stores of different kinds. Each store has common top-level elements such as `name`, `products` and `sale-items`. Each store might have different sorts of products with different attributes:
+```
+$ ./app try:nested
+bills-hardware:
+  name: 'Bill''s Hardware'
+  products:
+    tools:
+      electric-drill:
+        price: '79.98'
+      screwdriver:
+        price: '8.99'
+  sale-items:
+    screwdriver: '4.99'
+alberts-supermarket:
+  name: 'Albert''s Supermarket'
+  products:
+    fruits:
+      strawberries:
+        price: '2'
+        units: lbs
+      watermellons:
+        price: '5'
+        units: each
+  sale-items:
+    watermellons: '4.50'
+```
+Just as is the case with tabular output, it is possible to select only a certain set of fields to display with each output item:
+```
+$ ./app try:nested --fields=sale-items
+bills-hardware:
+  sale-items:
+    screwdriver: '4.99'
+alberts-supermarket:
+  sale-items:
+    watermellons: '4.50'
+```
+With unstructured data, it is also possible to remap the name of the field to something else:
+```
+$ ./robo try:nested --fields='sale-items as items'
+bills-hardware:
+  items:
+    screwdriver: '4.99'
+alberts-supermarket:
+  items:
+    watermellons: '4.50'
+```
+The field name `.` is special, though: it indicates that the named element should be omitted, and its value or children should be applied directly to the result row:
+```
+$ ./app try:nested --fields='sale-items as .'
+bills-hardware:
+  screwdriver: '4.99'
+alberts-supermarket:
+  watermellons: '4.50'
+```
+Finally, it is also possible to reach down into nested data structures and pull out information about an element or elements identified using "dot" notation:
+```
+$ ./app try:nested --fields=products.fruits.strawberries
+bills-hardware: {  }
+alberts-supermarket:
+  strawberries:
+    price: '2'
+    units: lbs
+```
+Commands that use `RowsOfFields` or `PropertyList` return type will be automatically converted to `UnstructuredListData` or `UnstructuredData`, respectively, whenever any field remapping is done. This will only work for data types such as `yaml` or `json` that can render unstructured data types. It is not possible to render unstructured data in a table, even if the resulting data happens to be uniform.
 
 ## Filtering Specific Rows
 
