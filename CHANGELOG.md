@@ -1,6 +1,6 @@
 # Change Log
 
-### 3.3.0 - 15 October 2018
+### 3.3.0 & 3.3.1 - 15 October 2018
 
 - Add UnstructuredListData and UnstructuredData to replace deprecated ListDataFromKeys
 - Support --field and --fields in commands that return UnstructuredData / UnstructuredListData

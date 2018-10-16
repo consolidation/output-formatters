@@ -130,7 +130,7 @@ class FormatterManager
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, $description, $defaultFields);
         } elseif ($dataTypeClass->implementsInterface('Consolidation\OutputFormatters\StructuredData\RestructureInterface')) {
-            $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, 'Dot notation of fields to include in output.', []);
+            $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, 'Limit output to only the listed elements. Name top-level elements by key, e.g. "--fields=name,date", or use dot notation to select a nested element, e.g. "--fields=a.b.c as example".', []);
         }
 
         if (isset($automaticOptions[FormatterOptions::FIELDS])) {
