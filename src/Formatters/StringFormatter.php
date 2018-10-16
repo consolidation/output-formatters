@@ -7,6 +7,8 @@ use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
+use Consolidation\OutputFormatters\Transformations\SimplifiedFormatterInterface;
+use Consolidation\OutputFormatters\Transformations\StringTransformationInterface;
 
 /**
  * String formatter
@@ -53,7 +55,7 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
 
     /**
      * If the data provided to a 'string' formatter is a table, then try
-     * to emit it as a TSV value.
+     * to emit it in a simplified form (by default, TSV).
      *
      * @param OutputInterface $output
      * @param mixed $data
@@ -61,6 +63,11 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
      */
     protected function reduceToSigleFieldAndWrite(OutputInterface $output, $data, FormatterOptions $options)
     {
+        if ($data instanceof StringTransformationInterface) {
+            $simplified = $data->simplifyToString($options);
+            return $output->write($simplified);
+        }
+
         $alternateFormatter = new TsvFormatter();
         try {
             $data = $alternateFormatter->validate($data);

@@ -20,6 +20,7 @@
     },
     "require": {
         "php": ">=5.4.0",
+        "dflydev/dot-access-data": "^1.1.0",
         "symfony/finder": "^2.5|^3|^4"
     },
     "require-dev": {

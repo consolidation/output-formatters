@@ -19,6 +19,8 @@ use Consolidation\OutputFormatters\Validate\ValidationInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
+use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
+use Consolidation\OutputFormatters\StructuredData\ConversionInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -121,10 +123,17 @@ class FormatterManager
             $automaticOptions[FormatterOptions::FORMAT] = new InputOption(FormatterOptions::FORMAT, '', InputOption::VALUE_REQUIRED, $description, $defaultFormat);
         }
 
+        $dataTypeClass = ($dataType instanceof \ReflectionClass) ? $dataType : new \ReflectionClass($dataType);
+
         if ($availableFields) {
             $defaultFields = $options->get(FormatterOptions::DEFAULT_FIELDS, [], '');
             $description = 'Available fields: ' . implode(', ', $this->availableFieldsList($availableFields));
             $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, $description, $defaultFields);
+        } elseif ($dataTypeClass->implementsInterface('Consolidation\OutputFormatters\StructuredData\RestructureInterface')) {
+            $automaticOptions[FormatterOptions::FIELDS] = new InputOption(FormatterOptions::FIELDS, '', InputOption::VALUE_REQUIRED, 'Dot notation of fields to include in output.', []);
+        }
+
+        if (isset($automaticOptions[FormatterOptions::FIELDS])) {
             $automaticOptions[FormatterOptions::FIELD] = new InputOption(FormatterOptions::FIELD, '', InputOption::VALUE_REQUIRED, "Select just one field, and force format to 'string'.", '');
         }
 
@@ -203,7 +212,17 @@ class FormatterManager
      */
     public function write(OutputInterface $output, $format, $structuredOutput, FormatterOptions $options)
     {
+        // Convert the data to another format (e.g. converting from RowsOfFields to
+        // UnstructuredListData when the fields indicate an unstructured transformation
+        // is requested).
+        $structuredOutput = $this->convertData($structuredOutput, $options);
+
+        // TODO: If the $format is the default format (not selected by the user), and
+        // if `convertData` switched us to unstructured data, then select a new default
+        // format (e.g. yaml) if the selected format cannot render the converted data.
         $formatter = $this->getFormatter((string)$format);
+
+        // If the data format is not applicable for the selected formatter, throw an error.
         if (!is_string($structuredOutput) && !$this->isValidFormat($formatter, $structuredOutput)) {
             $validFormats = $this->validFormats($structuredOutput);
             throw new InvalidFormatException((string)$format, $structuredOutput, $validFormats);
@@ -353,6 +372,17 @@ class FormatterManager
             }
         }
         return false;
+    }
+
+    /**
+     * Convert from one format to another if necessary prior to restructuring.
+     */
+    public function convertData($structuredOutput, FormatterOptions $options)
+    {
+        if ($structuredOutput instanceof ConversionInterface) {
+            return $structuredOutput->convert($options);
+        }
+        return $structuredOutput;
     }
 
     /**

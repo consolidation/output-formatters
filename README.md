@@ -26,7 +26,7 @@ This is a library intended to be used in some other project.  Require from your 
         "consolidation/output-formatters": "~3"
     },
 ```
-If you require the feature that allows a data table to be automatically reduced to a single element when the `string` format is selected, then you should require version "~2" instead. In most other respects, the 1.x and 2.x versions are compatible. See the [CHANGELOG](CHANGELOG.md) for details.
+If you require the feature that allows a data table to be automatically reduced to a single element when the `string` format is selected, then you should require version ^2 instead. In most other respects, the 1.x and 2.x versions are compatible. See the [CHANGELOG](CHANGELOG.md) for details.
 
 ## Example Formatter
 
@@ -53,14 +53,14 @@ Formatters may also implement different interfaces to alter the behavior of the 
 Most formatters will operate on any array or ArrayObject data. Some formatters require that specific data types be used. The following data types, all of which are subclasses of ArrayObject, are available for use:
 
 - `RowsOfFields`: Each row contains an associative array of field:value pairs. It is also assumed that the fields of each row are the same for every row. This format is ideal for displaying in a table, with labels in the top row.
-- `RowsOfFieldsWithMetadata`: Equivalent to `RowsOfFields`, but allows the data to be nested inside of an element, with other elements being used as metadata, or, alternately, allows the metadata to be nested inside of an element, with all other elements being used as data.
+- `RowsOfFieldsWithMetadata`: Equivalent to `RowsOfFields`, but allows for metadata to be attached to the result. The metadata is not displayed in table format, but is evident if the data is converted to another format (e.g. `yaml` or `json`). The table data may either be nested inside of a specially-designated element, with other elements being used as metadata, or, alternately, the metadata may be nested inside of an element, with all other elements being used as data.
 - `PropertyList`: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
-- `ListDataFromKeys`: The result may be structured or unstructured data. When formatted with the --format=list formatter, the result will come from the array keys instead of the array values.
+- `UnstructuredListData`: The result is assumed to be a list of items, with the key of each row being used as the row id. The data elements may contain any sort of array data. The elements on each row do not need to be uniform, and the data may be nested to arbitrary depths.
+- `UnstruturedData`: The result is an unstructured array nested to arbitrary levels.
 - `DOMDocument`: The standard PHP DOM document class may be used by functions that need to be able to presicely specify the exact attributes and children when the XML output format is used.
+- `ListDataFromKeys`: This data structure is deprecated. Use `UnstructuredListData` instead.
 
-Commands that return table structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array.
-
-The formatter manager will do its best to convert from an array to a DOMDocument, or from a DOMDocument to an array. It is important to note that a DOMDocument does not have a 1-to-1 mapping with a PHP array.  DOM elements contain both attributes and elements; a simple string property 'foo' may be represented either as <element foo="value"/> or <element><foo>value</foo></element>. Also, there may be multiple XML elements with the same name, whereas php associative arrays must always have unique keys. When converting from an array to a DOM document, the XML formatter will default to representing the string properties of an array as attributes of the element. Sets of elements with the same name may be used only if they are wrapped in a containing parent element--e.g. <element><foos><foo>one</foo><foo>two</foo></foos></element>. The XMLSchema class may be used to provide control over whether a property is rendered as an attribute or an element; however, in instances where the schema of the XML output is important, it is best for a function to return its result as a DOMDocument rather than an array.
+Commands that need to produce XML output should return a DOMDocument as its return type. The formatter manager will do its best to convert from an array to a DOMDocument, or from a DOMDocument to an array, as needed. It is important to note that a DOMDocument does not have a 1-to-1 mapping with a PHP array.  DOM elements contain both attributes and elements; a simple string property 'foo' may be represented either as <element foo="value"/> or <element><foo>value</foo></element>. Also, there may be multiple XML elements with the same name, whereas php associative arrays must always have unique keys. When converting from an array to a DOM document, the XML formatter will default to representing the string properties of an array as attributes of the element. Sets of elements with the same name may be used only if they are wrapped in a containing parent element--e.g. <element><foos><foo>one</foo><foo>two</foo></foos></element>. The XMLSchema class may be used to provide control over whether a property is rendered as an attribute or an element; however, in instances where the schema of the XML output is important, it is best for a function to return its result as a DOMDocument rather than an array.
 
 A function may also define its own structured data type to return, usually by extending one of the types mentioned above.  If a custom structured data class implements an appropriate interface, then it can provide its own conversion function to one of the other data types:
 
@@ -71,6 +71,115 @@ A function may also define its own structured data type to return, usually by ex
 - `RestructureInterface`: The restructure interface can be implemented by a structured data object to restructure the data in response to options provided by the user. For example, the RowsOfFields and PropertyList data types use this interface to select and reorder the fields that were selected to appear in the output. Custom data types usually will not need to implement this interface, as they can inherit this behavior by extending RowsOfFields or PropertyList.
 
 Additionally, structured data may be simplified to arrays via an array simplification object. To provide an array simplifier, implement `SimplifyToArrayInterface`, and register the simplifier via `FormatterManager::addSimplifier()`.
+
+## Reordering Fields
+
+Commands that return table structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array. One of `RowsOfFields`, `PropertyList` or `UnstructuredListData` (or similar) must be used.
+
+When the `--fields` option is provided, the user may stipulate the exact fields to list on each row, and what order they should appear in. For example, if a command usually produces output using the `RowsOfFields` data type, as shown below:
+```
+$ ./app try:formatters
+ ------ ------ ------- 
+  I      II     III    
+ ------ ------ ------- 
+  One    Two    Three  
+  Eins   Zwei   Drei   
+  Ichi   Ni     San    
+  Uno    Dos    Tres   
+ ------ ------ ------- 
+```
+Then the third and first fields may be selected as follows:
+```
+ $ ./app try:formatters --fields=III,I
+ ------- ------ 
+  III     I     
+ ------- ------ 
+  Three   One   
+  Drei    Eins  
+  San     Ichi  
+  Tres    Uno   
+ ------- ------ 
+```
+To select a single column and strip away all formatting, use the `--field` option:
+```
+$ ./app try:formatters --field=II
+Two
+Zwei
+Ni
+Dos
+```
+Commands that produce deeply-nested data structures using the `UnstructuredData` and `UnstructuredListData` data type may also be manipulated using the `--fields` and `--field` options. It is possible to address items deep in the heirarchy using dot notation.
+
+The `UnstructuredData` type represents a single nested array with no requirements for uniform structure. The `UnstructuredListData` type is similar; it represents a list of `UnstructuredData` types. It is not required for the different elements in the list to have all of the same fields or structure, although it is expected that there will be a certain degree of similarity.
+
+In the example below, a command returns a list of stores of different kinds. Each store has common top-level elements such as `name`, `products` and `sale-items`. Each store might have different sorts of products with different attributes:
+```
+$ ./app try:nested
+bills-hardware:
+  name: 'Bill''s Hardware'
+  products:
+    tools:
+      electric-drill:
+        price: '79.98'
+      screwdriver:
+        price: '8.99'
+  sale-items:
+    screwdriver: '4.99'
+alberts-supermarket:
+  name: 'Albert''s Supermarket'
+  products:
+    fruits:
+      strawberries:
+        price: '2'
+        units: lbs
+      watermellons:
+        price: '5'
+        units: each
+  sale-items:
+    watermellons: '4.50'
+```
+Just as is the case with tabular output, it is possible to select only a certain set of fields to display with each output item:
+```
+$ ./app try:nested --fields=sale-items
+bills-hardware:
+  sale-items:
+    screwdriver: '4.99'
+alberts-supermarket:
+  sale-items:
+    watermellons: '4.50'
+```
+With unstructured data, it is also possible to remap the name of the field to something else:
+```
+$ ./robo try:nested --fields='sale-items as items'
+bills-hardware:
+  items:
+    screwdriver: '4.99'
+alberts-supermarket:
+  items:
+    watermellons: '4.50'
+```
+The field name `.` is special, though: it indicates that the named element should be omitted, and its value or children should be applied directly to the result row:
+```
+$ ./app try:nested --fields='sale-items as .'
+bills-hardware:
+  screwdriver: '4.99'
+alberts-supermarket:
+  watermellons: '4.50'
+```
+Finally, it is also possible to reach down into nested data structures and pull out information about an element or elements identified using "dot" notation:
+```
+$ ./app try:nested --fields=products.fruits.strawberries
+bills-hardware: {  }
+alberts-supermarket:
+  strawberries:
+    price: '2'
+    units: lbs
+```
+Commands that use `RowsOfFields` or `PropertyList` return type will be automatically converted to `UnstructuredListData` or `UnstructuredData`, respectively, whenever any field remapping is done. This will only work for data types such as `yaml` or `json` that can render unstructured data types. It is not possible to render unstructured data in a table, even if the resulting data happens to be uniform.
+
+## Filtering Specific Rows
+
+A command may allow the user to filter specific rows of data using simple boolean logic and/or regular expressions. For details, see the external library [consolidation/filter-via-dot-access-data](https://github.com/consolidation/filter-via-dot-access-data) that provides this capability.
 
 ## Rendering Table Cells
 

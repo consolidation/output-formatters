@@ -1,5 +1,15 @@
 # Change Log
 
+### Unreleased - 12 October 2018
+
+- Add UnstructuredListData to replace deprecated ListDataFromKeys
+- Support --field and --fields in commands that return UnstructuredListData
+- Support field remapping, e.g. `--fields=original as remapped`
+
+### 3.2.1 - 25 May 2018
+
+- Rename g1a/composer-test-scenarios
+
 ### 3.2.0 - 20 March 2018
 
 - Add RowsOfFieldsWithMetadata: allows commands to return an object with metadata that shows up in yaml/json (& etc.) formats, but is not shown in table/csv (& etc.).

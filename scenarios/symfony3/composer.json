@@ -19,7 +19,8 @@
         }
     },
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "dflydev/dot-access-data": "^1.1.0"
     },
     "require-dev": {
         "g1a/composer-test-scenarios": "^2",

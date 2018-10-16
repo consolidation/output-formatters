@@ -9,6 +9,8 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFieldsWithMetadata;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
+use Consolidation\OutputFormatters\StructuredData\UnstructuredListData;
+use Consolidation\OutputFormatters\StructuredData\UnstructuredData;
 use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,14 +63,24 @@ c
 EOT;
         $this->assertFormattedOutputMatches($expected, 'list', $data);
 
-        $data = new ListDataFromKeys($data);
+        // @deprecated: replaced by UnstructuredListData
+        $listData = new ListDataFromKeys($data);
 
         $expected = <<<EOT
 one: a
 two: b
 three: c
 EOT;
-        $this->assertFormattedOutputMatches($expected, 'yaml', $data);
+        $this->assertFormattedOutputMatches($expected, 'yaml', $listData);
+
+        $unstructuredData = new UnstructuredData($data);
+
+        $expected = <<<EOT
+one: a
+two: b
+three: c
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $unstructuredData);
 
         $expected = <<<EOT
 one
@@ -76,7 +88,16 @@ two
 three
 EOT;
 
-        $this->assertFormattedOutputMatches($expected, 'list', $data);
+        $this->assertFormattedOutputMatches($expected, 'list', $unstructuredData);
+
+        $options = new FormatterOptions([FormatterOptions::FIELDS => 'one as I,two as II,three as III']);
+        $expected = <<<EOT
+I: a
+II: b
+III: c
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'yaml', $unstructuredData, $options);
+
     }
 
     function testNestedYaml()
@@ -112,7 +133,60 @@ three:
 EOT;
 
         $this->assertFormattedOutputMatches($expected, 'yaml', $data);
+
+        $options = new FormatterOptions([FormatterOptions::FIELDS => 'i as A,ii as B,iii as C']);
+        $expected = <<<EOT
+one:
+  A:
+    - a
+    - b
+    - c
+two:
+  B:
+    - q
+    - r
+    - s
+three:
+  C:
+    - t
+    - u
+    - v
+EOT;
+
+        $unstructuredData = new UnstructuredListData($data);
+        $this->assertFormattedOutputMatches($expected, 'yaml', $unstructuredData, $options);
     }
+
+    function testDeepUnstructuredYaml()
+    {
+        $data = [
+            'root' => [
+                'one' => [
+                    'i' => ['a' => 'ape', 'b' => 'bat', 'c' => 'cat'],
+                ],
+                'two' => [
+                    'ii' => ['q' => 'quail', 'r' => 'rabbit', 's' => 'snake'],
+                ],
+                'three' => [
+                    'iii' => ['t' => 'turtle', 'u' => 'unicorn', 'v' => 'vulture'],
+                ],
+            ],
+        ];
+
+        $expected = <<<EOT
+root:
+  cool: cat
+  unique: unicorn
+  slithering: snake
+EOT;
+
+        $options = new FormatterOptions([FormatterOptions::FIELDS => 'one.i.c as cool,three.iii.u as unique,two.ii.s as slithering']);
+
+        $unstructuredData = new UnstructuredListData($data);
+        $this->assertFormattedOutputMatches($expected, 'yaml', $unstructuredData, $options);
+    }
+
+
 
     function testSimpleJson()
     {
@@ -988,6 +1062,21 @@ metadata:
   summary: 'This is some metadata'
 EOT;
         $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata, new FormatterOptions(['fields' => ['three', 'one']]));
+
+        // TODO: Is metadata handling correct with field remapping? Should metadata be preserved, or removed entirely?
+        $expected = <<<EOT
+metadata: {  }
+id-123:
+  iii: c
+  i: a
+id-456:
+  iii: z
+  i: x
+EOT;
+
+
+        $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata, new FormatterOptions(['fields' => ['three as iii', 'one as i']]));
+
 
     }
 
