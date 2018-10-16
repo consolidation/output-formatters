@@ -1,10 +1,12 @@
 # Change Log
 
-### Unreleased - 12 October 2018
+### 3.3.0 - 15 October 2018
 
-- Add UnstructuredListData to replace deprecated ListDataFromKeys
-- Support --field and --fields in commands that return UnstructuredListData
+- Add UnstructuredListData and UnstructuredData to replace deprecated ListDataFromKeys
+- Support --field and --fields in commands that return UnstructuredData / UnstructuredListData
 - Support field remapping, e.g. `--fields=original as remapped`
+- Support field addressing, e.g. `--fields=a.b.c`
+- Automatically convert from RowsOfFields to UnstruturedListData and from PropertyList to UnstructuredData when user utilizes field remapping or field addressing features.
 
 ### 3.2.1 - 25 May 2018
 
