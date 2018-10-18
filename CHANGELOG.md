@@ -1,5 +1,9 @@
 # Change Log
 
+### 3.3.2 - 18 October 2018
+
+- Add a 'null' output formatter that accepts all data types and never produces output
+
 ### 3.3.0 & 3.3.1 - 15 October 2018
 
 - Add UnstructuredListData and UnstructuredData to replace deprecated ListDataFromKeys
