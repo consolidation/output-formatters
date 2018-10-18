@@ -39,6 +39,7 @@ class FormatterManager
     public function addDefaultFormatters()
     {
         $defaultFormatters = [
+            'null' => '\Consolidation\OutputFormatters\Formatters\NoOutputFormatter',
             'string' => '\Consolidation\OutputFormatters\Formatters\StringFormatter',
             'yaml' => '\Consolidation\OutputFormatters\Formatters\YamlFormatter',
             'xml' => '\Consolidation\OutputFormatters\Formatters\XmlFormatter',

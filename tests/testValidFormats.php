@@ -51,19 +51,19 @@ class ValidFormatsTests extends TestCase
 
         // Check to see which formats can handle a simple array
         $validFormats = $this->formatterManager->validFormats([]);
-        $this->assertEquals('csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
+        $this->assertEquals('csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
 
         // Check to see which formats can handle an PropertyList
         $validFormats = $this->formatterManager->validFormats($associativeListRef);
-        $this->assertEquals('csv,json,list,php,print-r,string,table,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
+        $this->assertEquals('csv,json,list,null,php,print-r,string,table,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
 
         // Check to see which formats can handle an RowsOfFields
         $validFormats = $this->formatterManager->validFormats($rowsOfFieldsRef);
-        $this->assertEquals('csv,json,list,php,print-r,sections,string,table,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
+        $this->assertEquals('csv,json,list,null,php,print-r,sections,string,table,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
 
         // TODO: it woud be better if this returned an empty set instead of 'string'.
         $validFormats = $this->formatterManager->validFormats($notADataType);
-        $this->assertEquals('string', implode(',', $validFormats));
+        $this->assertEquals('null,string', implode(',', $validFormats));
     }
 
     function testAutomaticOptions()
@@ -75,7 +75,7 @@ class ValidFormatsTests extends TestCase
             ]
         );
         $inputOptions = $this->formatterManager->automaticOptions($formatterOptions, $rowsOfFieldsRef);
-        $this->assertInputOptionDescriptionsEquals("Format the result data. Available formats: csv,json,list,php,print-r,sections,string,table,tsv,var_dump,var_export,xml,yaml [Default: 'table']\nAvailable fields: Name (name), Phone Number (phone_number) [Default: '']\nSelect just one field, and force format to 'string'. [Default: '']", $inputOptions);
+        $this->assertInputOptionDescriptionsEquals("Format the result data. Available formats: csv,json,list,null,php,print-r,sections,string,table,tsv,var_dump,var_export,xml,yaml [Default: 'table']\nAvailable fields: Name (name), Phone Number (phone_number) [Default: '']\nSelect just one field, and force format to 'string'. [Default: '']", $inputOptions);
     }
 
     function assertInputOptionDescriptionsEquals($expected, $inputOptions)

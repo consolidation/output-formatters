@@ -98,6 +98,8 @@ III: c
 EOT;
         $this->assertFormattedOutputMatches($expected, 'yaml', $unstructuredData, $options);
 
+        // Ensure that the 'null' format produces no output at all
+        $this->assertFormattedOutputMatches('', 'null', $unstructuredData);
     }
 
     function testNestedYaml()
@@ -950,7 +952,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
+     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleDataForTableFormatter()
     {
@@ -961,7 +963,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
+     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleDataForSectionsFormatter()
     {
@@ -1416,7 +1418,7 @@ EOT;
     /**
      * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,php,print-r,string,tsv,var_dump,var_export,xml,yaml
+     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml
      */
     function testIncompatibleListDataForTableFormatter()
     {

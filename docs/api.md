@@ -18,6 +18,7 @@
 - [\Consolidation\OutputFormatters\Formatters\StringFormatter](#class-consolidationoutputformattersformattersstringformatter)
 - [\Consolidation\OutputFormatters\Formatters\VarExportFormatter](#class-consolidationoutputformattersformattersvarexportformatter)
 - [\Consolidation\OutputFormatters\Formatters\YamlFormatter](#class-consolidationoutputformattersformattersyamlformatter)
+- [\Consolidation\OutputFormatters\Formatters\NoOutputFormatter](#class-consolidationoutputformattersformattersnooutputformatter)
 - [\Consolidation\OutputFormatters\Formatters\TableFormatter](#class-consolidationoutputformattersformatterstableformatter)
 - [\Consolidation\OutputFormatters\Formatters\XmlFormatter](#class-consolidationoutputformattersformattersxmlformatter)
 - [\Consolidation\OutputFormatters\Formatters\PrintRFormatter](#class-consolidationoutputformattersformattersprintrformatter)
@@ -324,6 +325,20 @@
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface)*
+
+<hr />
+
+### Class: \Consolidation\OutputFormatters\Formatters\NoOutputFormatter
+
+> No output formatter This formatter never produces any output. It is useful in cases where a command should not produce any output by default, but may do so if the user explicitly includes a --format option.
+
+| Visibility | Function |
+|:-----------|:---------|
+| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>All data types are acceptable.</em> |
+| public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>mixed</em><br /><em>Throw an IncompatibleDataException if the provided data cannot be processed by this formatter.  Return the source data if it is valid. The data may be encapsulated or converted if necessary.</em> |
+| public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
+
+*This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface)*
 
 <hr />
 
