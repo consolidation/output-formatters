@@ -55,7 +55,7 @@ install:
   - mkdir c:\test_temp
 
 test_script:
-  - php composer.phar unit
+  - php composer.phar unit -- --testsuite formatters
 
 # environment variables
 environment:
