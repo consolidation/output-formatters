@@ -55,7 +55,7 @@ install:
   - mkdir c:\test_temp
 
 test_script:
-  - php vendor/bin/phpunit
+  - php composer.phar unit -- --configuration phpunit.xml.dist
 
 # environment variables
 environment:
