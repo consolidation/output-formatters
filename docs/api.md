@@ -37,6 +37,7 @@
 - [\Consolidation\OutputFormatters\StructuredData\AbstractStructuredList (abstract)](#class-consolidationoutputformattersstructureddataabstractstructuredlist-abstract)
 - [\Consolidation\OutputFormatters\StructuredData\ListDataFromKeys](#class-consolidationoutputformattersstructureddatalistdatafromkeys)
 - [\Consolidation\OutputFormatters\StructuredData\UnstructuredListData](#class-consolidationoutputformattersstructureddataunstructuredlistdata)
+- [\Consolidation\OutputFormatters\StructuredData\UnstructuredInterface (interface)](#interface-consolidationoutputformattersstructureddataunstructuredinterface)
 - [\Consolidation\OutputFormatters\StructuredData\PropertyList](#class-consolidationoutputformattersstructureddatapropertylist)
 - [\Consolidation\OutputFormatters\StructuredData\ConversionInterface (interface)](#interface-consolidationoutputformattersstructureddataconversioninterface)
 - [\Consolidation\OutputFormatters\StructuredData\MetadataHolderInterface (interface)](#interface-consolidationoutputformattersstructureddatametadataholderinterface)
@@ -294,7 +295,7 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>All data types are acceptable.</em> |
+| public | <strong>isValidDataType(</strong><em>[\ReflectionClass](http://php.net/manual/en/class.reflectionclass.php)</em> <strong>$dataType</strong>)</strong> : <em>bool</em><br /><em>By default, we assume that we can convert any data type to `string`, unless it implements UnstructuredInterface, in which case we won't allow the `string` format unless the data type also implements StringTransformationInterface.</em> |
 | public | <strong>overrideOptions(</strong><em>mixed</em> <strong>$structuredOutput</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Allow the formatter to mess with the configuration options before any transformations et. al. get underway.</em> |
 | public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>void</em><br /><em>Always validate any data, though. This format will never cause an error if it is selected for an incompatible data type; at worse, it simply does not print any data.</em> |
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
@@ -518,7 +519,7 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractListData](#class-consolidationoutputformattersstructureddataabstractlistdata)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\UnstructuredInterface](#interface-consolidationoutputformattersstructureddataunstructuredinterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface)*
 
 <hr />
 
@@ -595,7 +596,16 @@
 
 *This class extends [\Consolidation\OutputFormatters\StructuredData\AbstractListData](#class-consolidationoutputformattersstructureddataabstractlistdata)*
 
-*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface)*
+*This class implements [\Consolidation\OutputFormatters\StructuredData\ListDataInterface](#interface-consolidationoutputformattersstructureddatalistdatainterface), \IteratorAggregate, \Traversable, \ArrayAccess, \Serializable, \Countable, [\Consolidation\OutputFormatters\StructuredData\UnstructuredInterface](#interface-consolidationoutputformattersstructureddataunstructuredinterface), [\Consolidation\OutputFormatters\StructuredData\RestructureInterface](#interface-consolidationoutputformattersstructureddatarestructureinterface)*
+
+<hr />
+
+### Interface: \Consolidation\OutputFormatters\StructuredData\UnstructuredInterface
+
+> UnstructuredInterface is a marker interface that indicates that the data type is unstructured, and has no default conversion to a string. Unstructured data supports the `string` format only if it also implements StringTransformationInterface.
+
+| Visibility | Function |
+|:-----------|:---------|
 
 <hr />
 

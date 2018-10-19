@@ -13,7 +13,7 @@ use Consolidation\OutputFormatters\Transformations\UnstructuredDataListTransform
  * RowsOfFields, which expects uniform rows), and the data elements may
  * themselves be deep arrays.
  */
-class UnstructuredListData extends AbstractListData implements RestructureInterface
+class UnstructuredListData extends AbstractListData implements UnstructuredInterface, RestructureInterface
 {
     public function __construct($data)
     {
