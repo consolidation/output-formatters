@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use PHPUnit\Framework\TestCase;
 
-class APIDocsTests extends TestCase
+class APIDocsTest extends TestCase
 {
     function testAPIDocs()
     {

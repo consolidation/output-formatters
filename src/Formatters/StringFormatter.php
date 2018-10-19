@@ -1,14 +1,15 @@
 <?php
 namespace Consolidation\OutputFormatters\Formatters;
 
-use Consolidation\OutputFormatters\Validate\ValidationInterface;
-use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
-use Symfony\Component\Console\Output\OutputInterface;
+use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
+use Consolidation\OutputFormatters\StructuredData\UnstructuredInterface;
 use Consolidation\OutputFormatters\Transformations\SimplifiedFormatterInterface;
 use Consolidation\OutputFormatters\Transformations\StringTransformationInterface;
+use Consolidation\OutputFormatters\Validate\ValidationInterface;
+use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * String formatter
@@ -21,10 +22,16 @@ use Consolidation\OutputFormatters\Transformations\StringTransformationInterface
 class StringFormatter implements FormatterInterface, ValidationInterface, OverrideOptionsInterface
 {
     /**
-     * All data types are acceptable.
+     * By default, we assume that we can convert any data type to `string`,
+     * unless it implements UnstructuredInterface, in which case we won't
+     * allow the `string` format unless the data type also implements
+     * StringTransformationInterface.
      */
     public function isValidDataType(\ReflectionClass $dataType)
     {
+        if ($dataType->implementsInterface('\Consolidation\OutputFormatters\StructuredData\UnstructuredInterface') && !$dataType->implementsInterface('\Consolidation\OutputFormatters\Transformations\StringTransformationInterface')) {
+            return false;
+        }
         return true;
     }
 

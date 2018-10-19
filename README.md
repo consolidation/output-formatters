@@ -47,8 +47,42 @@ Formatters may also implement different interfaces to alter the behavior of the 
 
 - `ValidationInterface`: A formatter should implement this interface to test to see if the provided data type can be processed. Any formatter that does **not** implement this interface is presumed to operate exclusively on php arrays. The formatter manager will always convert any provided data into an array before passing it to a formatter that does not implement ValidationInterface. These formatters will not be made available when the returned data type cannot be converted into an array.
 - `OverrideRestructureInterface`: A formatter that implements this interface will be given the option to act on the provided structured data object before it restructures itself. See the section below on structured data for details on data restructuring.
+- `UnstructuredInterface`: A formatter that implements this interface will not be able to be formatted by the `string` formatter by default. Data structures that do not implement this interface will be automatically converted to a string when applicable; if this conversion fails, then no output is produced.
+- `StringTransformationInterface`: Implementing this interface allows a data type to provide a specific implementation for the conversion of the data to a string. Data types that implement both `UnstructuredInterface` and `StringTransformationInterface` may be used with the `string` format.
 
-## Structured Data
+## Configuring Formats for a Command
+
+Commands declare what type of data they return using a `@return` annotation, as usual:
+```php
+    /**
+     * Demonstrate formatters.  Default format is 'table'.
+     *
+     * @field-labels
+     *   first: I
+     *   second: II
+     *   third: III
+     * @default-string-field second
+     * @usage try:formatters --format=yaml
+     * @usage try:formatters --format=csv
+     * @usage try:formatters --fields=first,third
+     * @usage try:formatters --fields=III,II
+     *
+     * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
+     */
+    public function tryFormatters($somthing = 'default', $options = ['format' => 'table', 'fields' => ''])
+    {
+        $outputData = [
+            'en' => [ 'first' => 'One',  'second' => 'Two',  'third' => 'Three' ],
+            'de' => [ 'first' => 'Eins', 'second' => 'Zwei', 'third' => 'Drei'  ],
+            'jp' => [ 'first' => 'Ichi', 'second' => 'Ni',   'third' => 'San'   ],
+            'es' => [ 'first' => 'Uno',  'second' => 'Dos',  'third' => 'Tres'  ],
+        ];
+        return new RowsOfFields($outputData);
+    }
+```
+The output-formatters library determines which output formats are applicable to the command by querying all available formats, and selecting any that are able to process the data type that is returned. Thus, if a new format is added to a program, it will automatically be available via any command that it works with. It is not necessary to hand-select the available formats on every command individually.
+
+### Structured Data
 
 Most formatters will operate on any array or ArrayObject data. Some formatters require that specific data types be used. The following data types, all of which are subclasses of ArrayObject, are available for use:
 
@@ -72,9 +106,40 @@ A function may also define its own structured data type to return, usually by ex
 
 Additionally, structured data may be simplified to arrays via an array simplification object. To provide an array simplifier, implement `SimplifyToArrayInterface`, and register the simplifier via `FormatterManager::addSimplifier()`.
 
-## Reordering Fields
+### Fields
 
-Commands that return table structured data with fields can be filtered and/or re-ordered by using the --fields option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array. One of `RowsOfFields`, `PropertyList` or `UnstructuredListData` (or similar) must be used.
+Some commands produce output that contain *fields*. A field may be either the key in a key/value pair, or it may be the label used in tabular output and so on.
+
+#### Declaring Default Fields
+
+If a command declares a very large number of fields, it is possible to display only a subset of the available options by way of the `@default-fields` annotation. The following example comes from Drush:
+```php
+    /**
+     * @command cache:get
+     * @field-labels
+     *   cid: Cache ID
+     *   data: Data
+     *   created: Created
+     *   expire: Expire
+     *   tags: Tags
+     *   checksum: Checksum
+     *   valid: Valid
+     * @default-fields cid,data,created,expire,tags
+     * @return \Consolidation\OutputFormatters\StructuredData\PropertyList
+     */
+    public function get($cid, $bin = 'default', $options = ['format' => 'json'])
+    {
+        $result = ...
+        return new PropertyList($result);
+    }
+```
+All of the available fields will be listed in the `help` output for the command, and may be selected by listing the desired fields explicitly via the `--fields` option.
+
+To include all avalable fields, use `--fields=*`.
+
+#### Reordering Fields
+
+Commands that return table structured data with fields can be filtered and/or re-ordered by using the `--fields` option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array. One of `RowsOfFields`, `PropertyList` or `UnstructuredListData` (or similar) must be used.
 
 When the `--fields` option is provided, the user may stipulate the exact fields to list on each row, and what order they should appear in. For example, if a command usually produces output using the `RowsOfFields` data type, as shown below:
 ```
@@ -177,7 +242,7 @@ alberts-supermarket:
 ```
 Commands that use `RowsOfFields` or `PropertyList` return type will be automatically converted to `UnstructuredListData` or `UnstructuredData`, respectively, whenever any field remapping is done. This will only work for data types such as `yaml` or `json` that can render unstructured data types. It is not possible to render unstructured data in a table, even if the resulting data happens to be uniform.
 
-## Filtering Specific Rows
+### Filtering Specific Rows
 
 A command may allow the user to filter specific rows of data using simple boolean logic and/or regular expressions. For details, see the external library [consolidation/filter-via-dot-access-data](https://github.com/consolidation/filter-via-dot-access-data) that provides this capability.
 

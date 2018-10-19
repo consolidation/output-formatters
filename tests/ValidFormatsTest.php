@@ -6,7 +6,7 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use PHPUnit\Framework\TestCase;
 
-class ValidFormatsTests extends TestCase
+class ValidFormatsTest extends TestCase
 {
     protected $formatterManager;
 
@@ -21,6 +21,7 @@ class ValidFormatsTests extends TestCase
         $arrayObjectRef = new \ReflectionClass('\ArrayObject');
         $associativeListRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\PropertyList');
         $rowsOfFieldsRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\RowsOfFields');
+        $unstructuredDataRef = new \ReflectionClass('\Consolidation\OutputFormatters\StructuredData\UnstructuredData');
         $notADataType = new \ReflectionClass('\Consolidation\OutputFormatters\FormatterManager');
 
         $jsonFormatter = $this->formatterManager->getFormatter('json');
@@ -60,6 +61,10 @@ class ValidFormatsTests extends TestCase
         // Check to see which formats can handle an RowsOfFields
         $validFormats = $this->formatterManager->validFormats($rowsOfFieldsRef);
         $this->assertEquals('csv,json,list,null,php,print-r,sections,string,table,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
+
+        // Check to see which formats can handle unstructured data
+        $validFormats = $this->formatterManager->validFormats($unstructuredDataRef);
+        $this->assertEquals('csv,json,list,null,php,print-r,tsv,var_dump,var_export,xml,yaml', implode(',', $validFormats));
 
         // TODO: it woud be better if this returned an empty set instead of 'string'.
         $validFormats = $this->formatterManager->validFormats($notADataType);
