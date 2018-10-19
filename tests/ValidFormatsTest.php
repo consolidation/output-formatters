@@ -6,7 +6,7 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use PHPUnit\Framework\TestCase;
 
-class ValidFormatsTests extends TestCase
+class ValidFormatsTest extends TestCase
 {
     protected $formatterManager;
 
