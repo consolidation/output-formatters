@@ -6,9 +6,9 @@ branches:
   only:
     - master
 
-## Cache composer bits
-#cache:
-#    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
+# Cache composer bits
+cache:
+    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
 
 init:
   #https://github.com/composer/composer/blob/master/appveyor.yml
