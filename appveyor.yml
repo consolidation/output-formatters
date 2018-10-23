@@ -1,12 +1,12 @@
 build: false
-shallow_clone: true
+shallow_clone: false
 platform: 'x86'
 clone_folder: C:\projects\output-formatters
 branches:
   only:
     - master
 
-## Cache composer bits
+# Cache composer bits
 cache:
     - '%LOCALAPPDATA%\Composer\files -> composer.lock'
 
@@ -55,7 +55,7 @@ install:
   - mkdir c:\test_temp
 
 test_script:
-  - php composer.phar unit -- --configuration phpunit.xml.dist
+  - php composer.phar unit
 
 # environment variables
 environment:
