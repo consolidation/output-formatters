@@ -8,39 +8,38 @@
             "email": "greg.1.anderson@greenknowe.org"
         }
     ],
-    "autoload":{
-        "psr-4":{
-            "Consolidation\\OutputFormatters\\": "src"
+    "autoload": {
+        "psr-4": {
+            "Consolidation\\OutputFormatters\\": "../../src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Consolidation\\TestUtils\\": "tests/src"
+            "Consolidation\\TestUtils\\": "../../tests/src"
         }
     },
     "require": {
+        "symfony/console": "^2.8",
         "php": ">=5.4.0",
-        "dflydev/dot-access-data": "^1.1.0"
+        "dflydev/dot-access-data": "^1.1.0",
+        "symfony/finder": "^2.5|^3|^4"
     },
     "require-dev": {
-        "g1a/composer-test-scenarios": "^2",
-        "phpunit/phpunit": "^5.7.27",
-        "satooshi/php-coveralls": "^2",
+        "phpunit/phpunit": "^4.8.36",
+        "g1a/composer-test-scenarios": "^3",
         "squizlabs/php_codesniffer": "^2.7",
-        "symfony/console": "^3.4",
-        "symfony/finder": "^3.4",
-        "symfony/var-dumper": "^3.4",
+        "symfony/var-dumper": "^2.8|^3|^4",
         "victorjonsson/markdowndocs": "^1.3"
     },
     "suggest": {
         "symfony/var-dumper": "For using the var_dump formatter"
     },
     "config": {
+        "platform": {
+            "php": "5.4.8"
+        },
         "optimize-autoloader": true,
         "sort-packages": true,
-        "platform": {
-            "php": "5.6.32"
-        },
         "vendor-dir": "../../vendor"
     },
     "scripts": {
@@ -56,19 +55,11 @@
             "@lint",
             "@unit",
             "@cs"
-        ],
-        "scenario": "scenarios/install",
-        "post-update-cmd": [
-            "create-scenario symfony4 'symfony/console:^4.0' 'phpunit/phpunit:^6' --platform-php '7.1.3'",
-            "create-scenario symfony3 'symfony/console:^3.4' 'symfony/finder:^3.4' 'symfony/var-dumper:^3.4' --platform-php '5.6.32'",
-            "create-scenario symfony2 'symfony/console:^2.8' 'phpunit/phpunit:^4.8.36' --remove 'satooshi/php-coveralls' --platform-php '5.4' --no-lockfile",
-            "dependency-licenses"
         ]
     },
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"
         }
-    },
-    "minimum-stability": "stable"
+    }
 }
