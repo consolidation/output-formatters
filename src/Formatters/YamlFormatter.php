@@ -22,6 +22,6 @@ class YamlFormatter implements FormatterInterface
         $indent = 2;
         // The level where you switch to inline YAML is set to PHP_INT_MAX to
         // ensure this does not occur.
-        $output->writeln(Yaml::dump($data, PHP_INT_MAX, $indent, false, true));
+        $output->write(Yaml::dump($data, PHP_INT_MAX, $indent, false, true));
     }
 }

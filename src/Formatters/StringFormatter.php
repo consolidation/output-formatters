@@ -41,7 +41,7 @@ class StringFormatter implements FormatterInterface, ValidationInterface, Overri
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
         if (is_string($data)) {
-            return $output->writeln($data);
+            return $output->write($data);
         }
         return $this->reduceToSigleFieldAndWrite($output, $data, $options);
     }

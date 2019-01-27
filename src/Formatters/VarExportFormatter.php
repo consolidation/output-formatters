@@ -16,6 +16,6 @@ class VarExportFormatter implements FormatterInterface
      */
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
-        $output->writeln(var_export($data, true));
+        $output->write(var_export($data, true));
     }
 }

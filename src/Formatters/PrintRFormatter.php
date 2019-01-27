@@ -16,6 +16,6 @@ class PrintRFormatter implements FormatterInterface
      */
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
-        $output->writeln(print_r($data, true));
+        $output->write(print_r($data, true));
     }
 }

@@ -74,6 +74,6 @@ class XmlFormatter implements FormatterInterface, ValidDataTypesInterface
             $dom = $schema->arrayToXML($dom);
         }
         $dom->formatOutput = true;
-        $output->writeln($dom->saveXML());
+        $output->write($dom->saveXML());
     }
 }

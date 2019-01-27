@@ -22,7 +22,7 @@ class ListFormatter implements FormatterInterface, OverrideRestructureInterface,
      */
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
-        $output->writeln(implode("\n", $data));
+        $output->write(implode("\n", $data));
     }
 
     /**

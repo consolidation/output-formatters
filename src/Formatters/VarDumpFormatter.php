@@ -33,7 +33,7 @@ class VarDumpFormatter implements FormatterInterface
             // VarDumper v2.
             $stream = fopen('php://memory', 'r+b');
             $dumper->dump($cloned_data, $stream);
-            $output->writeln(stream_get_contents($stream, -1, 0));
+            $output->write(stream_get_contents($stream, -1, 0));
             fclose($stream);
         }
     }

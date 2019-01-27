@@ -18,6 +18,7 @@
 - [\Consolidation\OutputFormatters\Formatters\StringFormatter](#class-consolidationoutputformattersformattersstringformatter)
 - [\Consolidation\OutputFormatters\Formatters\VarExportFormatter](#class-consolidationoutputformattersformattersvarexportformatter)
 - [\Consolidation\OutputFormatters\Formatters\YamlFormatter](#class-consolidationoutputformattersformattersyamlformatter)
+- [\Consolidation\OutputFormatters\Formatters\ImplicitEolInterface (interface)](#interface-consolidationoutputformattersformattersimpliciteolinterface)
 - [\Consolidation\OutputFormatters\Formatters\NoOutputFormatter](#class-consolidationoutputformattersformattersnooutputformatter)
 - [\Consolidation\OutputFormatters\Formatters\TableFormatter](#class-consolidationoutputformattersformatterstableformatter)
 - [\Consolidation\OutputFormatters\Formatters\XmlFormatter](#class-consolidationoutputformattersformattersxmlformatter)
@@ -329,6 +330,15 @@
 
 <hr />
 
+### Interface: \Consolidation\OutputFormatters\Formatters\ImplicitEolInterface
+
+> This is a marker interface that should be implemented by all formatters that always print an end-of-line character at the end of their input.
+
+| Visibility | Function |
+|:-----------|:---------|
+
+<hr />
+
 ### Class: \Consolidation\OutputFormatters\Formatters\NoOutputFormatter
 
 > No output formatter This formatter never produces any output. It is useful in cases where a command should not produce any output by default, but may do so if the user explicitly includes a --format option.
@@ -448,8 +458,10 @@
 | public | <strong>getInputOptions(</strong><em>array</em> <strong>$defaults</strong>)</strong> : <em>array</em><br /><em>Return all of the options from the provided $defaults array that exist in our InputInterface object.</em> |
 | public | <strong>getOptions()</strong> : <em>array</em><br /><em>Return a reference to the user-specified options for this request.</em> |
 | public | <strong>getXmlSchema()</strong> : <em>[\Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema](#class-consolidationoutputformattersstructureddataxmlxmlschema)</em><br /><em>Return the XmlSchema to use with --format=xml for data types that support that.  This is used when an array needs to be converted into xml.</em> |
+| public | <strong>isInteractive()</strong> : <em>bool</em><br /><em>Check to see if we are in interactive mode. If we were never given a reference to the input object, then assume not.</em> |
 | public | <strong>override(</strong><em>array</em> <strong>$configurationData</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Create a new FormatterOptions object with new configuration data (provided), and the same options data as this instance.</em> |
 | public | <strong>parsePropertyList(</strong><em>string</em> <strong>$value</strong>)</strong> : <em>array</em><br /><em>Convert from a textual list to an array</em> |
+| public | <strong>removeOption(</strong><em>mixed</em> <strong>$key</strong>)</strong> : <em>void</em><br /><em>Remove an option.</em> |
 | public | <strong>setConfigurationData(</strong><em>array</em> <strong>$configurationData</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Change the configuration data for this formatter options object.</em> |
 | public | <strong>setConfigurationDefault(</strong><em>string</em> <strong>$key</strong>, <em>mixed</em> <strong>$value</strong>)</strong> : <em>\Consolidation\OutputFormatters\Options\FormetterOptions</em><br /><em>Change one configuration value for this formatter option, but only if it does not already have a value set.</em> |
 | public | <strong>setDefaultFields(</strong><em>mixed</em> <strong>$fields</strong>)</strong> : <em>void</em> |
@@ -465,6 +477,8 @@
 | public | <strong>setRowLabels(</strong><em>mixed</em> <strong>$rowLabels</strong>)</strong> : <em>void</em> |
 | public | <strong>setTableStyle(</strong><em>mixed</em> <strong>$style</strong>)</strong> : <em>void</em> |
 | public | <strong>setWidth(</strong><em>mixed</em> <strong>$width</strong>)</strong> : <em>void</em> |
+| public | <strong>shouldAppendNewline(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>)</strong> : <em>bool</em> |
+| protected | <strong>defaultAppendEol(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>)</strong> : <em>void</em> |
 | protected | <strong>defaultsForKey(</strong><em>string</em> <strong>$key</strong>, <em>array</em> <strong>$defaults</strong>, <em>bool</em> <strong>$default=false</strong>)</strong> : <em>array</em><br /><em>Reduce provided defaults to the single item identified by '$key', if it exists, or an empty array otherwise.</em> |
 | protected | <strong>fetch(</strong><em>string</em> <strong>$key</strong>, <em>array</em> <strong>$defaults=array()</strong>, <em>bool/mixed</em> <strong>$default=false</strong>)</strong> : <em>mixed</em><br /><em>Look up a key, and return its raw value.</em> |
 | protected | <strong>fetchRawValues(</strong><em>array</em> <strong>$defaults=array()</strong>)</strong> : <em>array</em><br /><em>Look up all of the items associated with the provided defaults.</em> |

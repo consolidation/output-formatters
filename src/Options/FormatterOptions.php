@@ -2,9 +2,12 @@
 namespace Consolidation\OutputFormatters\Options;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 use Consolidation\OutputFormatters\Transformations\PropertyParser;
 use Consolidation\OutputFormatters\StructuredData\Xml\XmlSchema;
 use Consolidation\OutputFormatters\StructuredData\Xml\XmlSchemaInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * FormetterOptions holds information that affects the way a formatter
@@ -94,8 +97,6 @@ class FormatterOptions
     {
         return $this->setConfigurationValue(self::LIST_DELIMITER, $listDelimiter);
     }
-
-
 
     public function setIncludeFieldLables($includFieldLables)
     {
@@ -326,6 +327,14 @@ class FormatterOptions
     }
 
     /**
+     * Remove an option.
+     */
+    public function removeOption($key)
+    {
+        unset($this->options[$key]);
+    }
+
+    /**
      * Change one option value specified by the user for this request.
      *
      * @param string $key
@@ -382,5 +391,46 @@ class FormatterOptions
             }
         }
         return $options;
+    }
+
+    public function shouldAppendNewline(OutputInterface $output)
+    {
+        return $this->fetch('append-eol', [], $this->defaultAppendEol($output));
+    }
+
+    protected function defaultAppendEol(OutputInterface $output)
+    {
+        // If we have a reference to the input object, and we are
+        // not in interactive mode, then by default do not append an eol.
+        if ($this->input && !$this->isInteractive()) {
+            return false;
+        }
+
+        // If we are not writing to the console, then by default
+        // do not append an eol.
+        if (!$output instanceof ConsoleOutput) {
+            return false;
+        }
+
+        // If we cannot tell whether output is being redirected or not,
+        // assume that it is not.
+        if (function_exists('posix_isatty')) {
+            return true;
+        }
+
+        // If stdout is a tty, then add an EOL. Otherwise, do not.
+        return posix_isatty(STDOUT);
+    }
+
+    /**
+     * Check to see if we are in interactive mode. If we were never
+     * given a reference to the input object, then assume not.
+     */
+    public function isInteractive()
+    {
+        if (!$this->input) {
+            return false;
+        }
+        return $this->input->isInteractive();
     }
 }

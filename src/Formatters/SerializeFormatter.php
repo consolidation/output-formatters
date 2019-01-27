@@ -16,6 +16,6 @@ class SerializeFormatter implements FormatterInterface
      */
     public function write(OutputInterface $output, $data, FormatterOptions $options)
     {
-        $output->writeln(serialize($data));
+        $output->write(serialize($data));
     }
 }

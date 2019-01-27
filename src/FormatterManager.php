@@ -21,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Consolidation\OutputFormatters\StructuredData\OriginalDataInterface;
 use Consolidation\OutputFormatters\StructuredData\ListDataFromKeys;
 use Consolidation\OutputFormatters\StructuredData\ConversionInterface;
+use Consolidation\OutputFormatters\Formatters\ImplicitEolInterface;
 
 /**
  * Manage a collection of formatters; return one on request.
@@ -238,6 +239,11 @@ class FormatterManager
             $formatter->writeMetadata($output, $structuredOutput, $options);
         }
         $formatter->write($output, $restructuredOutput, $options);
+        // In interactive mode, write an extra newline after the output,
+        // but only if the formatter has not already implicitly done so.
+        if ($options->shouldAppendNewline($output) && !$formatter instanceof ImplicitEolInterface) {
+            $output->writeln();
+        }
     }
 
     protected function validateAndRestructure(FormatterInterface $formatter, $structuredOutput, FormatterOptions $options)
