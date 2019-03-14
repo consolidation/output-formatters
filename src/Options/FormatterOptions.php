@@ -99,7 +99,7 @@ class FormatterOptions
 
     public function setCsvEscapeChar($escapeChar)
     {
-        return $this->setConfigurationValue(self::CSV_ENCLOSURE, $escapeChar);
+        return $this->setConfigurationValue(self::CSV_ESCAPE_CHAR, $escapeChar);
     }
 
     public function setListDelimiter($listDelimiter)
