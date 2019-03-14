@@ -246,10 +246,10 @@
 | public | <strong>validDataTypes()</strong> : <em>void</em> |
 | public | <strong>validate(</strong><em>mixed</em> <strong>$structuredData</strong>)</strong> : <em>void</em> |
 | public | <strong>write(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Given structured data, apply appropriate formatting, and return a printable string.</em> |
-| protected | <strong>csvEscape(</strong><em>mixed</em> <strong>$data</strong>, <em>string</em> <strong>$delimiter=`','`</strong>)</strong> : <em>void</em> |
+| protected | <strong>csvEscape(</strong><em>array</em> <strong>$data</strong>, <em>string</em> <strong>$delimiter=`','`</strong>, <em>string</em> <strong>$enclosure=`'"'`</strong>, <em>string</em> <strong>$escapeChar=`'\'`</strong>)</strong> : <em>string/bool the formatted CSV string, or FALSE if the formatting failed.</em><br /><em>Generates a CSV-escaped string from an array of field data.</em> |
 | protected | <strong>getDefaultFormatterOptions()</strong> : <em>array</em><br /><em>Return default values for formatter options</em> |
 | protected | <strong>renderEachCell(</strong><em>mixed</em> <strong>$originalData</strong>, <em>mixed</em> <strong>$restructuredData</strong>, <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em> <strong>$options</strong>)</strong> : <em>void</em> |
-| protected | <strong>writeOneLine(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>mixed</em> <strong>$data</strong>, <em>mixed</em> <strong>$options</strong>)</strong> : <em>void</em> |
+| protected | <strong>writeOneLine(</strong><em>\Symfony\Component\Console\Output\OutputInterface</em> <strong>$output</strong>, <em>array</em> <strong>$data</strong>, <em>\Consolidation\OutputFormatters\Formatters\FormatterOptions</em> <strong>$options</strong>)</strong> : <em>void</em><br /><em>Writes a single a single line of formatted CSV data to the output stream.</em> |
 
 *This class implements [\Consolidation\OutputFormatters\Formatters\FormatterInterface](#interface-consolidationoutputformattersformattersformatterinterface), [\Consolidation\OutputFormatters\Validate\ValidDataTypesInterface](#interface-consolidationoutputformattersvalidatevaliddatatypesinterface), [\Consolidation\OutputFormatters\Validate\ValidationInterface](#interface-consolidationoutputformattersvalidatevalidationinterface), [\Consolidation\OutputFormatters\Formatters\RenderDataInterface](#interface-consolidationoutputformattersformattersrenderdatainterface)*
 
@@ -452,6 +452,8 @@
 | public | <strong>parsePropertyList(</strong><em>string</em> <strong>$value</strong>)</strong> : <em>array</em><br /><em>Convert from a textual list to an array</em> |
 | public | <strong>setConfigurationData(</strong><em>array</em> <strong>$configurationData</strong>)</strong> : <em>[\Consolidation\OutputFormatters\Options\FormatterOptions](#class-consolidationoutputformattersoptionsformatteroptions)</em><br /><em>Change the configuration data for this formatter options object.</em> |
 | public | <strong>setConfigurationDefault(</strong><em>string</em> <strong>$key</strong>, <em>mixed</em> <strong>$value</strong>)</strong> : <em>\Consolidation\OutputFormatters\Options\FormetterOptions</em><br /><em>Change one configuration value for this formatter option, but only if it does not already have a value set.</em> |
+| public | <strong>setCsvEnclosure(</strong><em>mixed</em> <strong>$enclosure</strong>)</strong> : <em>void</em> |
+| public | <strong>setCsvEscapeChar(</strong><em>mixed</em> <strong>$escapeChar</strong>)</strong> : <em>void</em> |
 | public | <strong>setDefaultFields(</strong><em>mixed</em> <strong>$fields</strong>)</strong> : <em>void</em> |
 | public | <strong>setDefaultStringField(</strong><em>mixed</em> <strong>$defaultStringField</strong>)</strong> : <em>void</em> |
 | public | <strong>setDelimiter(</strong><em>mixed</em> <strong>$delimiter</strong>)</strong> : <em>void</em> |

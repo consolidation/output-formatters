@@ -46,6 +46,8 @@ class FormatterOptions
     const DEFAULT_FIELDS = 'default-fields';
     const DEFAULT_STRING_FIELD = 'default-string-field';
     const DELIMITER = 'delimiter';
+    const CSV_ENCLOSURE = 'csv-enclosure';
+    const CSV_ESCAPE_CHAR = 'csv-escape-char';
     const LIST_DELIMITER = 'list-delimiter';
     const TERMINAL_WIDTH = 'width';
     const METADATA_TEMPLATE = 'metadata-template';
@@ -88,6 +90,16 @@ class FormatterOptions
     public function setDelimiter($delimiter)
     {
         return $this->setConfigurationValue(self::DELIMITER, $delimiter);
+    }
+
+    public function setCsvEnclosure($enclosure)
+    {
+        return $this->setConfigurationValue(self::CSV_ENCLOSURE, $enclosure);
+    }
+
+    public function setCsvEscapeChar($escapeChar)
+    {
+        return $this->setConfigurationValue(self::CSV_ESCAPE_CHAR, $escapeChar);
     }
 
     public function setListDelimiter($listDelimiter)
