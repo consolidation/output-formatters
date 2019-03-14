@@ -645,6 +645,53 @@ EOT;
 
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
+    public function testCsvEnclosureOption()
+    {
+        $data = [
+            'simple_field',
+            'Complex field that requires enclosure'
+        ];
+        $default_expected = 'simple_field,"Complex field that requires enclosure"';
+        $custom_expected = 'simple_field,~Complex field that requires enclosure~';
+
+        // First, ensure that the default enclosure style, double quote, is preserved
+        // as the default.
+        $this->assertFormattedOutputMatches($default_expected, 'csv', $data);
+
+        // Next, ensure that user-provided enclosure settings are respected.
+        $this->assertFormattedOutputMatches(
+            $custom_expected,
+            'csv',
+            $data,
+            new FormatterOptions(),
+            ['csv-enclosure' => '~']
+        );
+    }
+
+    public function testCsvEscapeCharOption()
+    {
+        $data = [
+            'Enclosed field with "double quotes"',
+            'Enclosed field with \"backslash-prefixed double quotes\"',
+        ];
+        $default_expected = '"Enclosed field with ""double quotes""",' .
+            '"Enclosed field with \"backslash-prefixed double quotes\""';
+        $custom_expected = '"Enclosed field with ""double quotes""",' .
+            '"Enclosed field with \""backslash-prefixed double quotes\"""';
+
+        // First, ensure that the default escape character, the double backslash, is preserved
+        // as the default.
+        $this->assertFormattedOutputMatches($default_expected, 'csv', $data);
+
+        // Next, ensure that user-provided escape character settings are respected.
+        $this->assertFormattedOutputMatches(
+            $custom_expected,
+            'csv',
+            $data,
+            new FormatterOptions(),
+            ['csv-escape-char' => "\0"]
+        );
+    }
 
     function testSimpleTsv()
     {
