@@ -670,6 +670,11 @@ EOT;
 
     public function testCsvEscapeCharOption()
     {
+        if (version_compare(PHP_VERSION, '5.5.4', '<')) {
+            $this->markTestIncomplete(
+                'The $escape_char argument for fputcsv is only supported by PHP 5.5.4 or above.'
+            );
+        }
         $data = [
             'Enclosed field with "double quotes"',
             'Enclosed field with \"backslash-prefixed double quotes\"',

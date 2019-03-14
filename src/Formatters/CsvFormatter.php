@@ -118,7 +118,11 @@ class CsvFormatter implements FormatterInterface, ValidDataTypesInterface, Rende
     protected function csvEscape($data, $delimiter = ',', $enclosure = '"', $escapeChar = "\\")
     {
         $buffer = fopen('php://temp', 'r+');
-        fputcsv($buffer, $data, $delimiter, $enclosure, $escapeChar);
+        if (version_compare(PHP_VERSION, '5.5.4', '>=')) {
+            fputcsv($buffer, $data, $delimiter, $enclosure, $escapeChar);
+        } else {
+            fputcsv($buffer, $data, $delimiter, $enclosure);
+        }
         rewind($buffer);
         $csv = fgets($buffer);
         fclose($buffer);
