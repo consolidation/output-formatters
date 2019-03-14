@@ -1,5 +1,9 @@
 # Change Log
 
+### 3.4.1 - 13 March 2019
+
+- Add enclosure and escape character options for CsvFormatter. (#79)
+
 ### 3.4.0 - 19 October 2018
 
 - Add an UnstucturedInterface marker interface, and update the 'string' format to not accept data types that implement this interface unless they also implement StringTransformationInterface.
