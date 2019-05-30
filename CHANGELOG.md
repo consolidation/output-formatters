@@ -1,5 +1,9 @@
 # Change Log
 
+### 3.5.0 - 30 May 2019
+
+- Add `@default-table-fields` to specify the fields to use with the table formatter and other "human readable" output formats.
+
 ### 3.4.1 - 13 March 2019
 
 - Add enclosure and escape character options for CsvFormatter. (#79)
