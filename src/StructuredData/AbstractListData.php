@@ -36,9 +36,16 @@ class AbstractListData extends \ArrayObject implements ListDataInterface
         if (!empty($fieldShortcut)) {
             return [$fieldShortcut];
         }
-        $result = $options->get(FormatterOptions::FIELDS, $defaults);
+        $result = $options->get(FormatterOptions::FIELDS);
         if (!empty($result)) {
             return $result;
+        }
+        $isHumanReadable = $options->get(FormatterOptions::HUMAN_READABLE);
+        if ($isHumanReadable) {
+            $result = $options->get(FormatterOptions::DEFAULT_TABLE_FIELDS);
+            if (!empty($result)) {
+                return $result;
+            }
         }
         return $options->get(FormatterOptions::DEFAULT_FIELDS, $defaults);
     }

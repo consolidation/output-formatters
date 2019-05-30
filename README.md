@@ -137,6 +137,8 @@ All of the available fields will be listed in the `help` output for the command,
 
 To include all avalable fields, use `--fields=*`.
 
+Note that using the `@default-fields` annotation will reduce the number of fields included in the output for all formats, including unstructured formats such as json and yaml. To specify a reduced set of fields to display only when using a human-readable output format (e.g. table), use the `@default-table-fields` annotation instead.
+
 #### Reordering Fields
 
 Commands that return table structured data with fields can be filtered and/or re-ordered by using the `--fields` option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array. One of `RowsOfFields`, `PropertyList` or `UnstructuredListData` (or similar) must be used.
