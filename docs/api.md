@@ -458,6 +458,7 @@
 | public | <strong>setDefaultStringField(</strong><em>mixed</em> <strong>$defaultStringField</strong>)</strong> : <em>void</em> |
 | public | <strong>setDelimiter(</strong><em>mixed</em> <strong>$delimiter</strong>)</strong> : <em>void</em> |
 | public | <strong>setFieldLabels(</strong><em>mixed</em> <strong>$fieldLabels</strong>)</strong> : <em>void</em> |
+| public | <strong>setHumanReadable(</strong><em>bool</em> <strong>$isHumanReadable=true</strong>)</strong> : <em>void</em> |
 | public | <strong>setIncludeFieldLables(</strong><em>mixed</em> <strong>$includFieldLables</strong>)</strong> : <em>void</em> |
 | public | <strong>setInput(</strong><em>\Symfony\Component\Console\Input\InputInterface</em> <strong>$input</strong>)</strong> : <em>\Consolidation\OutputFormatters\Options\type</em><br /><em>Provide a Symfony Console InputInterface containing the user-specified options for this request.</em> |
 | public | <strong>setListDelimiter(</strong><em>mixed</em> <strong>$listDelimiter</strong>)</strong> : <em>void</em> |
