@@ -21,15 +21,15 @@
     "require": {
         "php": ">=5.4.0",
         "dflydev/dot-access-data": "^1.1.0",
-        "symfony/console": "^2.8|^3|^4",
-        "symfony/finder": "^2.5|^3|^4"
+        "symfony/console": "^4",
+        "symfony/finder": "^4"
     },
     "require-dev": {
         "g1a/composer-test-scenarios": "^3",
         "php-coveralls/php-coveralls": "^1",
         "phpunit/phpunit": "^5.7.27",
         "squizlabs/php_codesniffer": "^2.7",
-        "symfony/var-dumper": "^2.8|^3|^4",
+        "symfony/var-dumper": "^4",
         "victorjonsson/markdowndocs": "^1.3"
     },
     "suggest": {
@@ -39,7 +39,7 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-            "php": "5.6.32"
+            "php": "7.1.3"
         }
     },
     "scripts": {
@@ -58,54 +58,8 @@
         ]
     },
     "extra": {
-        "scenarios": {
-            "symfony4": {
-                "require": {
-                    "symfony/console": "^4.0"
-                },
-                "require-dev": {
-                    "phpunit/phpunit": "^6"
-                },
-                "config": {
-                    "platform": {
-                        "php": "7.1.3"
-                    }
-                }
-            },
-            "symfony3": {
-                "require": {
-                    "symfony/console": "^3.4",
-                    "symfony/finder": "^3.4",
-                    "symfony/var-dumper": "^3.4"
-                },
-                "config": {
-                    "platform": {
-                        "php": "5.6.32"
-                    }
-                }
-            },
-            "symfony2": {
-                "require": {
-                    "symfony/console": "^2.8"
-                },
-                "require-dev": {
-                    "phpunit/phpunit": "^4.8.36"
-                },
-                "remove": [
-                    "php-coveralls/php-coveralls"
-                ],
-                "config": {
-                    "platform": {
-                        "php": "5.4.8"
-                    }
-                },
-                "scenario-options": {
-                    "create-lockfile": "false"
-                }
-            }
-        },
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "4.x-dev"
         }
     }
 }
