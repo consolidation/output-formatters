@@ -58,6 +58,13 @@
         ]
     },
     "extra": {
+        "scenarios": {
+            "symfony4": {
+                "require": {
+                    "symfony/console": "^4.0"
+                }
+            }
+        },
         "branch-alias": {
             "dev-master": "4.x-dev"
         }
