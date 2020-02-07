@@ -12,20 +12,13 @@ branches:
 # We can remove this once we fix the whitespace problem in the Windows tests.
 matrix:
   include:
-    - php: 7.2
+    - php: 7.4
       env: 'SCENARIO=symfony4 DEPENDENCIES=highest'
+    - php: 7.4
+    - php: 7.3
+    - php: 7.2
     - php: 7.1
-      env: 'SCENARIO=symfony4'
-    - php: 7.0.11
-      env: 'SCENARIO=symfony3 DEPENDENCIES=highest'
-    - php: 7.0.11
-      env: 'SCENARIO=symfony3'
-    - php: 5.6
-      env: 'SCENARIO=symfony3'
-    - php: 5.5
-      env: 'SCENARIO=symfony2'
-    - php: 5.4
-      env: 'SCENARIO=symfony2 DEPENDENCIES=lowest'
+      env: 'SCENARIO=symfony4 DEPENDENCIES=lowest'
 
 sudo: false
 
