@@ -29,7 +29,9 @@ class WordWrapper
      */
     public function setPaddingFromStyle(TableStyle $style)
     {
-        $verticalBorderLen = strlen(sprintf($style->getBorderFormat(), $style->getVerticalBorderChar()));
+        $borderChars = $style->getBorderChars();
+        $verticalBorderChar = $borderChars[1];
+        $verticalBorderLen = strlen(sprintf($style->getBorderFormat(), $verticalBorderChar));
         $paddingLen = strlen($style->getPaddingChar());
 
         $this->extraPaddingAtBeginningOfLine = 0;

@@ -136,9 +136,9 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         // style, except it maintains the colored headers used in 'default'.
         $consolidationStyle = new TableStyle();
         $consolidationStyle
-            ->setHorizontalBorderChar('-')
-            ->setVerticalBorderChar(' ')
-            ->setCrossingChar(' ')
+            ->setHorizontalBorderChars('-')
+            ->setVerticalBorderChars(' ')
+            ->setDefaultCrossingChar(' ')
         ;
         $table->setStyleDefinition('consolidation', $consolidationStyle);
     }
