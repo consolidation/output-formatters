@@ -1,5 +1,9 @@
 # Change Log
 
+### 4.1.1 - 27 May 2020
+
+- Fix Symfony 5 bugs. (#85)
+
 ### 4.1.0 - 6 Feb 2020
 
 - Test with PHP 7.4.
