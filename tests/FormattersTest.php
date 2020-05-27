@@ -37,7 +37,7 @@ class FormattersTests extends TestCase
         $options->setOptions($userOptions);
         $output = new BufferedOutput();
         $this->formatterManager->write($output, $format, $data, $options);
-        $actual = preg_replace('#[ \t]*$#sm', '', $output->fetch());
+        $actual = preg_replace('#[ \t\r]*$#sm', '', $output->fetch());
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
 

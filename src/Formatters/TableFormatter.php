@@ -135,11 +135,20 @@ class TableFormatter implements FormatterInterface, ValidDataTypesInterface, Ren
         // The 'consolidation' style is the same as the 'symfony-style-guide'
         // style, except it maintains the colored headers used in 'default'.
         $consolidationStyle = new TableStyle();
-        $consolidationStyle
-            ->setHorizontalBorderChar('-')
-            ->setVerticalBorderChar(' ')
-            ->setCrossingChar(' ')
-        ;
+
+        if (method_exists($consolidationStyle, 'setHorizontalBorderChars')) {
+            $consolidationStyle
+                ->setHorizontalBorderChars('-')
+                ->setVerticalBorderChars(' ')
+                ->setDefaultCrossingChar(' ')
+            ;
+        } else {
+            $consolidationStyle
+                ->setHorizontalBorderChar('-')
+                ->setVerticalBorderChar(' ')
+                ->setCrossingChar(' ')
+            ;
+        }
         $table->setStyleDefinition('consolidation', $consolidationStyle);
     }
 }

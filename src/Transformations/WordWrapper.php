@@ -29,7 +29,27 @@ class WordWrapper
      */
     public function setPaddingFromStyle(TableStyle $style)
     {
+        if (method_exists($style, 'getBorderChars')) {
+            return $this->setPaddingFromSymfony5Style($style);
+        }
+
         $verticalBorderLen = strlen(sprintf($style->getBorderFormat(), $style->getVerticalBorderChar()));
+        $paddingLen = strlen($style->getPaddingChar());
+
+        $this->extraPaddingAtBeginningOfLine = 0;
+        $this->extraPaddingAtEndOfLine = $verticalBorderLen;
+        $this->paddingInEachCell = $verticalBorderLen + $paddingLen + 1;
+    }
+
+    /**
+     * Calculate our padding widths from the specified table style.
+     * @param TableStyle $style
+     */
+    public function setPaddingFromSymfony5Style(TableStyle $style)
+    {
+        $borderChars = $style->getBorderChars();
+        $verticalBorderChar = $borderChars[1];
+        $verticalBorderLen = strlen(sprintf($style->getBorderFormat(), $verticalBorderChar));
         $paddingLen = strlen($style->getPaddingChar());
 
         $this->extraPaddingAtBeginningOfLine = 0;
