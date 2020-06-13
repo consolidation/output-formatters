@@ -2,9 +2,9 @@ language: php
 dist: trusty
 
 branches:
-  # Only test the master branch and SemVer tags.
+  # Only test the main branch and SemVer tags.
   only:
-    - master
+    - main
     - /^[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+.*$/
 
 # Note: we explicitly use a 'symfony 3' scenario here because we
