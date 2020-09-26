@@ -12,7 +12,7 @@ Apply transformations to structured data to write output in different formats.
 
 Formatters are used to allow simple commandline tool commands to be implemented in a manner that is completely independent from the Symfony Console output interfaces.  A command receives its input via its method parameters, and returns its result as structured data (e.g. a php standard object or array).  The structured data is then formatted by a formatter, and the result is printed.
 
-This process is managed by the [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) project.
+This process is managed by the [Consolidation/AnnotatedCommand](https://github.com/consolidation/annotated-command) project.
 
 ## Library Usage
 
@@ -285,7 +285,7 @@ use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 
 ## API Usage
 
-It is recommended to use [Consolidation/AnnotationCommand](https://github.com/consolidation/annotation-command) to manage commands and formatters.  See the [AnnotationCommand API Usage](https://github.com/consolidation/annotation-command#api-usage) for details.
+It is recommended to use [Consolidation/AnnotatedCommand](https://github.com/consolidation/annotated-command) to manage commands and formatters.  See the [AnnotatedCommand API Usage](https://github.com/consolidation/annotated-command#api-usage) for details.
 
 The FormatterManager may also be used directly, if desired:
 ```php
