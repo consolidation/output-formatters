@@ -22,7 +22,7 @@
         "php": ">=5.4.0",
         "dflydev/dot-access-data": "^1.1.0",
         "symfony/console": "^2.8|^3|^4",
-        "symfony/finder": "^2.5|^3|^4"
+        "symfony/finder": "^2.5|^3|^4|^5"
     },
     "require-dev": {
         "g1a/composer-test-scenarios": "^3",
@@ -59,6 +59,16 @@
     },
     "extra": {
         "scenarios": {
+            "finder5": {
+                "require": {
+                    "symfony/finder": "^5"
+                },
+                "config": {
+                    "platform": {
+                        "php": "7.2.5"
+                    }
+                }                
+            },
             "symfony4": {
                 "require": {
                     "symfony/console": "^4.0"

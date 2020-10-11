@@ -12,11 +12,9 @@ class APIDocsTest extends TestCase
 {
     function testAPIDocs()
     {
-        if (getenv('CI')) {
-            $this->markTestIncomplete(
-                'API generation has slight variations when run on CI server. This test is therefore skipped on CI until we can make the test results consistent.'
-            );
-        }
+        $this->markTestIncomplete(
+            'API docs not maintained on this branch any longer.'
+        );
 
         $testDocs = tempnam(sys_get_temp_dir(), 'TestAPIDocs.md');
         $currentDocs = getcwd() . '/docs/api.md';
