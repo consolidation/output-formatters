@@ -5,6 +5,7 @@ branches:
   # Only test the master branch and SemVer tags.
   only:
     - master
+    - 3.x
     - /^[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+.*$/
 
 # Note: we explicitly use a 'symfony 3' scenario here because we
@@ -12,6 +13,8 @@ branches:
 # We can remove this once we fix the whitespace problem in the Windows tests.
 matrix:
   include:
+    - php: 7.2
+      env: 'SCENARIO=finder5'
     - php: 7.2
       env: 'SCENARIO=symfony4 DEPENDENCIES=highest'
     - php: 7.1
