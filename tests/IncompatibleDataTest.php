@@ -10,7 +10,7 @@ class IncompatibleDataTests extends TestCase
 {
     protected $formatterManager;
 
-    function setup() {
+    function setup(): void {
         $this->formatterManager = new FormatterManager();
     }
 
@@ -30,34 +30,31 @@ class IncompatibleDataTests extends TestCase
         $this->assertIncompatibleDataMessage('Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be either an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields or an instance of Consolidation\OutputFormatters\StructuredData\PropertyList. Instead, an instance of Consolidation\OutputFormatters\StructuredData\PropertyList was provided.', $tableFormatter, new PropertyList([]));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Undescribable data error: NULL
-     */
     public function testUndescribableData()
     {
+        $this->expectException('\Exception');
+        $this->expectExceptionMessage("Undescribable data error: NULL");
+
         $tableFormatter = $this->formatterManager->getFormatter('table');
         $data = $tableFormatter->validate(null);
         $this->assertEquals('Will throw before comparing.', $data);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be either an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields or an instance of Consolidation\OutputFormatters\StructuredData\PropertyList. Instead, a string was provided.
-     */
     public function testInvalidTableData()
     {
+        $this->expectException('\Exception');
+        $this->expectExceptionMessage("Data provided to Consolidation\OutputFormatters\Formatters\TableFormatter must be either an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields or an instance of Consolidation\OutputFormatters\StructuredData\PropertyList. Instead, a string was provided.");
+
         $tableFormatter = $this->formatterManager->getFormatter('table');
         $data = $tableFormatter->validate('bad data type');
         $this->assertEquals('Will throw before comparing.', $data);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\SectionsFormatter must be an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields. Instead, a string was provided.
-     */
     public function testInvalidSectionsData()
     {
+        $this->expectException('\Exception');
+        $this->expectExceptionMessage("Data provided to Consolidation\OutputFormatters\Formatters\SectionsFormatter must be an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields. Instead, a string was provided.");
+
         $tableFormatter = $this->formatterManager->getFormatter('sections');
         $data = $tableFormatter->validate('bad data type');
         $this->assertEquals('Will throw before comparing.', $data);

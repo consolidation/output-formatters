@@ -10,7 +10,7 @@ class ValidFormatsTest extends TestCase
 {
     protected $formatterManager;
 
-    function setup() {
+    function setup(): void {
         $this->formatterManager = new FormatterManager();
         $this->formatterManager->addDefaultFormatters();
         $this->formatterManager->addDefaultSimplifiers();
