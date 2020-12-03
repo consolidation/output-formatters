@@ -8,7 +8,7 @@ on:
 name: CI
 
 env:
-  EXAMPLE: "foo"
+  PHP_EXTENSIONS: "foo"
 
 jobs:
   coding-guidelines:
@@ -53,8 +53,8 @@ jobs:
           coverage: none
           extensions: intl
 
-      - name: Run roave/backward-compatibility-check
-        run: ./tools/roave-backward-compatibility-check --from=4.0.0
+#      - name: Run roave/backward-compatibility-check
+#        run: roave-backward-compatibility-check --from=4.0.0
 
   tests:
     name: Tests
@@ -68,19 +68,20 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
+#          - windows-latest
 
         php-version:
           - "7.3"
-          - "7.4"
-          - "8.0"
+#          - "7.4"
+#          - "8.0"
 
         php-ini-values:
           - assert.exception=1, zend.assertions=1
 
         dependencies:
-          - lowest
-          - highest
+#          - lowest
+          - locked
+#          - highest
 
         include:
           - os: ubuntu-latest
@@ -105,11 +106,11 @@ jobs:
 
       - name: Determine composer cache directory on Linux
         if: matrix.os == 'ubuntu-latest'
-        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(./tools/composer config cache-dir)"
+        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
 
       - name: Determine composer cache directory on Windows
         if: matrix.os == 'windows-latest'
-        run: ECHO "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
+        run: ECHO "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" >> $GITHUB_ENV
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v1
@@ -120,11 +121,11 @@ jobs:
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+        run: composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: composer unit
