@@ -7,25 +7,12 @@ on:
 
 name: CI
 
-jobs:
-  
-  preconditions:
-    # continue-on-error: true # Uncomment once integration is finished
-    runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          github_token: ${{ github.token }}
-          paths_ignore: '["**/README.md", "**/CONTRIBUTING.md", "**/CHANGELOG.md"]'
+env:
+  PHP_EXTENSIONS: "foo"
 
+jobs:
   coding-guidelines:
     name: Coding Guidelines
-    needs: preconditions
-    if: ${{ needs.preconditions.outputs.should_skip != 'true' }}
 
     runs-on: ubuntu-latest
 
@@ -50,8 +37,6 @@ jobs:
 
   backward-compatibility:
     name: Backward Compatibility
-    needs: preconditions
-    if: ${{ needs.preconditions.outputs.should_skip != 'true' }}
 
     runs-on: ubuntu-latest
 
@@ -76,8 +61,6 @@ jobs:
 
   tests:
     name: Tests
-    needs: preconditions
-    if: ${{ needs.preconditions.outputs.should_skip != 'true' }}
 
     runs-on: ${{ matrix.os }}
 
@@ -98,11 +81,11 @@ jobs:
 
         include:
           - os: ubuntu-latest
-            php-version: ${{ matrix.php-version }}
+            php-version: "8.0"
             php-ini-values: assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit_buffer_size=4096M, opcache.jit=1205
 
           - os: windows-latest
-            php-version: ${{ matrix.php-version }}
+            php-version: "8.0"
             php-ini-values: assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit_buffer_size=4096M, opcache.jit=1205
 
     steps:
@@ -135,9 +118,6 @@ jobs:
 
       - name: Install dependencies 
         run: composer install --no-ansi --no-interaction --no-progress
-
-      - name: Ensure we get the right version of phpunit 
-        run: composer update phpunit/phpunit --no-ansi --no-interaction --no-progress --with-all-dependencies
 
       - name: Run tests with phpunit
         run: composer unit
