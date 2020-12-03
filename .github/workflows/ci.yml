@@ -71,20 +71,13 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-#          - windows-latest
+          - windows-latest
 
         php-version:
-          - "7.3"
-#          - "7.4"
-#          - "8.0"
+          - "8.0"
 
         php-ini-values:
           - assert.exception=1, zend.assertions=1
-
-        dependencies:
-#          - lowest
-          - locked
-#          - highest
 
         include:
           - os: ubuntu-latest
@@ -122,17 +115,9 @@ jobs:
           key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
-      - name: Install lowest dependencies with composer
-        if: matrix.dependencies == 'lowest'
-        run: composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
-      - name: Install locked dependencies with composer
-        if: matrix.dependencies == 'locked'
+      - name: Install dependencies 
         run: composer install --no-ansi --no-interaction --no-progress
-
-      - name: Install highest dependencies with composer
-        if: matrix.dependencies == 'highest'
-        run: composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: composer unit
