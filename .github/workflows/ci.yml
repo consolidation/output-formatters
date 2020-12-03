@@ -4,8 +4,6 @@
 on:
   - pull_request
   - push
-    branches:
-      - master
 
 name: CI
 
@@ -119,6 +117,9 @@ jobs:
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
       - name: Install dependencies 
+        run: composer install --no-ansi --no-interaction --no-progress
+
+      - name: Update phpunit 
         run: composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
