@@ -26,6 +26,9 @@ jobs:
           php-version: 7.4
           coverage: none
 
+      - name: Install dependencies
+        run: composer install --no-ansi --no-interaction --no-progress
+
       - name: Run phpcs
         run: composer cs
 
@@ -122,6 +125,10 @@ jobs:
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
         run: composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install locked dependencies with composer
+        if: matrix.dependencies == 'locked'
+        run: composer install --no-ansi --no-interaction --no-progress
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
