@@ -126,8 +126,5 @@ jobs:
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress
 
-      - name: Update phpunit
-        run: composer update phpunit/phpunit --no-ansi --no-interaction --no-progress
-
       - name: Run tests with phpunit
         run: composer unit
