@@ -85,6 +85,9 @@ jobs:
         php-ini-values:
           - assert.exception=1, zend.assertions=1
 
+        dependencies:
+          -locked
+
         include:
           - os: ubuntu-latest
             php-version: "8.0"
@@ -119,6 +122,7 @@ jobs:
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
       - name: Install dependencies
+        if: matrix.dependencies == 'locked'
         run: composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
