@@ -122,8 +122,15 @@ jobs:
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
       - name: Install dependencies
-        if: matrix.dependencies == 'locked'
         run: composer install --no-ansi --no-interaction --no-progress
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: composer unit
