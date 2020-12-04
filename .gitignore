@@ -7,3 +7,4 @@ main.php
 .phpunit.result.cache
 config.json
 auth.json
+tools

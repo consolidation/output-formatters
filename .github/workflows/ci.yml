@@ -60,8 +60,13 @@ jobs:
           coverage: none
           extensions: intl
 
-#      - name: Run roave/backward-compatibility-check
-#        run: roave-backward-compatibility-check --from=4.0.0
+      - name: Install roave/backward-compatibility-check
+      - run: |
+          mkdir -p tools
+          composer --working-dir=tools require roave/backward-compatibility-check:^5
+
+      - name: Run roave/backward-compatibility-check
+        run: ./tools/vendor/bin/roave-backward-compatibility-check --from=4.0.0
 
   tests:
     name: Tests
@@ -117,10 +122,10 @@ jobs:
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
-      - name: Install dependencies 
+      - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress
 
-      - name: Update phpunit 
+      - name: Update phpunit
         run: composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
