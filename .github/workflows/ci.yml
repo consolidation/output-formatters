@@ -75,6 +75,16 @@ jobs:
 
     strategy:
       matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+        php-version:
+          - "7.4"
+
+        dependencies:
+          -locked
+
         php-ini-values:
           - assert.exception=1, zend.assertions=1
 
@@ -85,19 +95,10 @@ jobs:
 
           - os: ubuntu-latest
             php-version: "7.4"
-            dependencies: locked
-
-          - os: ubuntu-latest
-            php-version: "7.4"
-            dependencies: highest
-
-          - os: windows-latest
-            php-version: "7.4"
             dependencies: highest
 
           - os: ubuntu-latest
             php-version: "8.0"
-            dependencied: locked
             php-ini-values: assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit_buffer_size=4096M, opcache.jit=1205
 
     steps:
@@ -128,24 +129,22 @@ jobs:
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
+      - name: Clear platform php configuration
+        run: composer config --unset platform.php
+
       - name: Install lowest dependencies
         if: matrix.dependencies == 'lowest'
-        run: |
-          composer config --unset platform.php
-          composer update --no-ansi --no-interaction --no-progress --prefer-lowest --no-scripts
+        run: composer update --no-ansi --no-interaction --no-progress --prefer-lowest --no-scripts
 
       - name: Install locked dependencies
         if: matrix.dependencies == 'locked'
         run: |
           composer install --no-ansi --no-interaction --no-progress
-          composer config --unset platform.php
           composer update phpunit/phpunit --no-ansi --no-interaction --no-progress --no-scripts
 
       - name: Install highest dependencies
         if: matrix.dependencies == 'highest'
-        run: |
-          composer config --unset platform.php
-          composer update --no-ansi --no-interaction --no-progress --no-scripts
+        run: composer update --no-ansi --no-interaction --no-progress --no-scripts
 
       - name: Run tests with phpunit
         run: composer unit
