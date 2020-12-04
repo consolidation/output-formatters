@@ -94,12 +94,6 @@ jobs:
             dependencies: lowest
 
           - os: ubuntu-latest
-            php-version: "7.2"
-
-          - os: ubuntu-latest
-            php-version: "7.3"
-
-          - os: ubuntu-latest
             php-version: "7.4"
             dependencies: highest
 
@@ -139,20 +133,20 @@ jobs:
         if: matrix.dependencies == 'lowest'
         run: |
           composer config --unset platform.php
-          composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+          composer update --no-ansi --no-interaction --no-progress --prefer-lowest --no-scripts
 
       - name: Install locked dependencies
-        if: matrix.dependencies == 'highest'
+        if: matrix.dependencies == 'locked'
         run: |
           composer install --no-ansi --no-interaction --no-progress
           composer config --unset platform.php
-          composer update phpunit/phpunit --no-ansi --no-interaction --no-progress
+          composer update phpunit/phpunit --no-ansi --no-interaction --no-progress --no-scripts
 
       - name: Install highest dependencies
         if: matrix.dependencies == 'highest'
         run: |
           composer config --unset platform.php
-          composer update --no-ansi --no-interaction --no-progress
+          composer update --no-ansi --no-interaction --no-progress --no-scripts
 
       - name: Run tests with phpunit
         run: composer unit
