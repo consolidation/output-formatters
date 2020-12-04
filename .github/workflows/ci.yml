@@ -64,7 +64,7 @@ jobs:
         run: mkdir -p tools
 
       - name: Install roave/backward-compatibility-check
-      - run: composer --working-dir=tools require roave/backward-compatibility-check:^5
+        run: composer --working-dir=tools require roave/backward-compatibility-check:^5
 
       - name: Run roave/backward-compatibility-check
         run: ./tools/vendor/bin/roave-backward-compatibility-check --from=4.0.0
@@ -127,7 +127,7 @@ jobs:
         run: composer install --no-ansi --no-interaction --no-progress
 
       - name: Update phpunit
-        run: composer install --no-ansi --no-interaction --no-progress
+        run: composer update phpunit/phpunit --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: composer unit
