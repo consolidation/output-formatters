@@ -11,9 +11,6 @@ on:
 
 name: CI
 
-env:
-  PHP_EXTENSIONS: "foo"
-
 jobs:
   coding-guidelines:
     name: Coding Guidelines
