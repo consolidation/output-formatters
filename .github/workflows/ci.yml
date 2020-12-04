@@ -129,6 +129,9 @@ jobs:
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
+      - name: Clear platform php configuration
+        run: composer config --unset platform.php
+
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress
 
@@ -138,7 +141,7 @@ jobs:
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: composer unit
