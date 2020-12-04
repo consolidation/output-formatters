@@ -86,7 +86,7 @@ jobs:
           - assert.exception=1, zend.assertions=1
 
         dependencies:
-          -locked
+          - locked
 
         include:
           - os: ubuntu-latest
