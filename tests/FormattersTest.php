@@ -26,7 +26,7 @@ class FormattersTests extends TestCase
 {
     protected $formatterManager;
 
-    function setup() {
+    function setup(): void {
         $this->formatterManager = new FormatterManager();
     }
 
@@ -37,6 +37,7 @@ class FormattersTests extends TestCase
         $options->setOptions($userOptions);
         $output = new BufferedOutput();
         $this->formatterManager->write($output, $format, $data, $options);
+        $expected = preg_replace('#[ \t\r]*$#sm', '', $expected);
         $actual = preg_replace('#[ \t\r]*$#sm', '', $output->fetch());
         $this->assertEquals(rtrim($expected), rtrim($actual));
     }
@@ -495,33 +496,30 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'list', $data);
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\UnknownFormatException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage The requested format, 'no-such-format', is not available.
-     */
     function testBadFormat()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\UnknownFormatException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("The requested format, 'no-such-format', is not available.");
+
         $this->assertFormattedOutputMatches('Will fail, not return', 'no-such-format', ['a' => 'b']);
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\CsvFormatter must be one of an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields, an instance of Consolidation\OutputFormatters\StructuredData\PropertyList or an array. Instead, a string was provided.
-     */
     function testBadDataTypeForCsv()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\IncompatibleDataException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("Data provided to Consolidation\OutputFormatters\Formatters\CsvFormatter must be one of an instance of Consolidation\OutputFormatters\StructuredData\RowsOfFields, an instance of Consolidation\OutputFormatters\StructuredData\PropertyList or an array. Instead, a string was provided.");
+
         $this->assertFormattedOutputMatches('Will fail, not return', 'csv', 'String cannot be converted to csv');
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\IncompatibleDataException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\JsonFormatter must be an array. Instead, a string was provided.
-     */
     function testBadDataTypeForJson()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\IncompatibleDataException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("Data provided to Consolidation\OutputFormatters\Formatters\JsonFormatter must be an array. Instead, a string was provided.");
+
         $this->assertFormattedOutputMatches('Will fail, not return', 'json', 'String cannot be converted to json');
     }
 
@@ -1001,24 +999,22 @@ EOT;
         return new RowsOfFields($data);
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml
-     */
     function testIncompatibleDataForTableFormatter()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\InvalidFormatException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml");
+
         $data = $this->simpleTableExampleData()->getArrayCopy();
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data);
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml
-     */
     function testIncompatibleDataForSectionsFormatter()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\InvalidFormatException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("The format sections cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml");
+
         $data = $this->simpleTableExampleData()->getArrayCopy();
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'sections', $data);
     }
@@ -1429,13 +1425,12 @@ EOT;
         $this->assertFormattedOutputMatches('[]', 'json', new RowsOfFields([]), $configurationData, ['field' => 'San']);
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\UnknownFieldException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage The requested field, 'Shi', is not defined.
-     */
     function testNoSuchFieldException()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\UnknownFieldException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("The requested field, 'Shi', is not defined.");
+
         $configurationData = new FormatterOptions(
             [
                 'field-labels' => ['one' => 'Ichi', 'two' => 'Ni', 'three' => 'San'],
@@ -1467,13 +1462,12 @@ EOT;
         return new AssociativeList($data);
     }
 
-    /**
-     * @expectedException \Consolidation\OutputFormatters\Exception\InvalidFormatException
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml
-     */
     function testIncompatibleListDataForTableFormatter()
     {
+        $this->expectException('\Consolidation\OutputFormatters\Exception\InvalidFormatException');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("The format table cannot be used with the data produced by this command, which was an array.  Valid formats are: csv,json,list,null,php,print-r,string,tsv,var_dump,var_export,xml,yaml");
+
         $data = $this->simpleListExampleData();
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
     }
@@ -1919,13 +1913,12 @@ EOT;
         $this->assertFormattedOutputMatches($expectedXml, 'xml', $expectedJsonAsArray);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionCode 1
-     * @expectedExceptionMessage Data provided to Consolidation\OutputFormatters\Formatters\XmlFormatter must be either an instance of DOMDocument or an array. Instead, a string was provided.
-     */
     function testDataTypeForXmlFormatter()
     {
+        $this->expectException('\Exception');
+        $this->expectExceptionCode(1);
+        $this->expectExceptionMessage("Data provided to Consolidation\OutputFormatters\Formatters\XmlFormatter must be either an instance of DOMDocument or an array. Instead, a string was provided.");
+
         $this->assertFormattedOutputMatches('Will fail, not return', 'xml', 'Strings cannot be converted to XML');
     }
 }
