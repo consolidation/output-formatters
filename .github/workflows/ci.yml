@@ -80,9 +80,6 @@ jobs:
         php-version:
           - "8.0"
 
-        php-ini-values:
-          - assert.exception=1, zend.assertions=1
-
         include:
           - os: ubuntu-latest
             php-version: "8.0"
