@@ -60,10 +60,11 @@ jobs:
           coverage: none
           extensions: intl
 
+      - name: Make tools directory
+        run: mkdir -p tools
+
       - name: Install roave/backward-compatibility-check
-      - run: |
-          mkdir -p tools
-          composer --working-dir=tools require roave/backward-compatibility-check:^5
+      - run: composer --working-dir=tools require roave/backward-compatibility-check:^5
 
       - name: Run roave/backward-compatibility-check
         run: ./tools/vendor/bin/roave-backward-compatibility-check --from=4.0.0
