@@ -110,7 +110,7 @@ jobs:
 
       - name: Determine composer cache directory on Windows
         if: matrix.os == 'windows-latest'
-        run: ECHO "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" >> $GITHUB_ENV
+        run: Add-Content -Path $ENV:GITHUB_ENV -Value "COMPOSER_CACHE_DIR=~\AppData\Local\Composer"
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v1
@@ -128,4 +128,3 @@ jobs:
 
       - name: Run tests with phpunit
         run: composer unit
-
