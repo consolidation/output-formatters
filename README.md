@@ -2,11 +2,11 @@
 
 Apply transformations to structured data to write output in different formats.
 
-[![Travis CI](https://travis-ci.org/consolidation/output-formatters.svg?branch=main)](https://travis-ci.org/consolidation/output-formatters)
-[![Windows CI](https://ci.appveyor.com/api/projects/status/umyfuujca6d2g2k6?svg=true)](https://ci.appveyor.com/project/greg-1-anderson/output-formatters)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/consolidation/output-formatters/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/consolidation/output-formatters/?branch=main)
-[![Coverage Status](https://coveralls.io/repos/github/consolidation/output-formatters/badge.svg?branch=main)](https://coveralls.io/github/consolidation/output-formatters?branch=main)
-[![License](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
+[![ci](https://github.com/consolidation/output-formatters/workflows/CI/badge.svg)](https://travis-ci.org/consolidation/output-formatters)
+[![scrutinizer](https://scrutinizer-ci.com/g/consolidation/output-formatters/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/consolidation/output-formatters/?branch=master)
+[![codecov](https://codecov.io/gh/consolidation/output-formatters/branch/main/graph/badge.svg?token=CAaB7ofhxx)](https://codecov.io/gh/consolidation/output-formatters)
+[![license](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
+
 
 ## Motivation
 

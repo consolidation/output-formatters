@@ -150,3 +150,7 @@ jobs:
 
       - name: Run tests with phpunit
         run: composer unit
+      
+      - name: Publish code coverage to Codecov
+        if: matrix.php-version == '8.0'
+        run: bash <(curl -s https://codecov.io/bash)
