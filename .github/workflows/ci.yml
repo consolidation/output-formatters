@@ -130,8 +130,13 @@ jobs:
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
+      - name: Make sure composer.json is valid before we start modifyig it
+        run: composer validate
+        
       - name: Clear platform php configuration in case we need to update phpunit
-        run: composer config --unset platform.php
+        run: |
+          composer config --unset platform.php
+          composer update --lock
 
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress
