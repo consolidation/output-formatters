@@ -134,16 +134,13 @@ jobs:
         run: composer validate
         
       - name: Clear platform php configuration in case we need to update phpunit
-        run: |
-          composer config --unset platform.php
-          composer update --lock
-
-      - name: Install dependencies
-        run: composer install --no-ansi --no-interaction --no-progress
+        run: composer config --unset platform.php
 
       - name: Update phpunit if dependencies are locked in case phpunit version in lock file is not compatible
         if: matrix.dependencies == 'locked'
-        run: composer update --no-ansi --no-interaction --no-progress phpunit/phpunit --with-all-dependencies
+        run: |
+          composer install --no-ansi --no-interaction --no-progress
+          composer update --no-ansi --no-interaction --no-progress phpunit/phpunit --with-all-dependencies
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
