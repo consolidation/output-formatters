@@ -1,5 +1,9 @@
 # Change Log
 
+### 4.1.2 - 10 Dec 2020
+
+- PHP 8
+
 ### 4.1.1 - 27 May 2020
 
 - Fix Symfony 5 bugs. (#85)
