@@ -11,11 +11,6 @@ class RowsOfFieldsWithMetadata extends RowsOfFields implements MetadataInterface
 {
     use MetadataHolderTrait;
 
-    public function __constructor($data)
-    {
-        parent::__construct($data);
-    }
-
     /**
      * Restructure this data for output by converting it into a table
      * transformation object. First, though, remove any metadata items.
