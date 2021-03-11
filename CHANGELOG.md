@@ -1,5 +1,9 @@
 # Change Log
 
+### 4.1.3 - 11 Mar 2021
+
+- No significant code changes, but removal of a method with a typo caused a b/c check failure.
+
 ### 4.1.2 - 10 Dec 2020
 
 - PHP 8
