@@ -85,7 +85,7 @@ Most formatters will operate on any array or ArrayObject data. Some formatters r
 - `RowsOfFieldsWithMetadata`: Equivalent to `RowsOfFields`, but allows for metadata to be attached to the result. The metadata is not displayed in table format, but is evident if the data is converted to another format (e.g. `yaml` or `json`). The table data may either be nested inside of a specially-designated element, with other elements being used as metadata, or, alternately, the metadata may be nested inside of an element, with all other elements being used as data.
 - `PropertyList`: Each row contains a field:value pair. Each field is unique. This format is ideal for displaying in a table, with labels in the first column and values in the second common.
 - `UnstructuredListData`: The result is assumed to be a list of items, with the key of each row being used as the row id. The data elements may contain any sort of array data. The elements on each row do not need to be uniform, and the data may be nested to arbitrary depths.
-- `UnstruturedData`: The result is an unstructured array nested to arbitrary levels.
+- `UnstructuredData`: The result is an unstructured array nested to arbitrary levels.
 - `DOMDocument`: The standard PHP DOM document class may be used by functions that need to be able to presicely specify the exact attributes and children when the XML output format is used.
 - `ListDataFromKeys`: This data structure is deprecated. Use `UnstructuredListData` instead.
 
