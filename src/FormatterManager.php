@@ -136,7 +136,7 @@ class FormatterManager
         }
 
         if (isset($automaticOptions[FormatterOptions::FIELDS])) {
-            $automaticOptions[FormatterOptions::FIELD] = new InputOption(FormatterOptions::FIELD, '', InputOption::VALUE_REQUIRED, "Select just one field, and force format to 'string'.", '');
+            $automaticOptions[FormatterOptions::FIELD] = new InputOption(FormatterOptions::FIELD, '', InputOption::VALUE_REQUIRED, "Select just one field, and force format to *string*.", '');
         }
 
         return $automaticOptions;
