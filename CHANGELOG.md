@@ -1,5 +1,9 @@
 # Change Log
 
+### 4.2.1 - 29 Dec 2021
+
+- PHP 8.1
+
 ### 4.2.0 - 27 Dec 2021
 
 - Symfony 6 support
