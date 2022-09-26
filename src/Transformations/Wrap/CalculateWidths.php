@@ -79,7 +79,7 @@ class CalculateWidths
         // word in each column.
         foreach ($rows as $rowkey => $row) {
             foreach ($row as $colkey => $cell) {
-                $value = $fn($cell);
+                $value = $fn((string) $cell);
                 if ((!isset($widths[$colkey]) || ($widths[$colkey] < $value))) {
                     $widths[$colkey] = $value;
                 }
