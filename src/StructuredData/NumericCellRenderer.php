@@ -65,7 +65,7 @@ class NumericCellRenderer implements RenderCellInterface, FormatterAwareInterfac
      */
     protected function justifyCellData($key, $cellData)
     {
-        return str_pad($cellData, $this->columnWidth($key), " ", STR_PAD_LEFT);
+        return str_pad((string) $cellData, $this->columnWidth($key), " ", STR_PAD_LEFT);
     }
 
     /**
