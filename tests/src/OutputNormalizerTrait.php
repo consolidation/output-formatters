@@ -15,8 +15,8 @@ trait OutputNormalizerTrait
     protected function filterForTrailingWhitespace($string)
     {
         $lines = explode(PHP_EOL, $string);
-        return join("", array_map(function ($incoming) {
+        return trim(join(" ", array_map(function ($incoming) {
             return trim($incoming, "\n\t ");
-        }, $lines));
+        }, $lines)));
     }
 }
