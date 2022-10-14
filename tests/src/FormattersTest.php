@@ -1150,10 +1150,10 @@ Name        : Rex
 Species     : dog
 Food        : kibble
 Legs        : 4
-Description : Rex is a very good dog, Brett. He likes kibble, and has four
-              legs.
+Description : Rex is a very good dog, Brett. He likes kibble, and has four legs.
+
 EOT;
-        $options->setWidth(78);
+        $options->setWidth(90);
         $options->setIncludeFieldLables(false);
         $options->setTableStyle('compact');
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
