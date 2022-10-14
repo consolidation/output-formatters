@@ -1,8 +1,8 @@
 <?php
-namespace Consolidation\OutputFormatters;
 
-use Consolidation\TestUtils\PropertyListWithCsvCells;
-use Consolidation\TestUtils\RowsOfFieldsWithAlternatives;
+namespace Consolidation\OutputFormatters\Tests;
+
+use Consolidation\OutputFormatters\FormatterManager;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\AssociativeList;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
@@ -13,24 +13,43 @@ use Consolidation\OutputFormatters\StructuredData\UnstructuredListData;
 use Consolidation\OutputFormatters\StructuredData\UnstructuredData;
 use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Output\StreamOutput;
 use PHPUnit\Framework\TestCase;
 
+/**
+ *
+ */
 class FormattersTests extends TestCase
 {
+    use OutputNormalizerTrait;
+
+    /**
+     * @var FormatterManager
+     */
     protected $formatterManager;
 
-    function setup(): void {
+    /**
+     * @setUp
+     * @return void
+     */
+    function setUp(): void
+    {
         $this->formatterManager = new FormatterManager();
     }
 
-    function assertFormattedOutputMatches($expected, $format, $data, FormatterOptions $options = null, $userOptions = []) {
+    /**
+     * @param $expected
+     * @param $format
+     * @param $data
+     * @param FormatterOptions|null $options
+     * @param $userOptions
+     * @return void
+     */
+    function assertFormattedOutputMatches($expected, $format, $data, FormatterOptions $options = null, $userOptions = [])
+    {
         if (!$options) {
             $options = new FormatterOptions();
         }
@@ -39,9 +58,16 @@ class FormattersTests extends TestCase
         $this->formatterManager->write($output, $format, $data, $options);
         $expected = preg_replace('#[ \t\r]*$#sm', '', $expected);
         $actual = preg_replace('#[ \t\r]*$#sm', '', $output->fetch());
-        $this->assertEquals(rtrim($expected), rtrim($actual));
+        $this->assertEquals(
+            $this->filterForTrailingWhitespace($expected),
+            $this->filterForTrailingWhitespace($actual)
+        );
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleYaml()
     {
         $data = [
@@ -103,6 +129,10 @@ EOT;
         $this->assertFormattedOutputMatches('', 'null', $unstructuredData);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNestedYaml()
     {
         $data = [
@@ -160,6 +190,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'yaml', $unstructuredData, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testDeepUnstructuredYaml()
     {
         $data = [
@@ -190,7 +224,10 @@ EOT;
     }
 
 
-
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleJson()
     {
         $data = [
@@ -210,6 +247,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'json', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSerializeFormat()
     {
         $data = [
@@ -223,6 +264,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'php', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNestedJson()
     {
         $data = [
@@ -266,6 +311,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'json', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimplePrintR()
     {
         $data = [
@@ -286,6 +335,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'print-r', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNestedPrintR()
     {
         $data = [
@@ -342,6 +395,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'print-r', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleVarExport()
     {
         $data = [
@@ -361,6 +418,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'var_export', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNestedVarExport()
     {
         $data = [
@@ -412,6 +473,7 @@ EOT;
 
 
     /**
+     * @test
      * @requires function \Symfony\Component\VarDumper\VarDumper::dump
      */
     public function testSimpleVarDump()
@@ -434,6 +496,7 @@ EOT;
     }
 
   /**
+   * @test
    * @requires function \Symfony\Component\VarDumper\VarDumper::dump
    */
     public function testNestedVarDump()
@@ -479,6 +542,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'var_dump', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testList()
     {
         $data = [
@@ -496,6 +563,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'list', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testBadFormat()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\UnknownFormatException');
@@ -505,6 +576,10 @@ EOT;
         $this->assertFormattedOutputMatches('Will fail, not return', 'no-such-format', ['a' => 'b']);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testBadDataTypeForCsv()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\IncompatibleDataException');
@@ -514,6 +589,10 @@ EOT;
         $this->assertFormattedOutputMatches('Will fail, not return', 'csv', 'String cannot be converted to csv');
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testBadDataTypeForJson()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\IncompatibleDataException');
@@ -523,6 +602,10 @@ EOT;
         $this->assertFormattedOutputMatches('Will fail, not return', 'json', 'String cannot be converted to json');
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNumericCellRenderer()
     {
         $data = [
@@ -532,7 +615,7 @@ EOT;
             ['place' => 'Brisbane', 'population' => 4693, 'cats-per-capita' => 3 ],
         ];
         $structuredData = (new RowsOfFields($data))->addRenderer(
-             new NumericCellRenderer($data, ['population' => 10,'cats-per-capita' => 15])
+            new NumericCellRenderer($data, ['population' => 10,'cats-per-capita' => 15])
         );
         $expected = <<<EOT
  --------------- ------------ -----------------
@@ -555,6 +638,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $structuredData);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNoFormatterSelected()
     {
         $data = 'Hello';
@@ -562,6 +649,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, '', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testRenderTableAsString()
     {
         $data = new RowsOfFields([['f1' => 'A', 'f2' => 'B', 'f3' => 'C'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
@@ -570,6 +661,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'string', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testRenderTableAsStringWithSingleField()
     {
         $data = new RowsOfFields([['f1' => 'q', 'f2' => 'r', 'f3' => 's'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
@@ -580,6 +675,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'string', $data, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testRenderTableAsStringWithSingleFieldAndUserSelectedField()
     {
         $data = new RowsOfFields([['f1' => 'q', 'f2' => 'r', 'f3' => 's'], ['f1' => 'x', 'f2' => 'y', 'f3' => 'z']]);
@@ -590,6 +689,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'string', $data, $options, ['fields' => 'f2']);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleCsv()
     {
         $data = ['a', 'b', 'c'];
@@ -598,6 +701,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testLinesOfCsv()
     {
         $data = [['a', 'b', 'c'], ['x', 'w', 'z']];
@@ -606,6 +713,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testCsvWithEscapedValues()
     {
         $data = ["Red apple", "Yellow lemon"];
@@ -614,6 +725,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testCsvWithEmbeddedSingleQuote()
     {
         $data = ["John's book", "Mary's laptop"];
@@ -624,6 +739,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testCsvWithEmbeddedDoubleQuote()
     {
         $data = ['The "best" solution'];
@@ -634,6 +753,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testCsvBothKindsOfQuotes()
     {
         $data = ["John's \"new\" book", "Mary's \"modified\" laptop"];
@@ -643,6 +766,11 @@ EOT;
 
         $this->assertFormattedOutputMatches($expected, 'csv', $data);
     }
+
+    /**
+     * @test
+     * @return void
+     */
     public function testCsvEnclosureOption()
     {
         $data = [
@@ -666,6 +794,10 @@ EOT;
         );
     }
 
+    /**
+     * @test
+     * @return void
+     */
     public function testCsvEscapeCharOption()
     {
         if (version_compare(PHP_VERSION, '5.5.4', '<')) {
@@ -696,6 +828,10 @@ EOT;
         );
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleTsv()
     {
         $data = ['a', 'b', 'c'];
@@ -704,6 +840,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'tsv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testLinesOfTsv()
     {
         $data = [['a', 'b', 'c'], ['x', 'y', 'z']];
@@ -712,6 +852,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'tsv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTsvBothKindsOfQuotes()
     {
         $data = ["John's \"new\" book", "Mary's \"modified\" laptop"];
@@ -720,6 +864,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'tsv', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTsvWithEscapedValues()
     {
         $data = ["Red apple", "Yellow lemon", "Embedded\ttab"];
@@ -728,6 +876,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'tsv', $data);
     }
 
+    /**
+     * @test
+     * @return RowsOfFields
+     */
     protected function missingCellTableExampleData()
     {
         $data = [
@@ -744,6 +896,10 @@ EOT;
         return new RowsOfFields($data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithMissingCell()
     {
         $data = $this->missingCellTableExampleData();
@@ -779,6 +935,10 @@ EOT;
         $this->assertFormattedOutputMatches($expectedTsvWithHeaders, 'tsv', $data, new FormatterOptions(), ['include-field-labels' => true]);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithWordWrapping()
     {
         $options = new FormatterOptions();
@@ -822,6 +982,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testWrappingLotsOfColumns()
     {
         $options = new FormatterOptions();
@@ -870,6 +1034,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithWordWrapping2()
     {
         $options = new FormatterOptions();
@@ -900,6 +1068,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithWordWrapping3()
     {
         $options = new FormatterOptions();
@@ -927,6 +1099,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithWordWrapping4()
     {
         $options = new FormatterOptions();
@@ -955,6 +1131,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithWordWrapping5()
     {
         $options = new FormatterOptions();
@@ -980,6 +1160,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    /**
+     * @test
+     * @return RowsOfFields
+     */
     protected function simpleTableExampleData()
     {
         $data = [
@@ -999,6 +1183,10 @@ EOT;
         return new RowsOfFields($data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testIncompatibleDataForTableFormatter()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\InvalidFormatException');
@@ -1009,6 +1197,10 @@ EOT;
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testIncompatibleDataForSectionsFormatter()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\InvalidFormatException');
@@ -1019,6 +1211,10 @@ EOT;
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'sections', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleTableWithMetadata()
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
@@ -1126,10 +1322,14 @@ EOT;
 
 
         $this->assertFormattedOutputMatches($expected, 'yaml', $rowsOfFieldsWithMetadata, new FormatterOptions(['fields' => ['three as iii', 'one as i']]));
-
-
     }
 
+    /**
+     * @param $rowsOfFieldsWithMetadata
+     * @param $data
+     * @param $metadata
+     * @return void
+     */
     function assertDataAndMetadata($rowsOfFieldsWithMetadata, $data, $metadata)
     {
         $actualData = $rowsOfFieldsWithMetadata->extractData($rowsOfFieldsWithMetadata->getArrayCopy());
@@ -1137,6 +1337,11 @@ EOT;
         $this->assertEquals($metadata, $rowsOfFieldsWithMetadata->getMetadata());
     }
 
+    /**
+     * @param $data
+     * @param $expectedHeader
+     * @return void
+     */
     function assertTableWithMetadata($data, $expectedHeader = '')
     {
         $expected = <<<EOT
@@ -1165,6 +1370,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'csv', $data, new FormatterOptions([FormatterOptions::METADATA_TEMPLATE => 'Summary: {summary}' . PHP_EOL, 'fields' => ['three', 'one']]));
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleTable()
     {
         $data = $this->simpleTableExampleData();
@@ -1219,6 +1428,9 @@ EOT;
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
     }
 
+    /**
+     * @return RowsOfFieldsWithAlternatives
+     */
     protected function tableWithAlternativesExampleData()
     {
         $data = [
@@ -1238,6 +1450,10 @@ EOT;
         return new RowsOfFieldsWithAlternatives($data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testTableWithAlternatives()
     {
         $data = $this->tableWithAlternativesExampleData();
@@ -1299,6 +1515,10 @@ EOT;
         $this->assertFormattedOutputMatches($expectedList, 'list', $data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleTableWithFieldLabels()
     {
         $data = $this->simpleTableExampleData();
@@ -1425,6 +1645,10 @@ EOT;
         $this->assertFormattedOutputMatches('[]', 'json', new RowsOfFields([]), $configurationData, ['field' => 'San']);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testNoSuchFieldException()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\UnknownFieldException');
@@ -1441,6 +1665,9 @@ EOT;
         $this->assertFormattedOutputMatches('Will throw before comparing', 'table', $data, $configurationData, ['field' => 'Shi']);
     }
 
+    /**
+     * @return PropertyList
+     */
     protected function simpleListExampleData()
     {
         $data = [
@@ -1452,6 +1679,10 @@ EOT;
     }
 
     // Test with the deprecated data structure
+
+    /**
+     * @return AssociativeList
+     */
     protected function simpleListExampleDataUsingAssociativeList()
     {
         $data = [
@@ -1462,6 +1693,10 @@ EOT;
         return new AssociativeList($data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testIncompatibleListDataForTableFormatter()
     {
         $this->expectException('\Consolidation\OutputFormatters\Exception\InvalidFormatException');
@@ -1472,6 +1707,10 @@ EOT;
         $this->assertFormattedOutputMatches('Should throw an exception before comparing the table data', 'table', $data->getArrayCopy());
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testEmptyList()
     {
         $data = new RowsOfFields([]);
@@ -1489,6 +1728,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $formatterOptionsWithFieldLables);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleList()
     {
 
@@ -1592,6 +1835,9 @@ EOT;
         $this->assertFormattedOutputMatches($expectedCsv, 'csv', $data, $options);
     }
 
+    /**
+     * @return PropertyList
+     */
     protected function associativeListWithRenderer()
     {
         $data = [
@@ -1603,8 +1849,7 @@ EOT;
         $list = new PropertyList($data);
 
         $list->addRendererFunction(
-            function ($key, $cellData, FormatterOptions $options)
-            {
+            function ($key, $cellData, FormatterOptions $options) {
                 if (is_array($cellData)) {
                     return implode(',', $cellData);
                 }
@@ -1615,6 +1860,9 @@ EOT;
         return $list;
     }
 
+    /**
+     * @return PropertyListWithCsvCells
+     */
     protected function associativeListWithCsvCells()
     {
         $data = [
@@ -1626,12 +1874,20 @@ EOT;
         return new PropertyListWithCsvCells($data);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testPropertyListWithCsvCells()
     {
         $this->doPropertyListWithCsvCells($this->associativeListWithRenderer());
         $this->doPropertyListWithCsvCells($this->associativeListWithCsvCells());
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     function doPropertyListWithCsvCells($data)
     {
         $expected = <<<EOT
@@ -1665,9 +1921,12 @@ EOT;
 apple\tbanana,plantain\tcarrot\tpeaches,pumpkin pie
 EOT;
         $this->assertFormattedOutputMatches($expectedTsv, 'tsv', $data);
-
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleListWithFieldLabels()
     {
         $data = $this->simpleListExampleData();
@@ -1704,6 +1963,10 @@ EOT;
         $this->assertFormattedOutputMatches($expectedJson, 'json', $data, $configurationData, ['fields' => ['San', 'Ichi']]);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testSimpleXml()
     {
         $data = [
@@ -1732,6 +1995,10 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'xml', $data);
     }
 
+    /**
+     * @return \DOMDocument
+     * @throws \DOMException
+     */
     function domDocumentData()
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -1749,6 +2016,13 @@ EOT;
         return $dom;
     }
 
+    /**
+     * @param $dom
+     * @param $element
+     * @param $name
+     * @param $data
+     * @return void
+     */
     function domCreateElements($dom, $element, $name, $data)
     {
         $container = $dom->createElement("{$name}s");
@@ -1760,6 +2034,10 @@ EOT;
         }
     }
 
+    /**
+     * @return \DOMDocument
+     * @throws \DOMException
+     */
     function complexDomDocumentData()
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -1790,6 +2068,10 @@ EOT;
         return $dom;
     }
 
+    /**
+     * @return array[]
+     * @throws \DOMException
+     */
     function domDocumentTestValues()
     {
 
@@ -1900,7 +2182,8 @@ EOT;
     }
 
     /**
-     *  @dataProvider domDocumentTestValues
+     * @test
+     * @dataProvider domDocumentTestValues
      */
     function testDomData($data, $expectedXml, $expectedJson)
     {
@@ -1913,6 +2196,10 @@ EOT;
         $this->assertFormattedOutputMatches($expectedXml, 'xml', $expectedJsonAsArray);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     function testDataTypeForXmlFormatter()
     {
         $this->expectException('\Exception');

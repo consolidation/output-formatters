@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Transformations\Wrap;
 
 use Symfony\Component\Console\Helper\TableStyle;

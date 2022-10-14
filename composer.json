@@ -15,7 +15,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Consolidation\\TestUtils\\": "tests/src"
+            "Consolidation\\OutputFormatters\\Tests\\": "tests/src"
         }
     },
     "require": {
@@ -44,17 +44,19 @@
     },
     "scripts": {
         "cs": [
-            "phpcs --standard=PSR2 -n src"
+            "phpcs --standard=PSR12 -n src"
         ],
         "cbf": [
-            "phpcbf --standard=PSR2 -n src"
+            "phpcbf --standard=PSR12 -n src tests/src "
         ],
         "unit": [
             "phpunit --colors=always"
         ],
         "lint": [
             "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
-            "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l"
+            "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l",
+            "@cbf",
+            "@cs"
         ],
         "clean": [
             "rm -Rf vendor composer.lock"

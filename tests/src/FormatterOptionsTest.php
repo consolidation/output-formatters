@@ -1,5 +1,6 @@
 <?php
-namespace Consolidation\OutputFormatters;
+
+namespace Consolidation\OutputFormatters\Tests;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Symfony\Component\Console\Input\StringInput;
@@ -8,8 +9,15 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use PHPUnit\Framework\TestCase;
 
+/**
+ *
+ */
 class FormatterOptionsTests extends TestCase
 {
+    /**
+     * @param $testCommandline
+     * @return StringInput
+     */
     public function createStringInput($testCommandline)
     {
         $input = new StringInput($testCommandline);
@@ -32,12 +40,22 @@ class FormatterOptionsTests extends TestCase
         return $input;
     }
 
+    /**
+     * @param FormatterOptions $options
+     * @param $defaults
+     * @return mixed
+     */
     protected function getFormat(FormatterOptions $options, $defaults = [])
     {
         return $options->get(FormatterOptions::FORMAT, [], $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, ''));
     }
 
-    public function testFormatterOptions() {
+    /**
+     * @test
+     * @return void
+     */
+    public function testFormatterOptions()
+    {
         $configurationData = [
             FormatterOptions::DEFAULT_FORMAT => 'table',
             'test' => 'one',

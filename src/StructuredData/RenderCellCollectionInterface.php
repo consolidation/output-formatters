@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\Formatters\FormatterAwareInterface;

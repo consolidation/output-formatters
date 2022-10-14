@@ -1,5 +1,6 @@
 <?php
-namespace Consolidation\TestUtils;
+
+namespace Consolidation\OutputFormatters\Tests;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;

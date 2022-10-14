@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Exception;
 
 use Consolidation\OutputFormatters\Formatters\FormatterInterface;

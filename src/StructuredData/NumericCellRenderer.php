@@ -1,8 +1,8 @@
 <?php
+
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-
 use Consolidation\OutputFormatters\Formatters\FormatterAwareInterface;
 use Consolidation\OutputFormatters\Formatters\FormatterAwareTrait;
 

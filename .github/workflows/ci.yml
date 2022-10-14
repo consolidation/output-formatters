@@ -92,6 +92,10 @@ jobs:
 
         include:
           - os: ubuntu-latest
+            php-version: "7.1"
+            dependencies: lowest
+
+          - os: ubuntu-latest
             php-version: "7.4"
             dependencies: highest
 

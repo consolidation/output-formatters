@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Transformations;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;

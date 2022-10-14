@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Formatters;
 
 trait FormatterAwareTrait

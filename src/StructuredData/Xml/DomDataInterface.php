@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\StructuredData\Xml;
 
 interface DomDataInterface
