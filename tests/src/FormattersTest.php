@@ -877,7 +877,6 @@ EOT;
     }
 
     /**
-     * @test
      * @return RowsOfFields
      */
     protected function missingCellTableExampleData()
@@ -1161,7 +1160,6 @@ EOT;
     }
 
     /**
-     * @test
      * @return RowsOfFields
      */
     protected function simpleTableExampleData()
