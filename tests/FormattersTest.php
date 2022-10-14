@@ -967,12 +967,12 @@ EOT;
         ];
         $data = new RowsOfFields($data);
         $expected = <<<EOT
- Name        : Rex
- Species     : dog
- Food        : kibble
- Legs        : 4
- Description : Rex is a very good dog, Brett. He likes kibble, and has
-               four legs.
+Name        : Rex
+Species     : dog
+Food        : kibble
+Legs        : 4
+Description : Rex is a very good dog, Brett. He likes kibble, and has four
+              legs.
 EOT;
         $options->setWidth(78);
         $options->setIncludeFieldLables(false);
@@ -1378,14 +1378,14 @@ EOT;
         $expectedSections = <<<EOT
 
 Walrus
- One   a
- Two   b
- Three c
+One   a
+Two   b
+Three c
 
 Carpenter
- One   x
- Two   w
- Three z
+One   x
+Two   w
+Three z
 EOT;
         $this->assertFormattedOutputMatches($expectedSections, 'sections', $data, $configurationData);
 
@@ -1521,9 +1521,9 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $formatterOptionsWithFieldLables);
 
         $expectedDrushStyleTable = <<<EOT
- One   : apple
- Two   : banana
- Three : carrot
+One   : apple
+Two   : banana
+Three : carrot
 EOT;
 
         // If we provide field labels, then the output will change to reflect that.
