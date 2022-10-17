@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Options;
 
 use Symfony\Component\Console\Input\InputInterface;

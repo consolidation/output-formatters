@@ -1,9 +1,9 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Formatters;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
-
 use Consolidation\OutputFormatters\Validate\ValidDataTypesInterface;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\Validate\ValidDataTypesTrait;

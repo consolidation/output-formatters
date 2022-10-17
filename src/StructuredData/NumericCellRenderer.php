@@ -1,8 +1,8 @@
 <?php
+
 namespace Consolidation\OutputFormatters\StructuredData;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-
 use Consolidation\OutputFormatters\Formatters\FormatterAwareInterface;
 use Consolidation\OutputFormatters\Formatters\FormatterAwareTrait;
 
@@ -63,9 +63,9 @@ class NumericCellRenderer implements RenderCellInterface, FormatterAwareInterfac
     /**
      * Right-justify the cell data.
      */
-    protected function justifyCellData($key, $cellData)
+    protected function justifyCellData($key, $cellData = "")
     {
-        return str_pad($cellData, $this->columnWidth($key), " ", STR_PAD_LEFT);
+        return str_pad((string) $cellData, $this->columnWidth($key), " ", STR_PAD_LEFT);
     }
 
     /**

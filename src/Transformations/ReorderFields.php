@@ -1,4 +1,5 @@
 <?php
+
 namespace Consolidation\OutputFormatters\Transformations;
 
 use Symfony\Component\Finder\Glob;

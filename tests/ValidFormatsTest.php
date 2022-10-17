@@ -1,16 +1,17 @@
 <?php
-namespace Consolidation\OutputFormatters;
 
+namespace Consolidation\OutputFormatters\Tests;
+
+use Consolidation\OutputFormatters\FormatterManager;
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
-use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use PHPUnit\Framework\TestCase;
 
 class ValidFormatsTest extends TestCase
 {
     protected $formatterManager;
 
-    function setup(): void {
+    function setup(): void
+    {
         $this->formatterManager = new FormatterManager();
         $this->formatterManager->addDefaultFormatters();
         $this->formatterManager->addDefaultSimplifiers();

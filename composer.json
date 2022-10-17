@@ -8,14 +8,14 @@
             "email": "greg.1.anderson@greenknowe.org"
         }
     ],
-    "autoload":{
-        "psr-4":{
+    "autoload": {
+        "psr-4": {
             "Consolidation\\OutputFormatters\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Consolidation\\TestUtils\\": "tests/src"
+            "Consolidation\\OutputFormatters\\Tests\\": "tests/src"
         }
     },
     "require": {
@@ -37,15 +37,32 @@
     },
     "config": {
         "optimize-autoloader": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        },
+        "allow-plugins": {
+            "ocramius/package-versions": true
+        }
     },
     "scripts": {
-        "cs": "phpcs --standard=PSR2 -n src",
-        "cbf": "phpcbf --standard=PSR2 -n src",
-        "unit": "phpunit --colors=always",
+        "cs": [
+            "phpcs --standard=PSR12 -n src"
+        ],
+        "cbf": [
+            "phpcbf --standard=PSR12 -n src tests/src "
+        ],
+        "unit": [
+            "phpunit --colors=always"
+        ],
         "lint": [
             "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
-            "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l"
+            "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l",
+            "@cbf",
+            "@cs"
+        ],
+        "clean": [
+            "rm -Rf vendor composer.lock"
         ],
         "test": [
             "@lint",
