@@ -38,6 +38,9 @@
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        },
         "allow-plugins": {
             "ocramius/package-versions": true
         }
