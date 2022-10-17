@@ -1,8 +1,12 @@
 # Change Log
 
+### 4.2.3 - 16 Oct 2022
+
+- Various PHP 8.1 compatibility fixes (warnings)
+
 ### 4.2.2 - 13 Feb 2022
 
-* Allow dflydev/dot-access-data ^2 and ^3 (#98)
+- Allow dflydev/dot-access-data ^2 and ^3 (#98)
 
 ### 4.2.1 - 29 Dec 2021
 
