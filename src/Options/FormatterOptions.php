@@ -44,6 +44,7 @@ class FormatterOptions
     const INCLUDE_FIELD_LABELS = 'include-field-labels';
     const ROW_LABELS = 'row-labels';
     const FIELD_LABELS = 'field-labels';
+    const FIELDS_CAME_FROM_DEFAULT = 'field-labels-came-from-default';
     const DEFAULT_FIELDS = 'default-fields';
     const DEFAULT_TABLE_FIELDS = 'default-table-fields';
     const DEFAULT_STRING_FIELD = 'default-string-field';

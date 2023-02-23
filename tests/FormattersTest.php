@@ -981,10 +981,8 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
-    function testTableWithHumanReadableDefaultFields()
+    private function terminusLikeFixtureData()
     {
-        $options = new FormatterOptions();
-
         $data = [
             [
                 'id' => '4d87b545-b4c3-4ece-9908-20c5c5e67e81',
@@ -1007,7 +1005,13 @@ EOT;
                 'frozen' => 'false',
             ]
         ];
-        $data = new RowsOfFields($data);
+        return new RowsOfFields($data);
+    }
+
+    function testTableWithHumanReadableDefaultFieldsWithTable()
+    {
+        $data = $this->terminusLikeFixtureData();
+        $options = new FormatterOptions();
 
         $options = new FormatterOptions([
             FormatterOptions::FIELD_LABELS => [
@@ -1033,6 +1037,12 @@ EOT;
 EOT;
 
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
+    function testTableWithHumanReadableDefaultFieldsWithCsv()
+    {
+        $data = $this->terminusLikeFixtureData();
+        $options = new FormatterOptions();
 
         $options = new FormatterOptions([
             FormatterOptions::FIELD_LABELS => [
@@ -1061,6 +1071,71 @@ EOT;
 ]
 EOT;
         $this->assertFormattedOutputMatches($expected, 'json', $data, $options);
+    }
+
+    function testTableWithHumanReadableDefaultFieldsWithTableGivenUserFields()
+    {
+        $data = $this->terminusLikeFixtureData();
+        $options = new FormatterOptions();
+
+        $options = new FormatterOptions([
+            FormatterOptions::FIELD_LABELS => [
+                'id' => 'ID',
+                'name' => 'Name',
+                'service_level' => 'Service Level',
+                'owner' => 'Owner',
+                'created' => 'Created',
+                'memberships' => 'Memberships',
+                'frozen' => 'Frozen',
+            ],
+            FormatterOptions::FIELDS => 'name',
+            FormatterOptions::DEFAULT_FIELDS => 'name,owner',
+            FormatterOptions::DEFAULT_TABLE_FIELDS => 'name,created',
+        ]);
+
+        $expected = <<<EOT
+ --------------------------------------------------
+  Name
+ --------------------------------------------------
+  123456781234567812345678123456781234567812345678
+  build-tools-136
+ --------------------------------------------------
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
+    function testTableWithHumanReadableDefaultFieldsWithTableAndFieldsFromDefault()
+    {
+        $data = $this->terminusLikeFixtureData();
+        $options = new FormatterOptions();
+
+        $options = new FormatterOptions([
+            FormatterOptions::FIELD_LABELS => [
+                'id' => 'ID',
+                'name' => 'Name',
+                'service_level' => 'Service Level',
+                'owner' => 'Owner',
+                'created' => 'Created',
+                'memberships' => 'Memberships',
+                'frozen' => 'Frozen',
+            ],
+            FormatterOptions::FIELDS => 'name',
+            FormatterOptions::FIELDS_CAME_FROM_DEFAULT => true,
+            FormatterOptions::DEFAULT_FIELDS => 'name,owner',
+            FormatterOptions::DEFAULT_TABLE_FIELDS => 'name,created',
+        ]);
+
+        $expected = <<<EOT
+ -------------------------------------------------- ---------------------
+  Name                                               Created
+ -------------------------------------------------- ---------------------
+  123456781234567812345678123456781234567812345678   2017-05-24 19:28:45
+  build-tools-136                                    2017-05-24 19:28:45
+ -------------------------------------------------- ---------------------
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
     /**
