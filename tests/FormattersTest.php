@@ -981,6 +981,88 @@ EOT;
         $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
     }
 
+    function testTableWithHumanReadableDefaultFields()
+    {
+        $options = new FormatterOptions();
+
+        $data = [
+            [
+                'id' => '4d87b545-b4c3-4ece-9908-20c5c5e67e81',
+                'name' => '123456781234567812345678123456781234567812345678',
+                'service_level' => 'business',
+                'framework' => 'wordpress-network',
+                'owner' => '8558a08d-8059-45f6-9c4b-908299a025ee',
+                'created' => '2017-05-24 19:28:45',
+                'memberships' => 'b3a42ba5-755d-42ca-9109-21bde32809d0: Team,9bfaaf50-ece3-4460-acb8-dc1b8dd536e8: pantheon-engineering-canary-sites',
+                'frozen' => 'false',
+            ],
+            [
+                'id' => '3d87b545-b4c3-4ece-9908-20c5c5e67e80',
+                'name' => 'build-tools-136',
+                'service_level' => 'free',
+                'framework' => 'drupal8',
+                'owner' => '7558a08d-8059-45f6-9c4b-908299a025ef',
+                'created' => '2017-05-24 19:28:45',
+                'memberships' => '5ae1fa30-8cc4-4894-8ca9-d50628dcba17: ci-for-drupal-8-composer',
+                'frozen' => 'false',
+            ]
+        ];
+        $data = new RowsOfFields($data);
+
+        $options = new FormatterOptions([
+            FormatterOptions::FIELD_LABELS => [
+                'id' => 'ID',
+                'name' => 'Name',
+                'service_level' => 'Service Level',
+                'owner' => 'Owner',
+                'created' => 'Created',
+                'memberships' => 'Memberships',
+                'frozen' => 'Frozen',
+            ],
+            FormatterOptions::DEFAULT_FIELDS => 'name,owner',
+            FormatterOptions::DEFAULT_TABLE_FIELDS => 'name,created',
+        ]);
+
+        $expected = <<<EOT
+ -------------------------------------------------- ---------------------
+  Name                                               Created
+ -------------------------------------------------- ---------------------
+  123456781234567812345678123456781234567812345678   2017-05-24 19:28:45
+  build-tools-136                                    2017-05-24 19:28:45
+ -------------------------------------------------- ---------------------
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+
+        $options = new FormatterOptions([
+            FormatterOptions::FIELD_LABELS => [
+                'id' => 'ID',
+                'name' => 'Name',
+                'service_level' => 'Service Level',
+                'owner' => 'Owner',
+                'created' => 'Created',
+                'memberships' => 'Memberships',
+                'frozen' => 'Frozen',
+            ],
+            FormatterOptions::DEFAULT_FIELDS => 'name,owner',
+            FormatterOptions::DEFAULT_TABLE_FIELDS => 'name,created',
+        ]);
+
+        $expected = <<<EOT
+[
+    {
+        "name": "123456781234567812345678123456781234567812345678",
+        "owner": "8558a08d-8059-45f6-9c4b-908299a025ee"
+    },
+    {
+        "name": "build-tools-136",
+        "owner": "7558a08d-8059-45f6-9c4b-908299a025ef"
+    }
+]
+EOT;
+        $this->assertFormattedOutputMatches($expected, 'json', $data, $options);
+    }
+
     /**
      * @test
      * @return void
