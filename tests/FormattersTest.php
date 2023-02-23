@@ -1050,14 +1050,14 @@ EOT;
 
         $expected = <<<EOT
 [
-{
-"name": "123456781234567812345678123456781234567812345678",
-"owner": "8558a08d-8059-45f6-9c4b-908299a025ee"
-},
-{
-"name": "build-tools-136",
-"owner": "7558a08d-8059-45f6-9c4b-908299a025ef"
-}
+    {
+        "name": "123456781234567812345678123456781234567812345678",
+        "owner": "8558a08d-8059-45f6-9c4b-908299a025ee"
+    },
+    {
+        "name": "build-tools-136",
+        "owner": "7558a08d-8059-45f6-9c4b-908299a025ef"
+    }
 ]
 EOT;
         $this->assertFormattedOutputMatches($expected, 'json', $data, $options);
