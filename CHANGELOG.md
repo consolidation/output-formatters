@@ -1,5 +1,9 @@
 # Change Log
 
+### 4.2.4 - 23 Feb 2023
+
+- Minor dynamic property fix for PHP 8.2.
+
 ### 4.2.3 - 16 Oct 2022
 
 - Various PHP 8.1 compatibility fixes (warnings)
