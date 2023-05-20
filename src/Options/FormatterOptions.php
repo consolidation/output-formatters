@@ -167,6 +167,34 @@ class FormatterOptions
     }
 
     /**
+     * Get the fields based on the selections made by the user and
+     * the available annotation data.
+     *
+     * @param array $defaults
+     * @param mixed $default
+     * @return mixed
+     */
+    public function fields($defaults = [], $default = false)
+    {
+        $fieldShortcut = $this->get(self::FIELD, $defaults);
+        if (!empty($fieldShortcut)) {
+            return [$fieldShortcut];
+        }
+        $result = $this->get(self::FIELDS, $defaults);
+        if (!empty($result)) {
+            return $result;
+        }
+        $isHumanReadable = $this->get(self::HUMAN_READABLE, $defaults);
+        if ($isHumanReadable) {
+            $result = $this->get(self::DEFAULT_TABLE_FIELDS, $defaults);
+            if (!empty($result)) {
+                return $result;
+            }
+        }
+        return $this->get(self::DEFAULT_FIELDS, $defaults);
+    }
+
+    /**
      * Return the XmlSchema to use with --format=xml for data types that support
      * that.  This is used when an array needs to be converted into xml.
      *
