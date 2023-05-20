@@ -47,7 +47,8 @@ class FormatterOptionsTests extends TestCase
      */
     protected function getFormat(FormatterOptions $options, $defaults = [])
     {
-        return $options->get(FormatterOptions::FORMAT, [], $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, ''));
+        return $options->getFormat($defaults);
+        // return $options->get(FormatterOptions::FORMAT, [], $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, ''));
     }
 
     /**
@@ -127,5 +128,85 @@ class FormatterOptionsTests extends TestCase
         // We won't see the default value unless the configuration value is empty.
         $options = new FormatterOptions([], $userOptions);
         $this->assertEquals('var_export', $options->get(FormatterOptions::DEFAULT_FORMAT, $defaults, 'irrelevant'));
+    }
+
+    public function testFormatterOptionsFields()
+    {
+        $configurationData = [
+            FormatterOptions::DEFAULT_TABLE_FIELDS => 'a,b,c',
+            FormatterOptions::DEFAULT_FIELDS => 'a,b,c,d',
+            FormatterOptions::FIELD_LABELS => [
+                'a' => 'First',
+                'b' => 'Second',
+                'c' => 'Third',
+                'd' => 'Fourth'
+            ],
+        ];
+
+        $userOptions = [];
+
+        $options = new FormatterOptions($configurationData, $userOptions);
+
+        $this->assertEquals('a,b,c,d', $options->fields());
+
+        $this->assertEquals('a', $this->callProtected($options, 'fieldAlias', ['First']));
+        $this->assertEquals('First', $this->callProtected($options, 'fieldAlias', ['a']));
+
+        $this->assertTrue($options->fieldsContain('a'));
+        $this->assertTrue($options->fieldsContain('First'));
+
+        $this->assertTrue($options->fieldsContain('c'));
+        $this->assertTrue($options->fieldsContain('Third'));
+
+        $this->assertTrue($options->fieldsContain('d'));
+        $this->assertTrue($options->fieldsContain('Fourth'));
+
+        $options->setHumanReadable(true);
+
+        $this->assertEquals('a,b,c', $options->fields());
+
+        $this->assertTrue($options->fieldsContain('a'));
+        $this->assertTrue($options->fieldsContain('First'));
+
+        $this->assertTrue($options->fieldsContain('c'));
+        $this->assertTrue($options->fieldsContain('Third'));
+
+        $this->assertFalse($options->fieldsContain('d'));
+        $this->assertFalse($options->fieldsContain('Fourth'));
+
+        $userOptions = [
+            FormatterOptions::FIELDS => 'a,b',
+        ];
+
+        $options = new FormatterOptions($configurationData, $userOptions);
+
+        $this->assertTrue($options->fieldsContain('a'));
+        $this->assertTrue($options->fieldsContain('First'));
+
+        $this->assertFalse($options->fieldsContain('c'));
+        $this->assertFalse($options->fieldsContain('Third'));
+
+        $this->assertFalse($options->fieldsContain('d'));
+        $this->assertFalse($options->fieldsContain('Fourth'));
+
+        $options->setHumanReadable(true);
+
+        $this->assertTrue($options->fieldsContain('a'));
+        $this->assertTrue($options->fieldsContain('First'));
+
+        $this->assertFalse($options->fieldsContain('c'));
+        $this->assertFalse($options->fieldsContain('Third'));
+
+        $this->assertFalse($options->fieldsContain('d'));
+        $this->assertFalse($options->fieldsContain('Fourth'));
+
+
+    }
+
+    function callProtected($object, $method, $args = [])
+    {
+        $r = new \ReflectionMethod($object, $method);
+        $r->setAccessible(true);
+        return $r->invokeArgs($object, $args);
     }
 }
