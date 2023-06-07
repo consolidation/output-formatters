@@ -934,6 +934,31 @@ EOT;
         $this->assertFormattedOutputMatches($expectedTsvWithHeaders, 'tsv', $data, new FormatterOptions(), ['include-field-labels' => true]);
     }
 
+    function testEmptyTable()
+    {
+        $options = new FormatterOptions();
+        $options->setWidth(42);
+        $options->setFieldLabels(['first' => 'First', 'second' => 'Second']);
+
+        $data = new RowsOfFields([]);
+
+        $expected = <<<EOT
+------- --------
+First   Second
+------- --------
+EOT;
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+
+        $expected = <<<EOT
+Does not have any headers
+EOT;
+
+        $options->setTableEmptyMessage("Does not have any headers");
+
+        $this->assertFormattedOutputMatches($expected, 'table', $data, $options);
+    }
+
     /**
      * @test
      * @return void

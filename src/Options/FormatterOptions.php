@@ -38,6 +38,7 @@ class FormatterOptions
     const FORMAT = 'format';
     const DEFAULT_FORMAT = 'default-format';
     const TABLE_STYLE = 'table-style';
+    const TABLE_EMPTY_MESSAGE = 'table-empty-message';
     const LIST_ORIENTATION = 'list-orientation';
     const FIELDS = 'fields';
     const FIELD = 'field';
@@ -135,6 +136,11 @@ class FormatterOptions
     public function setFieldLabels($fieldLabels)
     {
         return $this->setConfigurationValue(self::FIELD_LABELS, $fieldLabels);
+    }
+
+    public function setTableEmptyMessage($emptyMessage)
+    {
+        return $this->setConfigurationValue(FormatterOptions::TABLE_EMPTY_MESSAGE, $emptyMessage);
     }
 
     public function setDefaultStringField($defaultStringField)
