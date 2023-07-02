@@ -20,7 +20,7 @@ class EntityToArraySimplifier implements SimplifyToArrayInterface
      */
     public function canSimplify(\ReflectionClass $dataType)
     {
-        return $dataType->implementsInterface('\Drupal\Core\Entity\EntityInterface');
+        return class_exists('\Drupal\Core\Entity\EntityInterface', false) && $dataType->implementsInterface('\Drupal\Core\Entity\EntityInterface');
     }
 
     public function simplifyToArray($structuredData, FormatterOptions $options)
