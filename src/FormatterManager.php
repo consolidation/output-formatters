@@ -14,6 +14,7 @@ use Consolidation\OutputFormatters\Options\OverrideOptionsInterface;
 use Consolidation\OutputFormatters\StructuredData\MetadataInterface;
 use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
+use Consolidation\OutputFormatters\Transformations\EntityToArraySimplifier;
 use Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface;
 use Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface;
 use Consolidation\OutputFormatters\Validate\ValidationInterface;
@@ -67,8 +68,8 @@ class FormatterManager
 
     public function addDefaultSimplifiers()
     {
-        // Add our default array simplifier (DOMDocument to array)
         $this->addSimplifier(new DomToArraySimplifier());
+        $this->addSimplifier(new EntityToArraySimplifier());
     }
 
     /**
