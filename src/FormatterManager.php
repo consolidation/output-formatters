@@ -69,7 +69,6 @@ class FormatterManager
     public function addDefaultSimplifiers()
     {
         $this->addSimplifier(new DomToArraySimplifier());
-        $this->addSimplifier(new EntityToArraySimplifier());
     }
 
     /**
