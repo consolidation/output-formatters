@@ -16,7 +16,6 @@ use Consolidation\OutputFormatters\StructuredData\RestructureInterface;
 use Consolidation\OutputFormatters\Transformations\DomToArraySimplifier;
 use Consolidation\OutputFormatters\Transformations\EntityToArraySimplifier;
 use Consolidation\OutputFormatters\Transformations\OverrideRestructureInterface;
-use Consolidation\OutputFormatters\Transformations\SimplifyToArrayInterface;
 use Consolidation\OutputFormatters\Validate\ValidationInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
