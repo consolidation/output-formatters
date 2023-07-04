@@ -68,6 +68,7 @@ class FormatterManager
 
     public function addDefaultSimplifiers()
     {
+        // Add our default array simplifier (DOMDocument to array)
         $this->addSimplifier(new DomToArraySimplifier());
     }
 
