@@ -69,7 +69,7 @@ class ValidFormatsTest extends TestCase
 
         // TODO: it woud be better if this returned an empty set instead of 'string'.
         $validFormats = $this->formatterManager->validFormats($notADataType);
-        $this->assertEquals('null,string', implode(',', $validFormats));
+        $this->assertEquals('null,string,var_dump,var_export', implode(',', $validFormats));
     }
 
     function testAutomaticOptions()
