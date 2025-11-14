@@ -48,7 +48,7 @@ class FormattersTests extends TestCase
      * @param $userOptions
      * @return void
      */
-    function assertFormattedOutputMatches($expected, $format, $data, FormatterOptions $options = null, $userOptions = [])
+    function assertFormattedOutputMatches($expected, $format, $data, ?FormatterOptions $options = null, $userOptions = [])
     {
         if (!$options) {
             $options = new FormatterOptions();
