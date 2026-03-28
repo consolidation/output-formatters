@@ -68,7 +68,7 @@ jobs:
         run: ./tools/vendor/bin/roave-backward-compatibility-check --from=4.1.3
 
   tests:
-    name: Tests
+    name: Tests ${{ matrix.symfony && format('(Symfony {0})', matrix.symfony) || '' }}
 
     runs-on: ${{ matrix.os }}
 
@@ -89,6 +89,9 @@ jobs:
 
         dependencies:
           - locked
+
+        symfony:
+          - ""
 
         include:
           - os: ubuntu-latest
@@ -113,6 +116,31 @@ jobs:
             php-version: "8.5"
             dependencies: highest
             php-ini-values: assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit_buffer_size=4096M, opcache.jit=1205
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            dependencies: highest
+            symfony: "4"
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            dependencies: highest
+            symfony: "5"
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            dependencies: highest
+            symfony: "6"
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            dependencies: highest
+            symfony: "7"
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            dependencies: highest
+            symfony: "8"
 
     steps:
       - name: Checkout
@@ -164,6 +192,10 @@ jobs:
 
       - name: Show what was installed
         run: composer info
+
+      - name: Require Symfony ${{ matrix.symfony }}
+        if: matrix.symfony != ''
+        run: composer require --no-interaction --no-progress symfony/console:^${{ matrix.symfony }} symfony/finder:^${{ matrix.symfony }} symfony/var-dumper:^${{ matrix.symfony }} symfony/yaml:^${{ matrix.symfony }}
 
       - name: Run tests with phpunit
         run: composer unit
