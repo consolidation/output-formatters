@@ -33,7 +33,7 @@ class TsvFormatter extends CsvFormatter
     {
         return implode("\t", array_map(
             function ($item) {
-                return str_replace(["\t", "\n"], ['\t', '\n'], $item);
+                return str_replace(["\t", "\n"], ['\t', '\n'], (string) $item);
             },
             $data
         ));
