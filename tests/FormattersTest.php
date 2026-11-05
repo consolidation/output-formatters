@@ -58,6 +58,8 @@ class FormattersTests extends TestCase
         $this->formatterManager->write($output, $format, $data, $options);
         $expected = preg_replace('#[ \t\r]*$#sm', '', $expected);
         $actual = preg_replace('#[ \t\r]*$#sm', '', $output->fetch());
+        // Different YAML library versions emit '{}' or '{  }' for empty elements; treat them the same.
+        $actual = preg_replace('#\{\s+\}#', '{}', $actual);
         $this->assertEquals(
             $this->filterForTrailingWhitespace($expected),
             $this->filterForTrailingWhitespace($actual)
@@ -1420,7 +1422,7 @@ EOT;
 
         // TODO: Is metadata handling correct with field remapping? Should metadata be preserved, or removed entirely?
         $expected = <<<EOT
-metadata: {  }
+metadata: {}
 id-123:
   iii: c
   i: a
