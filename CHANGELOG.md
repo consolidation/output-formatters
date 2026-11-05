@@ -1,5 +1,10 @@
 # Change Log
 
+### 4.7.2 - 4 Nov 2026
+
+- PHP 8.6
+- Fix deprecation warning on PHP 8.1+ in tsvEscape
+
 ### 4.7.1 - 28 Mar 2026
 
 - Allow Symfony 8 (#116)
